@@ -1,0 +1,67 @@
+[project]
+name = "sparkwarp"
+dynamic = ["version"]
+description = "Run existing PySpark DataFrame tests in milliseconds, with no JVM."
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.10"
+authors = [{ name = "Hugo" }]
+keywords = ["pyspark", "spark", "testing", "pytest", "spark-connect", "sail"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: Pytest",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Testing",
+]
+dependencies = [
+    "pyspark[connect]>=4.0,<5",
+    "pysail>=0.7.2,<0.8",
+    "pandas>=2,<3",
+    "pytest>=7",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+
+[project.entry-points.pytest11]
+sparkwarp = "sparkwarp.pytest_plugin"
+
+[dependency-groups]
+dev = ["pytest>=8", "mypy>=1.10", "ruff>=0.5", "black>=24", "pandas-stubs>=2,<3"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "src/sparkwarp/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sparkwarp"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.mypy]
+strict = true
+files = ["src"]
+python_version = "3.10"
+
+[[tool.mypy.overrides]]
+module = ["pysail.*", "pyspark.*"]
+ignore_missing_imports = true
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+extend-exclude = ["spikes"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "ANN"]
+
+[tool.black]
+line-length = 88
+target-version = ["py310"]
+extend-exclude = "spikes/"
