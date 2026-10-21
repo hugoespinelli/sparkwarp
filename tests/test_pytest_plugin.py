@@ -386,7 +386,7 @@ def test_uses_rdd(spark):
 
 
 def test_uses_spark_context(spark):
-    spark.sparkContext.setLogLevel("ERROR")
+    spark.sparkContext.parallelize([1, 2])
 
 
 def test_plain_failure(spark):
@@ -443,3 +443,72 @@ class UnsupportedHints:
             elif current and self.HINT_TEXT in line:
                 hinted.add(current)
         return hinted
+
+
+SESSION_CACHED_AT_IMPORT = """
+import os
+
+from pyspark.sql.connect.session import SparkSession as ConnectSession
+
+CACHED = ConnectSession.builder.remote(os.environ["SPARK_REMOTE"]).getOrCreate()
+"""
+
+STOPS_THEN_USES_THE_CACHED_SESSION = """
+import unittest
+
+from pyspark.sql import SparkSession
+
+import cachedlib
+
+
+class TestStopsInTeardown(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.spark = SparkSession.builder.master("local[1]").getOrCreate()
+        cls.spark.sparkContext.setLogLevel("WARN")
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.spark.catalog.clearCache()
+        cls.spark.stop()
+
+    def test_a(self):
+        self.assertEqual(self.spark.range(1).count(), 1)
+
+
+def test_b_library_session_still_works():
+    assert cachedlib.CACHED.range(2).count() == 2
+"""
+
+
+def test_common_conftest_lines_and_a_cached_session_work(
+    pytester: pytest.Pytester,
+) -> None:
+    pytester.makepyfile(cachedlib=SESSION_CACHED_AT_IMPORT)
+    pytester.makepyfile(test_cached=STOPS_THEN_USES_THE_CACHED_SESSION)
+    result = pytester.runpytest_subprocess(
+        "--sparkwarp", "-p", "no:cacheprovider", timeout=SUBPROCESS_TIMEOUT_SECONDS
+    )
+    result.assert_outcomes(passed=2)
+
+
+DEEP_EXPRESSION = """
+from pyspark.sql import functions as F
+
+
+def test_deep_chain(spark):
+    column = F.col("s")
+    for _ in range(150):
+        column = F.regexp_replace(column, "a", "b")
+    spark.createDataFrame([("a",)], "s string").select(column).collect()
+"""
+
+
+def test_protobuf_depth_failure_gets_the_hint(pytester: pytest.Pytester) -> None:
+    pytester.makepyfile(DEEP_EXPRESSION)
+    result = pytester.runpytest_subprocess(
+        "--sparkwarp", "-p", "no:cacheprovider", timeout=SUBPROCESS_TIMEOUT_SECONDS
+    )
+    result.assert_outcomes(failed=1)
+    hinted = UnsupportedHints(result.stdout.lines).tests_with_hint()
+    assert hinted == {"test_deep_chain"}
