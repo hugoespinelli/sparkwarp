@@ -41,7 +41,7 @@ def test_current_timestamp_is_not_null_and_is_recent(spark: SparkSession) -> Non
     row = (
         spark.range(1)
         .select(F.current_timestamp().alias("now"), F.year(F.current_date()).alias("y"))
-        .first()
+        .collect()[0]
     )
     assert row["now"] is not None
     assert row["y"] >= 2024
@@ -73,7 +73,7 @@ def test_cast_and_try_cast(spark: SparkSession) -> None:
     assert (
         df.filter(F.col("s") == "12")
         .select(F.col("s").cast("int").alias("i"))
-        .first()["i"]
+        .collect()[0]["i"]
         == 12
     )
 
@@ -98,7 +98,7 @@ def test_sql_can_read_two_views_and_join(spark: SparkSession) -> None:
     )
     row = spark.sql(
         "SELECT l.name, r.score FROM left_v l JOIN right_v r ON l.id = r.id"
-    ).first()
+    ).collect()[0]
     assert (row["name"], row["score"]) == ("a", 9)
 
 

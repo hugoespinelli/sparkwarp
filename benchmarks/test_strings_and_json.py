@@ -44,8 +44,8 @@ def test_json_parsed_struct_fields_are_selectable(spark: SparkSession) -> None:
 def test_concat_ws_and_split(spark: SparkSession) -> None:
     df = spark.createDataFrame([("a", "b")], "x string, y string")
     joined = df.select(F.concat_ws("-", "x", "y").alias("j"))
-    assert joined.first()["j"] == "a-b"
-    assert joined.select(F.split("j", "-").alias("parts")).first()["parts"] == [
+    assert joined.collect()[0]["j"] == "a-b"
+    assert joined.select(F.split("j", "-").alias("parts")).collect()[0]["parts"] == [
         "a",
         "b",
     ]
@@ -63,6 +63,6 @@ def test_struct_and_array_constructors(spark: SparkSession) -> None:
     df = spark.createDataFrame([(1, "a")], "id int, name string")
     row = df.select(
         F.struct("id", "name").alias("s"), F.array(F.lit(1), F.lit(2)).alias("arr")
-    ).first()
+    ).collect()[0]
     assert row["s"]["name"] == "a"
     assert row["arr"] == [1, 2]

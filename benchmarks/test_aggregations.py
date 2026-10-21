@@ -48,7 +48,7 @@ def test_global_aggregate_without_group(spark: SparkSession) -> None:
     df = spark.createDataFrame(ROWS, ORDERS)
     row = df.agg(
         F.sum("amount").alias("s"), F.count("*").alias("n"), F.min("amount").alias("m")
-    ).first()
+    ).collect()[0]
     assert (row["s"], row["n"], row["m"]) == (240, 5, 20)
 
 
@@ -74,5 +74,5 @@ def test_pivot_like_conditional_sums(spark: SparkSession) -> None:
         F.sum(F.when(F.col("country") != "BR", F.col("amount")).otherwise(0)).alias(
             "other"
         ),
-    ).first()
+    ).collect()[0]
     assert (row["br"], row["other"]) == (150, 90)
