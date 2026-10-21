@@ -4,11 +4,10 @@ from __future__ import annotations
 
 import json
 import os
-from abc import ABC, abstractmethod
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
 from types import MethodType
-from typing import TYPE_CHECKING, ClassVar, cast
+from typing import TYPE_CHECKING, cast
 
 from pyspark import SparkConf
 from pyspark.sql import SparkSession
@@ -23,6 +22,7 @@ from sparkwarp.config import (
     ORIGINAL_ENV_VAR,
     REMOTE_ENV_VAR,
 )
+from sparkwarp.patches import ClassPatch
 
 if TYPE_CHECKING:
     from pyspark.sql._typing import OptionalPrimitiveType
@@ -204,49 +204,25 @@ class ContractedGetOrCreate:
         return self.original(builder)
 
 
-class BuilderPatch(ABC):
+class BuilderPatch(ClassPatch):
     """Replaces one `SparkSession.Builder` method and puts the original back."""
 
-    METHOD: ClassVar[str]
-
-    def __init__(self) -> None:
-        self._original: object | None = None
-
-    @property
-    def installed(self) -> bool:
-        return self._original is not None
-
-    def install(self) -> None:
-        if self.installed:
-            return
-        original = getattr(SparkSession.Builder, self.METHOD)
-        self._original = original
-        setattr(SparkSession.Builder, self.METHOD, self._replacement(original))
-
-    def uninstall(self) -> None:
-        if self._original is None:
-            return
-        setattr(SparkSession.Builder, self.METHOD, self._original)
-        self._original = None
-
-    @abstractmethod
-    def _replacement(self, original: Callable[..., object]) -> object:
-        """The object that stands in for the original method."""
+    TARGET = SparkSession.Builder
 
 
 class MasterlessPatch(BuilderPatch):
     """Needed only in Connect mode, where PySpark rejects any master URL."""
 
-    METHOD = "config"
+    ATTRIBUTE = "config"
 
-    def _replacement(self, original: Callable[..., object]) -> object:
-        return MasterlessConfig(cast(BuilderConfig, original))
+    def _replacement(self, previous: object) -> object:
+        return MasterlessConfig(cast(BuilderConfig, previous))
 
 
 class SessionContractPatch(BuilderPatch):
     """Gives each new session sparkwarp's contract, minus what the user set."""
 
-    METHOD = "getOrCreate"
+    ATTRIBUTE = "getOrCreate"
 
     def __init__(
         self, defaults: Mapping[str, str], has_live_session: Callable[[], bool]
@@ -255,8 +231,8 @@ class SessionContractPatch(BuilderPatch):
         self._defaults = defaults
         self._has_live_session = has_live_session
 
-    def _replacement(self, original: Callable[..., object]) -> object:
-        get_or_create = cast(BuilderGetOrCreate, original)
+    def _replacement(self, previous: object) -> object:
+        get_or_create = cast(BuilderGetOrCreate, previous)
         return ContractedGetOrCreate(
             get_or_create, self._defaults, self._has_live_session
         )
