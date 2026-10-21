@@ -40,10 +40,23 @@ ENGINE_LABEL = "sail"
 LOCALHOST = "127.0.0.1"
 ANY_FREE_PORT = 0
 
+SPARK_ONLY_MARKER = "spark_only"
 SPARK_ONLY_MARKER_HELP = (
-    "spark_only: the test needs real Spark (Delta, RDD, streaming). "
-    "Routing to a JVM arrives in a later release; the marker is registered only."
+    "spark_only: the test needs real Spark (DeltaTable API, RDD, streaming). "
+    "sparkwarp skips it on Sail; it runs when sparkwarp is off (SPARKWARP=0)."
 )
+SPARK_ONLY_SKIP_REASON = (
+    "spark_only: needs real Spark; runs in the SPARKWARP=0 parity lane"
+)
+HINT_SECTION_TITLE = "sparkwarp"
+UNSUPPORTED_HINT = (
+    "This test hit a feature that Spark Connect or Sail does not support. "
+    "KNOWN_GAPS.md in the sparkwarp source distribution lists the known gaps. If the "
+    "test needs real Spark, mark it @pytest.mark.spark_only: sparkwarp then skips it, "
+    "and it runs when SPARKWARP=0."
+)
+UNSUPPORTED_CONDITIONS = frozenset({"NOT_IMPLEMENTED", "JVM_ATTRIBUTE_NOT_SUPPORTED"})
+UNSUPPORTED_ERROR_CLASSES = frozenset({"UnsupportedOperationException"})
 PLUGIN_OWNS_STOP_WARNING = (
     "sparkwarp.stop() was ignored: the pytest plugin owns this session and stops "
     "it when the run ends."

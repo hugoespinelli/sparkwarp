@@ -3,9 +3,10 @@
 from __future__ import annotations
 
 import os
-from collections.abc import Mapping
+from collections.abc import Generator, Mapping
 
 import pytest
+from pyspark.errors import PySparkException
 from pyspark.sql import SparkSession
 
 from sparkwarp.config import (
@@ -14,9 +15,15 @@ from sparkwarp.config import (
     CLI_FLAG_DEST,
     CLI_FLAG_HELP,
     CLI_GROUP,
+    HINT_SECTION_TITLE,
     ON_FLAG_VALUES,
     PLUGIN_NAME,
+    SPARK_ONLY_MARKER,
     SPARK_ONLY_MARKER_HELP,
+    SPARK_ONLY_SKIP_REASON,
+    UNSUPPORTED_CONDITIONS,
+    UNSUPPORTED_ERROR_CLASSES,
+    UNSUPPORTED_HINT,
     Ownership,
 )
 from sparkwarp.runtime import Runtime
@@ -66,6 +73,59 @@ class SparkwarpSession:
     @pytest.fixture
     def spark(self) -> SparkSession:
         return Runtime.start(owner=Ownership.PLUGIN).open_session()
+
+    def pytest_collection_modifyitems(self, items: list[pytest.Item]) -> None:
+        skip = pytest.mark.skip(reason=SPARK_ONLY_SKIP_REASON)
+        for item in items:
+            needs_real_spark = item.get_closest_marker(SPARK_ONLY_MARKER) is not None
+            if needs_real_spark:
+                item.add_marker(skip)
+
+    @pytest.hookimpl(wrapper=True)
+    def pytest_runtest_makereport(
+        self, call: pytest.CallInfo[None]
+    ) -> Generator[None, pytest.TestReport, pytest.TestReport]:
+        report = yield
+        failed_on_unsupported = report.failed and UnsupportedFeature.raised_in(call)
+        if failed_on_unsupported:
+            report.sections.append((HINT_SECTION_TITLE, UNSUPPORTED_HINT))
+        return report
+
+
+class UnsupportedFeature:
+    """Recognises PySpark's own "this feature is not supported" errors, nothing else.
+
+    Matching on message text would also catch ordinary bugs ("'<' not supported
+    between ..."), so only PySpark exception types and error conditions count.
+    """
+
+    @classmethod
+    def raised_in(cls, call: pytest.CallInfo[None]) -> bool:
+        if call.excinfo is None:
+            return False
+        return any(
+            cls.is_unsupported(error) for error in cls._chain(call.excinfo.value)
+        )
+
+    @staticmethod
+    def is_unsupported(error: BaseException) -> bool:
+        if not isinstance(error, PySparkException):
+            return False
+        known_condition = error.getCondition() in UNSUPPORTED_CONDITIONS
+        known_class = type(error).__name__ in UNSUPPORTED_ERROR_CLASSES
+        return known_condition or known_class
+
+    @staticmethod
+    def _chain(error: BaseException) -> list[BaseException]:
+        """The error and everything it was raised from, so wrapped errors count too."""
+        chain: list[BaseException] = []
+        current: BaseException | None = error
+        while current is not None and current not in chain:
+            chain.append(current)
+            hidden_context = current.__suppress_context__
+            implicit = None if hidden_context else current.__context__
+            current = current.__cause__ or implicit
+        return chain
 
 
 def pytest_addoption(parser: pytest.Parser) -> None:
