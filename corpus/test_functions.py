@@ -412,8 +412,86 @@ GENERATORS = [
     ),
 ]
 
+
+class Arrays:
+    """A frame with an array column and an integer index column."""
+
+    DDL = "id int, parts array<string>, i int"
+
+    @classmethod
+    def frame(cls, spark: SparkSession) -> DataFrame:
+        return spark.createDataFrame(
+            [(1, ["a", "b", "c"], 1), (2, ["x", "y"], 0)], cls.DDL
+        )
+
+
+class DeepChain:
+    """A column nested `depth` calls deep, the shape of a transliteration table."""
+
+    DEPTH = 60
+    LIMIT = 47
+
+    @classmethod
+    def column(cls) -> Column:
+        return cls.nested(cls.DEPTH)
+
+    @classmethod
+    def at_the_limit(cls) -> Column:
+        return cls.nested(cls.LIMIT)
+
+    @staticmethod
+    def nested(depth: int) -> Column:
+        column = F.col("s")
+        for _ in range(depth):
+            column = F.regexp_replace(column, "a", "b")
+        return column
+
+
+REAL_USAGE = [
+    row(
+        "array_index_from_column",
+        lambda: F.col("parts")[F.col("i")],
+        Arrays.frame,
+        gap=KnownGap("GAP-013"),
+    ),
+    row(
+        "array_index_from_expression",
+        lambda: F.col("parts")[F.size("parts") - 1],
+        Arrays.frame,
+        gap=KnownGap("GAP-013"),
+    ),
+    row(
+        "element_at_column_index",
+        lambda: F.element_at("parts", F.col("i") + 1),
+        Arrays.frame,
+    ),
+    row("input_file_name", F.input_file_name, gap=KnownGap("GAP-016")),
+    Case(
+        "fn_md5_then_distinct",
+        lambda s: Frames.numbers(s).select(F.md5("s").alias("h")).distinct(),
+        gap=KnownGap("GAP-018"),
+    ),
+    Case(
+        "fn_md5_then_union",
+        lambda s: Frames.numbers(s)
+        .select(F.md5("s").alias("h"))
+        .union(Frames.numbers(s).select("s")),
+        gap=KnownGap("GAP-018"),
+    ),
+    row("regexp_replace_chain_at_the_limit", DeepChain.at_the_limit),
+    row("deep_regexp_replace_chain", DeepChain.column, gap=KnownGap("ADOPT-007")),
+]
+
 ALL_CASES = (
-    CORE + STRINGS + NUMBERS + DATES + COLLECTIONS + AGGREGATES + WINDOWS + GENERATORS
+    CORE
+    + STRINGS
+    + NUMBERS
+    + DATES
+    + COLLECTIONS
+    + AGGREGATES
+    + WINDOWS
+    + GENERATORS
+    + REAL_USAGE
 )
 
 

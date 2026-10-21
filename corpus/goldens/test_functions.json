@@ -462,6 +462,92 @@
    "type": "struct"
   }
  },
+ "test_function[fn_array_index_from_column]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "b"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "x"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_array_index_from_expression]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "c"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "y"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
  "test_function[fn_array_join]": {
   "condition": null,
   "error": null,
@@ -2591,6 +2677,69 @@
    "type": "struct"
   }
  },
+ "test_function[fn_deep_regexp_replace_chain]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "b"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "c"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     ""
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
  "test_function[fn_dense_rank]": {
   "condition": null,
   "error": null,
@@ -2738,6 +2887,49 @@
      "name": "r",
      "nullable": false,
      "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_element_at_column_index]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "b"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "x"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
     }
    ],
    "type": "struct"
@@ -4479,6 +4671,69 @@
    "type": "struct"
   }
  },
+ "test_function[fn_input_file_name]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     ""
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     ""
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     ""
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     ""
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
  "test_function[fn_instr]": {
   "condition": null,
   "error": null,
@@ -6118,6 +6373,112 @@
    "type": "struct"
   }
  },
+ "test_function[fn_md5_then_distinct]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "h",
+     "0cc175b9c0f1b6a831c399e269772661"
+    ]
+   ],
+   [
+    [
+     "h",
+     "4a8a08f09d37b73795649038408b5f33"
+    ]
+   ],
+   [
+    [
+     "h",
+     "d41d8cd98f00b204e9800998ecf8427e"
+    ]
+   ],
+   [
+    [
+     "h",
+     null
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "h",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_md5_then_union]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "h",
+     ""
+    ]
+   ],
+   [
+    [
+     "h",
+     "0cc175b9c0f1b6a831c399e269772661"
+    ]
+   ],
+   [
+    [
+     "h",
+     "4a8a08f09d37b73795649038408b5f33"
+    ]
+   ],
+   [
+    [
+     "h",
+     "a"
+    ]
+   ],
+   [
+    [
+     "h",
+     "c"
+    ]
+   ],
+   [
+    [
+     "h",
+     "d41d8cd98f00b204e9800998ecf8427e"
+    ]
+   ],
+   [
+    [
+     "h",
+     null
+    ]
+   ],
+   [
+    [
+     "h",
+     null
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "h",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
  "test_function[fn_min]": {
   "condition": null,
   "error": null,
@@ -7515,6 +7876,69 @@
      "metadata": {},
      "name": "r",
      "nullable": false,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_regexp_replace_chain_at_the_limit]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "b"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "c"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     ""
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
      "type": "string"
     }
    ],

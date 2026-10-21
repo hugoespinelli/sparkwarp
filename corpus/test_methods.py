@@ -150,7 +150,25 @@ ACTIONS = [
     ),
 ]
 
-ALL_CASES = TRANSFORMATIONS + ACTIONS
+
+class CacheCycle:
+    """Caches, materialises and unpersists a frame, then asks whether it is cached."""
+
+    def __call__(self, spark: SparkSession) -> bool:
+        frame = P(spark)
+        frame.cache()
+        frame.count()
+        frame.unpersist()
+        return bool(frame.is_cached)
+
+
+REAL_USAGE = [
+    Case("action_is_cached_after_unpersist", CacheCycle(), gap=KnownGap("GAP-015")),
+    Case("action_set_log_level", lambda s: s.sparkContext.setLogLevel("WARN")),
+    Case("action_catalog_clear_cache", lambda s: s.catalog.clearCache()),
+]
+
+ALL_CASES = TRANSFORMATIONS + ACTIONS + REAL_USAGE
 
 
 @pytest.mark.parametrize("case", Case.params(ALL_CASES))
