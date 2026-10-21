@@ -39,6 +39,13 @@ ENGINE_LABEL = "sail"
 
 LOCALHOST = "127.0.0.1"
 ANY_FREE_PORT = 0
+CHECKPOINT_ENV_VAR = "SAIL_EXECUTION__CHECKPOINT__PATH"
+CHECKPOINT_DIR_PREFIX = "sparkwarp-checkpoint-"
+
+STUB_DEFAULT_PARALLELISM = 1
+STUB_ATTRIBUTE_PARAMETER = "attr_name"
+STUB_PREFIX = "sparkContext."
+CLOSE_WITHOUT_ORIGINAL_ERROR = "cannot close the session with {original!r}"
 
 SPARK_ONLY_MARKER = "spark_only"
 SPARK_ONLY_MARKER_HELP = (
@@ -55,7 +62,9 @@ UNSUPPORTED_HINT = (
     "test needs real Spark, mark it @pytest.mark.spark_only: sparkwarp then skips it, "
     "and it runs when SPARKWARP=0."
 )
-UNSUPPORTED_CONDITIONS = frozenset({"NOT_IMPLEMENTED", "JVM_ATTRIBUTE_NOT_SUPPORTED"})
+PROTOBUF_DEPTH_SIGNAL = "MaxDepth"
+JVM_ONLY_CONDITION = "JVM_ATTRIBUTE_NOT_SUPPORTED"
+UNSUPPORTED_CONDITIONS = frozenset({"NOT_IMPLEMENTED", JVM_ONLY_CONDITION})
 UNSUPPORTED_ERROR_CLASSES = frozenset({"UnsupportedOperationException"})
 PLUGIN_OWNS_STOP_WARNING = (
     "sparkwarp.stop() was ignored: the pytest plugin owns this session and stops "
