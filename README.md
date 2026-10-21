@@ -9,13 +9,13 @@
   <img alt="Python 3.10+" src="https://img.shields.io/badge/python-3.10%2B-2a78d6">
   <img alt="PySpark 4" src="https://img.shields.io/badge/pyspark-4.x-eb6834">
   <img alt="License: Apache-2.0" src="https://img.shields.io/badge/license-Apache--2.0-52514e">
-  <img alt="Status: pre-release" src="https://img.shields.io/badge/status-pre--release-898781">
+  <img alt="Release v0.1.0" src="https://img.shields.io/badge/release-v0.1.0-898781">
 </p>
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/benchmark-suite-dark.svg">
-    <img alt="Bar chart. The same 42 PySpark tests take 31.7 seconds on local Spark and 2.8 seconds on sparkwarp, 11 times faster." src="docs/assets/benchmark-suite-light.svg" width="760">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hugoespinelli/sparkwarp/main/docs/assets/benchmark-suite-dark.svg">
+    <img alt="Bar chart. The same 42 PySpark tests take 31.7 seconds on local Spark and 2.8 seconds on sparkwarp, 11 times faster." src="https://raw.githubusercontent.com/hugoespinelli/sparkwarp/main/docs/assets/benchmark-suite-light.svg" width="760">
   </picture>
 </p>
 <p align="center"><i>The same 42 lakehouse-style tests, same code, same conftest. Only <code>SPARKWARP=1</code> differs.</i></p>
@@ -25,7 +25,7 @@
 - **Zero edits.** Your `SparkSession.builder...getOrCreate()` conftest, your `F.*` calls and
   your `assertDataFrameEqual` stay as they are. You set one environment variable.
 - **Honest about differences.** A corpus of 329 cases, recorded on real Spark, checks the
-  engine. Every known difference is a test and is listed in [`KNOWN_GAPS.md`](KNOWN_GAPS.md).
+  engine. Every known difference is a test and is listed in [`KNOWN_GAPS.md`](https://github.com/hugoespinelli/sparkwarp/blob/main/KNOWN_GAPS.md).
 - **Real Spark stays one switch away.** `SPARKWARP=0` runs the same suite on the JVM, so
   CI keeps a parity lane.
 
@@ -49,18 +49,20 @@ Production keeps running on Spark.
 
 ## Installation
 
-sparkwarp is not on PyPI yet. Until the first release, build it from source:
+Install the 0.1.0 release from GitHub:
+
+```bash
+pip install https://github.com/hugoespinelli/sparkwarp/releases/download/v0.1.0/sparkwarp-0.1.0-py3-none-any.whl
+```
+
+Or from source:
 
 ```bash
 git clone https://github.com/hugoespinelli/sparkwarp.git && cd sparkwarp
 pip install .
 ```
 
-After the release:
-
-```bash
-pip install sparkwarp
-```
+`pip install sparkwarp` from PyPI is coming next.
 
 Requirements: Python 3.10+, PySpark 4 (installed as `pyspark[connect]>=4`), pytest 8+.
 No Java is needed. sparkwarp does nothing until you switch it on, so installing it does
@@ -175,8 +177,8 @@ no second API to keep in sync with Spark.
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/benchmark-per-test-dark.svg">
-    <img alt="Strip chart of each test's time on a log scale. Local Spark tests take a median of 364 ms; sparkwarp tests take a median of 25 ms." src="docs/assets/benchmark-per-test-light.svg" width="760">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hugoespinelli/sparkwarp/main/docs/assets/benchmark-per-test-dark.svg">
+    <img alt="Strip chart of each test's time on a log scale. Local Spark tests take a median of 364 ms; sparkwarp tests take a median of 25 ms." src="https://raw.githubusercontent.com/hugoespinelli/sparkwarp/main/docs/assets/benchmark-per-test-light.svg" width="760">
   </picture>
 </p>
 
@@ -185,7 +187,7 @@ no second API to keep in sync with Spark.
 | Real Spark, `local[1]`, tuned | 31.7 s | 364 ms | 686 ms |
 | sparkwarp (Sail) | 2.8 s | 25 ms | 34 ms |
 
-The suite in [`benchmarks/`](benchmarks) is 42 tests shaped like a real lakehouse repo.
+The suite in [`benchmarks/`](https://github.com/hugoespinelli/sparkwarp/tree/main/benchmarks) is 42 tests shaped like a real lakehouse repo.
 They are transformer classes with a `process(df)` method, tested with `createDataFrame`,
 `F.*`, `Window`, `groupBy().agg()`, joins, `unionByName`, `from_json`, `explode`,
 `regexp_replace`, `date_trunc`, `spark.sql()` on temp views and `assertDataFrameEqual`.
@@ -221,8 +223,8 @@ and CI checks them again on both engines.
 | Row order | 12 | 8 |
 
 Matches are compared the way `assertDataFrameEqual` compares by default. Every difference
-is a test, listed with its severity in [`KNOWN_GAPS.md`](KNOWN_GAPS.md). The full table,
-case by case, is [`docs/SUPPORT.md`](docs/SUPPORT.md). Five gaps change results without
+is a test, listed with its severity in [`KNOWN_GAPS.md`](https://github.com/hugoespinelli/sparkwarp/blob/main/KNOWN_GAPS.md). The full table,
+case by case, is [`docs/SUPPORT.md`](https://github.com/hugoespinelli/sparkwarp/blob/main/docs/SUPPORT.md). Five gaps change results without
 an error: four value gaps plus row order. That is why the parity lane matters.
 
 ## Limitations
@@ -234,7 +236,7 @@ an error: four value gaps plus row order. That is why the parity lane matters.
 - `isinstance(spark, pyspark.sql.SparkSession)` is `False` under Spark Connect.
 - Meant for unit tests on small inputs, not for benchmarking production jobs.
 
-The [FAQ](docs/FAQ.md) covers why sparkwarp uses Sail and not sqlframe, Sparkless or
+The [FAQ](https://github.com/hugoespinelli/sparkwarp/blob/main/docs/FAQ.md) covers why sparkwarp uses Sail and not sqlframe, Sparkless or
 pysparkling, and what to do about each gap.
 
 ## Contributing
@@ -244,7 +246,7 @@ line of Python. If it shows a difference between Sail and Spark, the project lea
 something, and so do other users. Bug reports with a minimal repro, docs fixes and upstream
 reports to Sail help too.
 
-[`CONTRIBUTING.md`](CONTRIBUTING.md) has the development setup, how to add a corpus case,
+[`CONTRIBUTING.md`](https://github.com/hugoespinelli/sparkwarp/blob/main/CONTRIBUTING.md) has the development setup, how to add a corpus case,
 how to record goldens on real Spark, and the checks every pull request must pass.
 
 ## Acknowledgements
@@ -256,4 +258,4 @@ The test-suite shape came from the many teams who run thousands of PySpark tests
 
 ## License
 
-[Apache-2.0](LICENSE).
+[Apache-2.0](https://github.com/hugoespinelli/sparkwarp/blob/main/LICENSE).
