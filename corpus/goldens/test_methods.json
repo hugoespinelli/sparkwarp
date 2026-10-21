@@ -1,0 +1,4875 @@
+{
+ "test_method[action_collect]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "name",
+     "alice"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "name",
+     "bob"
+    ],
+    [
+     "age",
+     25
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "name",
+     "carol"
+    ],
+    [
+     "age",
+     40
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "name",
+     "bob"
+    ],
+    [
+     "age",
+     45
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "name",
+     null
+    ],
+    [
+     "age",
+     null
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "name",
+     "dave"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     null
+    ]
+   ]
+  ],
+  "schema": null
+ },
+ "test_method[action_columns]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   "id",
+   "name",
+   "age",
+   "dept"
+  ],
+  "schema": null
+ },
+ "test_method[action_count]": {
+  "condition": null,
+  "error": null,
+  "rows": 6,
+  "schema": null
+ },
+ "test_method[action_dtypes]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    "id",
+    "int"
+   ],
+   [
+    "name",
+    "string"
+   ],
+   [
+    "age",
+    "int"
+   ],
+   [
+    "dept",
+    "string"
+   ]
+  ],
+  "schema": null
+ },
+ "test_method[action_first]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    "id",
+    1
+   ],
+   [
+    "name",
+    "alice"
+   ],
+   [
+    "age",
+    30
+   ],
+   [
+    "dept",
+    "eng"
+   ]
+  ],
+  "schema": null
+ },
+ "test_method[action_head]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "name",
+     "alice"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "name",
+     "bob"
+    ],
+    [
+     "age",
+     25
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ]
+  ],
+  "schema": null
+ },
+ "test_method[action_is_empty]": {
+  "condition": null,
+  "error": null,
+  "rows": true,
+  "schema": null
+ },
+ "test_method[action_rdd_is_unsupported]": {
+  "condition": null,
+  "error": null,
+  "rows": 6,
+  "schema": null
+ },
+ "test_method[action_schema_simple_string]": {
+  "condition": null,
+  "error": null,
+  "rows": "struct<id:int,name:string,age:int,dept:string>",
+  "schema": null
+ },
+ "test_method[action_spark_context_is_unsupported]": {
+  "condition": null,
+  "error": null,
+  "rows": "sparkwarp-corpus",
+  "schema": null
+ },
+ "test_method[action_tail]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "name",
+     null
+    ],
+    [
+     "age",
+     null
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "name",
+     "dave"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     null
+    ]
+   ]
+  ],
+  "schema": null
+ },
+ "test_method[action_take]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "name",
+     "alice"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "name",
+     "bob"
+    ],
+    [
+     "age",
+     25
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ]
+  ],
+  "schema": null
+ },
+ "test_method[action_to_json]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   "{\"id\":1,\"name\":\"alice\",\"age\":30,\"dept\":\"eng\"}",
+   "{\"id\":2,\"name\":\"bob\",\"age\":25,\"dept\":\"eng\"}",
+   "{\"id\":3,\"name\":\"carol\",\"age\":40,\"dept\":\"ops\"}",
+   "{\"id\":4,\"name\":\"bob\",\"age\":45,\"dept\":\"ops\"}",
+   "{\"id\":5,\"dept\":\"ops\"}",
+   "{\"id\":6,\"name\":\"dave\",\"age\":30}"
+  ],
+  "schema": null
+ },
+ "test_method[action_to_pandas]": {
+  "condition": null,
+  "error": null,
+  "rows": {
+   "age": [
+    30.0,
+    25.0,
+    40.0,
+    45.0,
+    "float:nan",
+    30.0
+   ],
+   "dept": [
+    "eng",
+    "eng",
+    "ops",
+    "ops",
+    "ops",
+    null
+   ],
+   "id": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "name": [
+    "alice",
+    "bob",
+    "carol",
+    "bob",
+    null,
+    "dave"
+   ]
+  },
+  "schema": null
+ },
+ "test_method[df_alias_and_qualified_columns]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "name",
+     "alice"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "name",
+     "bob"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "name",
+     "carol"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "name",
+     "bob"
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "name",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "name",
+     "dave"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "name",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_cache_and_persist]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "name",
+     "alice"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "name",
+     "bob"
+    ],
+    [
+     "age",
+     25
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "name",
+     "carol"
+    ],
+    [
+     "age",
+     40
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "name",
+     "bob"
+    ],
+    [
+     "age",
+     45
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "name",
+     null
+    ],
+    [
+     "age",
+     null
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "name",
+     "dave"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     null
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "name",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "age",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_coalesce_partitions]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "name",
+     "alice"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "name",
+     "bob"
+    ],
+    [
+     "age",
+     25
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "name",
+     "carol"
+    ],
+    [
+     "age",
+     40
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "name",
+     "bob"
+    ],
+    [
+     "age",
+     45
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "name",
+     null
+    ],
+    [
+     "age",
+     null
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "name",
+     "dave"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     null
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "name",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "age",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_col_regex]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "age",
+     30
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "age",
+     25
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "age",
+     40
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "age",
+     45
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "age",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "age",
+     30
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "age",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_cross_join]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "country",
+     "BR"
+    ],
+    [
+     "region",
+     "latam"
+    ],
+    [
+     "c2",
+     "BR"
+    ]
+   ],
+   [
+    [
+     "country",
+     "BR"
+    ],
+    [
+     "region",
+     "latam"
+    ],
+    [
+     "c2",
+     "DE"
+    ]
+   ],
+   [
+    [
+     "country",
+     "BR"
+    ],
+    [
+     "region",
+     "latam"
+    ],
+    [
+     "c2",
+     "PT"
+    ]
+   ],
+   [
+    [
+     "country",
+     "BR"
+    ],
+    [
+     "region",
+     "latam"
+    ],
+    [
+     "c2",
+     "US"
+    ]
+   ],
+   [
+    [
+     "country",
+     "DE"
+    ],
+    [
+     "region",
+     "eu"
+    ],
+    [
+     "c2",
+     "BR"
+    ]
+   ],
+   [
+    [
+     "country",
+     "DE"
+    ],
+    [
+     "region",
+     "eu"
+    ],
+    [
+     "c2",
+     "DE"
+    ]
+   ],
+   [
+    [
+     "country",
+     "DE"
+    ],
+    [
+     "region",
+     "eu"
+    ],
+    [
+     "c2",
+     "PT"
+    ]
+   ],
+   [
+    [
+     "country",
+     "DE"
+    ],
+    [
+     "region",
+     "eu"
+    ],
+    [
+     "c2",
+     "US"
+    ]
+   ],
+   [
+    [
+     "country",
+     "PT"
+    ],
+    [
+     "region",
+     "eu"
+    ],
+    [
+     "c2",
+     "BR"
+    ]
+   ],
+   [
+    [
+     "country",
+     "PT"
+    ],
+    [
+     "region",
+     "eu"
+    ],
+    [
+     "c2",
+     "DE"
+    ]
+   ],
+   [
+    [
+     "country",
+     "PT"
+    ],
+    [
+     "region",
+     "eu"
+    ],
+    [
+     "c2",
+     "PT"
+    ]
+   ],
+   [
+    [
+     "country",
+     "PT"
+    ],
+    [
+     "region",
+     "eu"
+    ],
+    [
+     "c2",
+     "US"
+    ]
+   ],
+   [
+    [
+     "country",
+     "US"
+    ],
+    [
+     "region",
+     "na"
+    ],
+    [
+     "c2",
+     "BR"
+    ]
+   ],
+   [
+    [
+     "country",
+     "US"
+    ],
+    [
+     "region",
+     "na"
+    ],
+    [
+     "c2",
+     "DE"
+    ]
+   ],
+   [
+    [
+     "country",
+     "US"
+    ],
+    [
+     "region",
+     "na"
+    ],
+    [
+     "c2",
+     "PT"
+    ]
+   ],
+   [
+    [
+     "country",
+     "US"
+    ],
+    [
+     "region",
+     "na"
+    ],
+    [
+     "c2",
+     "US"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "country",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "region",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "c2",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_cube]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "country",
+     "BR"
+    ],
+    [
+     "count",
+     2
+    ]
+   ],
+   [
+    [
+     "country",
+     "PT"
+    ],
+    [
+     "count",
+     1
+    ]
+   ],
+   [
+    [
+     "country",
+     "US"
+    ],
+    [
+     "count",
+     2
+    ]
+   ],
+   [
+    [
+     "country",
+     "XX"
+    ],
+    [
+     "count",
+     1
+    ]
+   ],
+   [
+    [
+     "country",
+     null
+    ],
+    [
+     "count",
+     6
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "country",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "count",
+     "nullable": false,
+     "type": "long"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_describe]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "summary",
+     "count"
+    ],
+    [
+     "age",
+     "5"
+    ]
+   ],
+   [
+    [
+     "summary",
+     "mean"
+    ],
+    [
+     "age",
+     "34.0"
+    ]
+   ],
+   [
+    [
+     "summary",
+     "stddev"
+    ],
+    [
+     "age",
+     "8.215838362577491"
+    ]
+   ],
+   [
+    [
+     "summary",
+     "min"
+    ],
+    [
+     "age",
+     "25"
+    ]
+   ],
+   [
+    [
+     "summary",
+     "max"
+    ],
+    [
+     "age",
+     "45"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "summary",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "age",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_distinct]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "dept",
+     null
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_drop]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "name",
+     "alice"
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "name",
+     "bob"
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "name",
+     "carol"
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "name",
+     "bob"
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "name",
+     null
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "name",
+     "dave"
+    ],
+    [
+     "dept",
+     null
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "name",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_drop_duplicates]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "dept",
+     null
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_dropna]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "v",
+     10
+    ],
+    [
+     "d",
+     -2.25
+    ],
+    [
+     "s",
+     "c"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "v",
+     0
+    ],
+    [
+     "d",
+     0.0
+    ],
+    [
+     "s",
+     ""
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "v",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "d",
+     "nullable": true,
+     "type": "double"
+    },
+    {
+     "metadata": {},
+     "name": "s",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_except_all]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "country",
+     "BR"
+    ],
+    [
+     "region",
+     "latam"
+    ]
+   ],
+   [
+    [
+     "country",
+     "US"
+    ],
+    [
+     "region",
+     "na"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "country",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "region",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_fillna]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "v",
+     0
+    ],
+    [
+     "d",
+     1.5
+    ],
+    [
+     "s",
+     "a"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "v",
+     5
+    ],
+    [
+     "d",
+     0.0
+    ],
+    [
+     "s",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "v",
+     10
+    ],
+    [
+     "d",
+     -2.25
+    ],
+    [
+     "s",
+     "c"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "v",
+     0
+    ],
+    [
+     "d",
+     0.0
+    ],
+    [
+     "s",
+     ""
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "v",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "d",
+     "nullable": false,
+     "type": "double"
+    },
+    {
+     "metadata": {},
+     "name": "s",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_fillna_dict]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "v",
+     -1
+    ],
+    [
+     "d",
+     1.5
+    ],
+    [
+     "s",
+     "a"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "v",
+     5
+    ],
+    [
+     "d",
+     null
+    ],
+    [
+     "s",
+     "?"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "v",
+     10
+    ],
+    [
+     "d",
+     -2.25
+    ],
+    [
+     "s",
+     "c"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "v",
+     0
+    ],
+    [
+     "d",
+     0.0
+    ],
+    [
+     "s",
+     ""
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "v",
+     "nullable": false,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "d",
+     "nullable": true,
+     "type": "double"
+    },
+    {
+     "metadata": {},
+     "name": "s",
+     "nullable": false,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_filter_string_expr]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "name",
+     "carol"
+    ],
+    [
+     "age",
+     40
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "name",
+     "bob"
+    ],
+    [
+     "age",
+     45
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "name",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "age",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_group_by_agg]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "dept",
+     "eng"
+    ],
+    [
+     "n",
+     2
+    ],
+    [
+     "oldest",
+     30
+    ]
+   ],
+   [
+    [
+     "dept",
+     "ops"
+    ],
+    [
+     "n",
+     3
+    ],
+    [
+     "oldest",
+     45
+    ]
+   ],
+   [
+    [
+     "dept",
+     null
+    ],
+    [
+     "n",
+     1
+    ],
+    [
+     "oldest",
+     30
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "n",
+     "nullable": false,
+     "type": "long"
+    },
+    {
+     "metadata": {},
+     "name": "oldest",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_group_by_dict_agg]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "dept",
+     "eng"
+    ],
+    [
+     "avg(age)",
+     27.5
+    ]
+   ],
+   [
+    [
+     "dept",
+     "ops"
+    ],
+    [
+     "avg(age)",
+     42.5
+    ]
+   ],
+   [
+    [
+     "dept",
+     null
+    ],
+    [
+     "avg(age)",
+     30.0
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {
+      "__autoGeneratedAlias": "true"
+     },
+     "name": "avg(age)",
+     "nullable": true,
+     "type": "double"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_hint]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "country",
+     "BR"
+    ],
+    [
+     "order_id",
+     1
+    ],
+    [
+     "customer_id",
+     10
+    ],
+    [
+     "amount",
+     100
+    ],
+    [
+     "region",
+     "latam"
+    ]
+   ],
+   [
+    [
+     "country",
+     "BR"
+    ],
+    [
+     "order_id",
+     2
+    ],
+    [
+     "customer_id",
+     10
+    ],
+    [
+     "amount",
+     50
+    ],
+    [
+     "region",
+     "latam"
+    ]
+   ],
+   [
+    [
+     "country",
+     "PT"
+    ],
+    [
+     "order_id",
+     5
+    ],
+    [
+     "customer_id",
+     13
+    ],
+    [
+     "amount",
+     20
+    ],
+    [
+     "region",
+     "eu"
+    ]
+   ],
+   [
+    [
+     "country",
+     "US"
+    ],
+    [
+     "order_id",
+     3
+    ],
+    [
+     "customer_id",
+     11
+    ],
+    [
+     "amount",
+     70
+    ],
+    [
+     "region",
+     "na"
+    ]
+   ],
+   [
+    [
+     "country",
+     "US"
+    ],
+    [
+     "order_id",
+     4
+    ],
+    [
+     "customer_id",
+     12
+    ],
+    [
+     "amount",
+     null
+    ],
+    [
+     "region",
+     "na"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "country",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "order_id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "customer_id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "amount",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "region",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_intersect]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "country",
+     "DE"
+    ],
+    [
+     "region",
+     "eu"
+    ]
+   ],
+   [
+    [
+     "country",
+     "PT"
+    ],
+    [
+     "region",
+     "eu"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "country",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "region",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_join]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "country",
+     "BR"
+    ],
+    [
+     "order_id",
+     1
+    ],
+    [
+     "customer_id",
+     10
+    ],
+    [
+     "amount",
+     100
+    ],
+    [
+     "region",
+     "latam"
+    ]
+   ],
+   [
+    [
+     "country",
+     "BR"
+    ],
+    [
+     "order_id",
+     2
+    ],
+    [
+     "customer_id",
+     10
+    ],
+    [
+     "amount",
+     50
+    ],
+    [
+     "region",
+     "latam"
+    ]
+   ],
+   [
+    [
+     "country",
+     "PT"
+    ],
+    [
+     "order_id",
+     5
+    ],
+    [
+     "customer_id",
+     13
+    ],
+    [
+     "amount",
+     20
+    ],
+    [
+     "region",
+     "eu"
+    ]
+   ],
+   [
+    [
+     "country",
+     "US"
+    ],
+    [
+     "order_id",
+     3
+    ],
+    [
+     "customer_id",
+     11
+    ],
+    [
+     "amount",
+     70
+    ],
+    [
+     "region",
+     "na"
+    ]
+   ],
+   [
+    [
+     "country",
+     "US"
+    ],
+    [
+     "order_id",
+     4
+    ],
+    [
+     "customer_id",
+     12
+    ],
+    [
+     "amount",
+     null
+    ],
+    [
+     "region",
+     "na"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "country",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "order_id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "customer_id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "amount",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "region",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_limit]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "name",
+     "alice"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "name",
+     "bob"
+    ],
+    [
+     "age",
+     25
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "name",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "age",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_na_replace]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "v",
+     null
+    ],
+    [
+     "d",
+     1.5
+    ],
+    [
+     "s",
+     "A"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "v",
+     5
+    ],
+    [
+     "d",
+     null
+    ],
+    [
+     "s",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "v",
+     10
+    ],
+    [
+     "d",
+     -2.25
+    ],
+    [
+     "s",
+     "c"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "v",
+     0
+    ],
+    [
+     "d",
+     0.0
+    ],
+    [
+     "s",
+     ""
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "v",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "d",
+     "nullable": true,
+     "type": "double"
+    },
+    {
+     "metadata": {},
+     "name": "s",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_order_by]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "name",
+     "bob"
+    ],
+    [
+     "age",
+     45
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "name",
+     "carol"
+    ],
+    [
+     "age",
+     40
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "name",
+     "alice"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "name",
+     "dave"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "name",
+     "bob"
+    ],
+    [
+     "age",
+     25
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "name",
+     null
+    ],
+    [
+     "age",
+     null
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "name",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "age",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_pivot]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "customer_id",
+     10
+    ],
+    [
+     "BR",
+     150
+    ],
+    [
+     "US",
+     null
+    ]
+   ],
+   [
+    [
+     "customer_id",
+     11
+    ],
+    [
+     "BR",
+     null
+    ],
+    [
+     "US",
+     70
+    ]
+   ],
+   [
+    [
+     "customer_id",
+     12
+    ],
+    [
+     "BR",
+     null
+    ],
+    [
+     "US",
+     null
+    ]
+   ],
+   [
+    [
+     "customer_id",
+     13
+    ],
+    [
+     "BR",
+     null
+    ],
+    [
+     "US",
+     null
+    ]
+   ],
+   [
+    [
+     "customer_id",
+     14
+    ],
+    [
+     "BR",
+     null
+    ],
+    [
+     "US",
+     null
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "customer_id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "BR",
+     "nullable": true,
+     "type": "long"
+    },
+    {
+     "metadata": {},
+     "name": "US",
+     "nullable": true,
+     "type": "long"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_repartition]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "name",
+     "alice"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "name",
+     "bob"
+    ],
+    [
+     "age",
+     25
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "name",
+     "carol"
+    ],
+    [
+     "age",
+     40
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "name",
+     "bob"
+    ],
+    [
+     "age",
+     45
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "name",
+     null
+    ],
+    [
+     "age",
+     null
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "name",
+     "dave"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     null
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "name",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "age",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_replace]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "name",
+     "alice"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "name",
+     "robert"
+    ],
+    [
+     "age",
+     25
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "name",
+     "carol"
+    ],
+    [
+     "age",
+     40
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "name",
+     "robert"
+    ],
+    [
+     "age",
+     45
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "name",
+     null
+    ],
+    [
+     "age",
+     null
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "name",
+     "dave"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     null
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "name",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "age",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_rollup]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "country",
+     "BR"
+    ],
+    [
+     "total",
+     150
+    ]
+   ],
+   [
+    [
+     "country",
+     "PT"
+    ],
+    [
+     "total",
+     20
+    ]
+   ],
+   [
+    [
+     "country",
+     "US"
+    ],
+    [
+     "total",
+     70
+    ]
+   ],
+   [
+    [
+     "country",
+     "XX"
+    ],
+    [
+     "total",
+     5
+    ]
+   ],
+   [
+    [
+     "country",
+     null
+    ],
+    [
+     "total",
+     245
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "country",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "total",
+     "nullable": true,
+     "type": "long"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_select]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "who",
+     "alice"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "who",
+     "bob"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "who",
+     "carol"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "who",
+     "bob"
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "who",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "who",
+     "dave"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "who",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_select_expr]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "double_age",
+     60
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "double_age",
+     50
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "double_age",
+     80
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "double_age",
+     90
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "double_age",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "double_age",
+     60
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "double_age",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_sort]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "name",
+     "dave"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "name",
+     "alice"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "name",
+     "bob"
+    ],
+    [
+     "age",
+     25
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "name",
+     "carol"
+    ],
+    [
+     "age",
+     40
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "name",
+     "bob"
+    ],
+    [
+     "age",
+     45
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "name",
+     null
+    ],
+    [
+     "age",
+     null
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "name",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "age",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_subtract]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "country",
+     "BR"
+    ],
+    [
+     "region",
+     "latam"
+    ]
+   ],
+   [
+    [
+     "country",
+     "US"
+    ],
+    [
+     "region",
+     "na"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "country",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "region",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_summary]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "summary",
+     "count"
+    ],
+    [
+     "age",
+     "5"
+    ]
+   ],
+   [
+    [
+     "summary",
+     "min"
+    ],
+    [
+     "age",
+     "25"
+    ]
+   ],
+   [
+    [
+     "summary",
+     "max"
+    ],
+    [
+     "age",
+     "45"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "summary",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "age",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_to_df]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "a",
+     1
+    ],
+    [
+     "b",
+     "alice"
+    ],
+    [
+     "c",
+     30
+    ],
+    [
+     "d",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "a",
+     2
+    ],
+    [
+     "b",
+     "bob"
+    ],
+    [
+     "c",
+     25
+    ],
+    [
+     "d",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "a",
+     3
+    ],
+    [
+     "b",
+     "carol"
+    ],
+    [
+     "c",
+     40
+    ],
+    [
+     "d",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "a",
+     4
+    ],
+    [
+     "b",
+     "bob"
+    ],
+    [
+     "c",
+     45
+    ],
+    [
+     "d",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "a",
+     5
+    ],
+    [
+     "b",
+     null
+    ],
+    [
+     "c",
+     null
+    ],
+    [
+     "d",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "a",
+     6
+    ],
+    [
+     "b",
+     "dave"
+    ],
+    [
+     "c",
+     30
+    ],
+    [
+     "d",
+     null
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "a",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "b",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "c",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "d",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_transform]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "name",
+     "alice"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "name",
+     "carol"
+    ],
+    [
+     "age",
+     40
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "name",
+     "bob"
+    ],
+    [
+     "age",
+     45
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "name",
+     "dave"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     null
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "name",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "age",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_union]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "country",
+     "BR"
+    ],
+    [
+     "region",
+     "latam"
+    ]
+   ],
+   [
+    [
+     "country",
+     "BR"
+    ],
+    [
+     "region",
+     "latam"
+    ]
+   ],
+   [
+    [
+     "country",
+     "DE"
+    ],
+    [
+     "region",
+     "eu"
+    ]
+   ],
+   [
+    [
+     "country",
+     "DE"
+    ],
+    [
+     "region",
+     "eu"
+    ]
+   ],
+   [
+    [
+     "country",
+     "PT"
+    ],
+    [
+     "region",
+     "eu"
+    ]
+   ],
+   [
+    [
+     "country",
+     "PT"
+    ],
+    [
+     "region",
+     "eu"
+    ]
+   ],
+   [
+    [
+     "country",
+     "US"
+    ],
+    [
+     "region",
+     "na"
+    ]
+   ],
+   [
+    [
+     "country",
+     "US"
+    ],
+    [
+     "region",
+     "na"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "country",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "region",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_union_by_name]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "country",
+     "BR"
+    ],
+    [
+     "region",
+     "latam"
+    ]
+   ],
+   [
+    [
+     "country",
+     "BR"
+    ],
+    [
+     "region",
+     "latam"
+    ]
+   ],
+   [
+    [
+     "country",
+     "DE"
+    ],
+    [
+     "region",
+     "eu"
+    ]
+   ],
+   [
+    [
+     "country",
+     "DE"
+    ],
+    [
+     "region",
+     "eu"
+    ]
+   ],
+   [
+    [
+     "country",
+     "PT"
+    ],
+    [
+     "region",
+     "eu"
+    ]
+   ],
+   [
+    [
+     "country",
+     "PT"
+    ],
+    [
+     "region",
+     "eu"
+    ]
+   ],
+   [
+    [
+     "country",
+     "US"
+    ],
+    [
+     "region",
+     "na"
+    ]
+   ],
+   [
+    [
+     "country",
+     "US"
+    ],
+    [
+     "region",
+     "na"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "country",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "region",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_where]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "name",
+     "alice"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "name",
+     "bob"
+    ],
+    [
+     "age",
+     25
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "name",
+     "carol"
+    ],
+    [
+     "age",
+     40
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "name",
+     "bob"
+    ],
+    [
+     "age",
+     45
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "name",
+     "dave"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     null
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "name",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "age",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_with_column]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "name",
+     "alice"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     "eng"
+    ],
+    [
+     "adult",
+     true
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "name",
+     "bob"
+    ],
+    [
+     "age",
+     25
+    ],
+    [
+     "dept",
+     "eng"
+    ],
+    [
+     "adult",
+     false
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "name",
+     "carol"
+    ],
+    [
+     "age",
+     40
+    ],
+    [
+     "dept",
+     "ops"
+    ],
+    [
+     "adult",
+     true
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "name",
+     "bob"
+    ],
+    [
+     "age",
+     45
+    ],
+    [
+     "dept",
+     "ops"
+    ],
+    [
+     "adult",
+     true
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "name",
+     null
+    ],
+    [
+     "age",
+     null
+    ],
+    [
+     "dept",
+     "ops"
+    ],
+    [
+     "adult",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "name",
+     "dave"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     null
+    ],
+    [
+     "adult",
+     true
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "name",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "age",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "adult",
+     "nullable": true,
+     "type": "boolean"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_with_column_renamed]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "who",
+     "alice"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "who",
+     "bob"
+    ],
+    [
+     "age",
+     25
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "who",
+     "carol"
+    ],
+    [
+     "age",
+     40
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "who",
+     "bob"
+    ],
+    [
+     "age",
+     45
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "who",
+     null
+    ],
+    [
+     "age",
+     null
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "who",
+     "dave"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     null
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "who",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "age",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_with_columns]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "name",
+     "alice"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     "eng"
+    ],
+    [
+     "a",
+     1
+    ],
+    [
+     "b",
+     2
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "name",
+     "bob"
+    ],
+    [
+     "age",
+     25
+    ],
+    [
+     "dept",
+     "eng"
+    ],
+    [
+     "a",
+     1
+    ],
+    [
+     "b",
+     3
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "name",
+     "carol"
+    ],
+    [
+     "age",
+     40
+    ],
+    [
+     "dept",
+     "ops"
+    ],
+    [
+     "a",
+     1
+    ],
+    [
+     "b",
+     4
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "name",
+     "bob"
+    ],
+    [
+     "age",
+     45
+    ],
+    [
+     "dept",
+     "ops"
+    ],
+    [
+     "a",
+     1
+    ],
+    [
+     "b",
+     5
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "name",
+     null
+    ],
+    [
+     "age",
+     null
+    ],
+    [
+     "dept",
+     "ops"
+    ],
+    [
+     "a",
+     1
+    ],
+    [
+     "b",
+     6
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "name",
+     "dave"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     null
+    ],
+    [
+     "a",
+     1
+    ],
+    [
+     "b",
+     7
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "name",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "age",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "a",
+     "nullable": false,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "b",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[df_with_columns_renamed]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "who",
+     "alice"
+    ],
+    [
+     "years",
+     30
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "who",
+     "bob"
+    ],
+    [
+     "years",
+     25
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "who",
+     "carol"
+    ],
+    [
+     "years",
+     40
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "who",
+     "bob"
+    ],
+    [
+     "years",
+     45
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "who",
+     null
+    ],
+    [
+     "years",
+     null
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "who",
+     "dave"
+    ],
+    [
+     "years",
+     30
+    ],
+    [
+     "dept",
+     null
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "who",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "years",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[spark_create_data_frame_empty]": {
+  "condition": null,
+  "error": null,
+  "rows": [],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "a",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "b",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[spark_create_data_frame_from_dicts]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "a",
+     1
+    ],
+    [
+     "b",
+     "x"
+    ]
+   ],
+   [
+    [
+     "a",
+     2
+    ],
+    [
+     "b",
+     null
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "a",
+     "nullable": true,
+     "type": "long"
+    },
+    {
+     "metadata": {},
+     "name": "b",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[spark_range]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     0
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ]
+   ],
+   [
+    [
+     "id",
+     9
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": false,
+     "type": "long"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_method[spark_sql_on_temp_view]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "dept",
+     "eng"
+    ],
+    [
+     "n",
+     2
+    ]
+   ],
+   [
+    [
+     "dept",
+     "ops"
+    ],
+    [
+     "n",
+     3
+    ]
+   ],
+   [
+    [
+     "dept",
+     null
+    ],
+    [
+     "n",
+     1
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "n",
+     "nullable": false,
+     "type": "long"
+    }
+   ],
+   "type": "struct"
+  }
+ }
+}

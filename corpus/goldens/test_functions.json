@@ -1,0 +1,10590 @@
+{
+ "test_function[fn_abs]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     1.5
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     2.25
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     0.0
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "double"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_add_months]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "date:2024-06-17"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "date:2024-03-29"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "date:2024-01-31"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "date"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_aggregate]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     6
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     6
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     6
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     6
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_approx_count_distinct]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "dept",
+     "eng"
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "dept",
+     "ops"
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "dept",
+     null
+    ],
+    [
+     "r",
+     1
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "long"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_array]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     [
+      1,
+      null
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     [
+      2,
+      5
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     [
+      3,
+      10
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     [
+      4,
+      0
+     ]
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": {
+      "containsNull": true,
+      "elementType": "integer",
+      "type": "array"
+     }
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_array_contains]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     true
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     false
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     false
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "boolean"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_array_distinct]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     [
+      1,
+      2
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     [
+      1,
+      2
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     [
+      1,
+      2
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     [
+      1,
+      2
+     ]
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": {
+      "containsNull": false,
+      "elementType": "integer",
+      "type": "array"
+     }
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_array_join]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "x+y"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     ""
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "z"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_array_position]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     2
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "long"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_array_sort]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     [
+      1,
+      2,
+      3
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     [
+      1,
+      2,
+      3
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     [
+      1,
+      2,
+      3
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     [
+      1,
+      2,
+      3
+     ]
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": {
+      "containsNull": false,
+      "elementType": "integer",
+      "type": "array"
+     }
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_array_union]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     [
+      1,
+      2,
+      3
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     [
+      1,
+      2,
+      3
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     [
+      1,
+      2,
+      3
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     [
+      1,
+      2,
+      3
+     ]
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": {
+      "containsNull": false,
+      "elementType": "integer",
+      "type": "array"
+     }
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_ascii]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     97
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     99
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     0
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_avg]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "dept",
+     "eng"
+    ],
+    [
+     "r",
+     27.5
+    ]
+   ],
+   [
+    [
+     "dept",
+     "ops"
+    ],
+    [
+     "r",
+     42.5
+    ]
+   ],
+   [
+    [
+     "dept",
+     null
+    ],
+    [
+     "r",
+     30.0
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "double"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_avg_over_rows_frame]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     27.5
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     31.6666666667
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     36.6666666667
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     42.5
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "r",
+     37.5
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "r",
+     30.0
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "double"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_base64]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "YQ=="
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "Yw=="
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     ""
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_bool_and]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "dept",
+     "eng"
+    ],
+    [
+     "r",
+     true
+    ]
+   ],
+   [
+    [
+     "dept",
+     "ops"
+    ],
+    [
+     "r",
+     true
+    ]
+   ],
+   [
+    [
+     "dept",
+     null
+    ],
+    [
+     "r",
+     true
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "boolean"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_bround]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     2.0
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     2.0
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     2.0
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     2.0
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "double"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_ceil]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     -2
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     0
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "long"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_coalesce]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     -1
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     5
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     10
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     0
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_col]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     5
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     10
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     0
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_collect_set]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "dept",
+     "eng"
+    ],
+    [
+     "r",
+     [
+      "alice",
+      "bob"
+     ]
+    ]
+   ],
+   [
+    [
+     "dept",
+     "ops"
+    ],
+    [
+     "r",
+     [
+      "bob",
+      "carol"
+     ]
+    ]
+   ],
+   [
+    [
+     "dept",
+     null
+    ],
+    [
+     "r",
+     [
+      "dave"
+     ]
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": {
+      "containsNull": false,
+      "elementType": "string",
+      "type": "array"
+     }
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_concat]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "a_1"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "c_3"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "_4"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_concat_ws]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "a|1"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "2"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "c|3"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "|4"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_contains]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     true
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     false
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     false
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "boolean"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_count]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "dept",
+     "eng"
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "dept",
+     "ops"
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "dept",
+     null
+    ],
+    [
+     "r",
+     1
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "long"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_count_distinct]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "dept",
+     "eng"
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "dept",
+     "ops"
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "dept",
+     null
+    ],
+    [
+     "r",
+     1
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "long"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_count_over_window]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     3
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     3
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "r",
+     3
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "r",
+     1
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "long"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_crc32]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     3904355907
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     112844655
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     0
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "long"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_create_map]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     {
+      "a": 1
+     }
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     {
+      "?": 2
+     }
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     {
+      "c": 3
+     }
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     {
+      "": 4
+     }
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": {
+      "keyType": "string",
+      "type": "map",
+      "valueContainsNull": true,
+      "valueType": "integer"
+     }
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_create_map_null_key_raises]": {
+  "condition": "NULL_MAP_KEY",
+  "error": "SparkRuntimeException",
+  "rows": null,
+  "schema": null
+ },
+ "test_function[fn_cume_dist]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     0.666666666667
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     0.333333333333
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     0.833333333333
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     1.0
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "r",
+     0.166666666667
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "r",
+     0.666666666667
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "double"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_current_date]": {
+  "condition": null,
+  "error": null,
+  "rows": null,
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "date"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_current_timestamp]": {
+  "condition": null,
+  "error": null,
+  "rows": null,
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "timestamp"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_date_add]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "date:2024-05-27"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "date:2024-03-10"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "date:2024-01-10"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "date"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_date_format]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "17/05/2024"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "29/02/2024"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "31/12/2023"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_date_sub]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "date:2024-05-07"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "date:2024-02-19"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "date:2023-12-21"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "date"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_date_trunc_day]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "datetime:2024-05-17T00:00:00"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "datetime:2024-02-29T00:00:00"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "datetime:2023-12-31T00:00:00"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "timestamp"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_date_trunc_week]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "datetime:2024-05-13T00:00:00"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "datetime:2024-02-26T00:00:00"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "datetime:2023-12-25T00:00:00"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "timestamp"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_datediff_days]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     -77
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     1
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     61
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_dayofmonth]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     17
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     29
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     31
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_dayofweek]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     6
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     5
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     1
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_dayofyear]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     138
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     60
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     365
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_dense_rank]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     3
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     4
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     5
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "r",
+     1
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "r",
+     3
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_divide_by_zero_raises]": {
+  "condition": "DIVIDE_BY_ZERO",
+  "error": "ArithmeticException",
+  "rows": null,
+  "schema": null
+ },
+ "test_function[fn_element_at]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     6
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     6
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     6
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     6
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_element_at_out_of_range_raises]": {
+  "condition": "INVALID_ARRAY_INDEX_IN_ELEMENT_AT",
+  "error": "ArrayIndexOutOfBoundsException",
+  "rows": null,
+  "schema": null
+ },
+ "test_function[fn_encode_decode]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "ol\u00e1"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "ol\u00e1"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "ol\u00e1"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "ol\u00e1"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_endswith]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     false
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     true
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     false
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "boolean"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_exists]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     true
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     true
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     true
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     true
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "boolean"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_exp]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     2.71828182846
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     2.71828182846
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     2.71828182846
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     2.71828182846
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "double"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_explode]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "t",
+     "x"
+    ]
+   ],
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "t",
+     "y"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "t",
+     "z"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "t",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_explode_map]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "key",
+     "k"
+    ],
+    [
+     "value",
+     1
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "key",
+     "nullable": false,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "value",
+     "nullable": false,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_explode_outer]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "t",
+     "x"
+    ]
+   ],
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "t",
+     "y"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "t",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "t",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "t",
+     "z"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "t",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_expr]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     3
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     5
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     7
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     9
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_filter_higher_order]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     [
+      2,
+      3
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     [
+      2,
+      3
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     [
+      2,
+      3
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     [
+      2,
+      3
+     ]
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": {
+      "containsNull": false,
+      "elementType": "integer",
+      "type": "array"
+     }
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_first_ignore_nulls]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "dept",
+     "eng"
+    ],
+    [
+     "r",
+     30
+    ]
+   ],
+   [
+    [
+     "dept",
+     "ops"
+    ],
+    [
+     "r",
+     40
+    ]
+   ],
+   [
+    [
+     "dept",
+     null
+    ],
+    [
+     "r",
+     30
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_first_over_window]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "alice"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "alice"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "carol"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "carol"
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "r",
+     "carol"
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "r",
+     "dave"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_flatten]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     [
+      1,
+      2,
+      3
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     [
+      1,
+      2,
+      3
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     [
+      1,
+      2,
+      3
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     [
+      1,
+      2,
+      3
+     ]
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": {
+      "containsNull": false,
+      "elementType": "integer",
+      "type": "array"
+     }
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_floor]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     1
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     -3
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     0
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "long"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_format_number]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "1,234,567.89"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "1,234,567.89"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "1,234,567.89"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "1,234,567.89"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_format_string]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "a-00001"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "null-00002"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "c-00003"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "-00004"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_from_unixtime]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "2024-05-17"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "2024-02-29"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "2023-12-31"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_from_utc_timestamp]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "datetime:2024-05-17T22:45:10"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "datetime:2024-02-29T09:00:00"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "datetime:2024-01-01T08:59:59"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "timestamp"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_get_field]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     1
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     null
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_get_item]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "x"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "z"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_get_json_object]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "x"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "z"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_get_json_object_scalar]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "1"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "2"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     null
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_greatest]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     1
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     5
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     10
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     4
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_hash]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     -936062819
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     1765031574
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     -848987790
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     1867124844
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_hour]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     13
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     0
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     23
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_ifnull]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     9
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     5
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     10
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     0
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_ilike]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     true
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     false
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     false
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "boolean"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_initcap]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "Hello Big World"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "Hello Big World"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "Hello Big World"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "Hello Big World"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_inline]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "a",
+     1
+    ],
+    [
+     "b",
+     "x"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "a",
+     "nullable": false,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "b",
+     "nullable": false,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_instr]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     2
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_integer_division]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     3
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     3
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     3
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     3
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "long"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_isnan]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     false
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     false
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     false
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     false
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "boolean"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_isnull]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     true
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     false
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     false
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     false
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "boolean"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_lag]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     30
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     40
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "r",
+     45
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "r",
+     null
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_last_day]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "date:2024-05-31"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "date:2024-02-29"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "date:2023-12-31"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "date"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_last_over_unbounded]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "bob"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "bob"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "r",
+     "dave"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_lead_with_default]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     25
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     0
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     45
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "r",
+     0
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "r",
+     0
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_least]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     1
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     3
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     0
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_length]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     1
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     1
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     0
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_levenshtein]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     3
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     3
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     3
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     3
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_like]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     true
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     false
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     false
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "boolean"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_lit]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     7
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     7
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     7
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     7
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_locate]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     4
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     4
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     4
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     4
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_log10]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     3.0
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     3.0
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     3.0
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     3.0
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "double"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_log]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     2.30258509299
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     2.30258509299
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     2.30258509299
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     2.30258509299
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "double"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_lower]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "abc"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "abc"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "abc"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "abc"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_lpad]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "***a"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "***c"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "****"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_ltrim]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "a"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "c"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     ""
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_make_date]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "date:2024-02-29"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "date:2024-02-29"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "date:2024-02-29"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "date:2024-02-29"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "date"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_map_keys]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     [
+      "k"
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     [
+      "k"
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     [
+      "k"
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     [
+      "k"
+     ]
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": {
+      "containsNull": true,
+      "elementType": "string",
+      "type": "array"
+     }
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_map_values]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     [
+      1
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     [
+      2
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     [
+      3
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     [
+      4
+     ]
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": {
+      "containsNull": true,
+      "elementType": "integer",
+      "type": "array"
+     }
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_max]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "dept",
+     "eng"
+    ],
+    [
+     "r",
+     "bob"
+    ]
+   ],
+   [
+    [
+     "dept",
+     "ops"
+    ],
+    [
+     "r",
+     "carol"
+    ]
+   ],
+   [
+    [
+     "dept",
+     null
+    ],
+    [
+     "r",
+     "dave"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_max_by]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "dept",
+     "eng"
+    ],
+    [
+     "r",
+     "alice"
+    ]
+   ],
+   [
+    [
+     "dept",
+     "ops"
+    ],
+    [
+     "r",
+     "bob"
+    ]
+   ],
+   [
+    [
+     "dept",
+     null
+    ],
+    [
+     "r",
+     "dave"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_md5]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "0cc175b9c0f1b6a831c399e269772661"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "4a8a08f09d37b73795649038408b5f33"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "d41d8cd98f00b204e9800998ecf8427e"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_min]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "dept",
+     "eng"
+    ],
+    [
+     "r",
+     25
+    ]
+   ],
+   [
+    [
+     "dept",
+     "ops"
+    ],
+    [
+     "r",
+     40
+    ]
+   ],
+   [
+    [
+     "dept",
+     null
+    ],
+    [
+     "r",
+     30
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_minute]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     45
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     0
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     59
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_modulo_operator]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     -1
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     -1
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     -1
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     -1
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_monotonically_increasing_id]": {
+  "condition": null,
+  "error": null,
+  "rows": null,
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "long"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_month]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     5
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     12
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_months_between]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     1.41935484
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     4.0
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     6.0
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "double"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_nanvl]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     1.5
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     -2.25
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     0.0
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "double"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_next_day]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "date:2024-05-20"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "date:2024-03-04"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "date:2024-01-01"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "date"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_ntile]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     1
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     1
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     1
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "r",
+     2
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_nullif]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     5
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     10
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     null
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_nvl]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "a"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "none"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "c"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     ""
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_overlay]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "SPARK_CORE"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "SPARK_CORE"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "SPARK_CORE"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "SPARK_CORE"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_percent_rank]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     0.4
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     0.2
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     0.8
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     1.0
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "r",
+     0.0
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "r",
+     0.4
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "double"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_percentile_approx]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "dept",
+     "eng"
+    ],
+    [
+     "r",
+     25
+    ]
+   ],
+   [
+    [
+     "dept",
+     "ops"
+    ],
+    [
+     "r",
+     40
+    ]
+   ],
+   [
+    [
+     "dept",
+     null
+    ],
+    [
+     "r",
+     30
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_pmod]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     2
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_posexplode]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "pos",
+     0
+    ],
+    [
+     "col",
+     "a"
+    ]
+   ],
+   [
+    [
+     "pos",
+     1
+    ],
+    [
+     "col",
+     "b"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "pos",
+     "nullable": false,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "col",
+     "nullable": false,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_pow]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     1.0
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     4.0
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     9.0
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     16.0
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "double"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_quarter]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     1
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     4
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_rand]": {
+  "condition": null,
+  "error": null,
+  "rows": null,
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "double"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_rand_seeded]": {
+  "condition": null,
+  "error": null,
+  "rows": null,
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "double"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_rank]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     3
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     5
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     6
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "r",
+     1
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "r",
+     3
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_regexp_extract]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "42"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "42"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "42"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "42"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_regexp_extract_no_match]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     ""
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     ""
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     ""
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     ""
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_regexp_replace]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "2024/05/17"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "2024/05/17"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "2024/05/17"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "2024/05/17"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_repeat]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "aaa"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "ccc"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     ""
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_reverse]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "a"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "c"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     ""
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_rlike]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     true
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     true
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     false
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "boolean"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_round]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     3.0
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     3.0
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     3.0
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     3.0
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "double"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_round_half_up_negative]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     -3.0
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     -3.0
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     -3.0
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     -3.0
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "double"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_row_number]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     1
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     1
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "r",
+     3
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "r",
+     1
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_rpad]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "a***"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "c***"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "****"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_rtrim]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "a"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "c"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     ""
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_second]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     10
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     0
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     59
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_sequence]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     [
+      1
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     [
+      1,
+      2
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     [
+      1,
+      2,
+      3
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     [
+      1,
+      2,
+      3,
+      4
+     ]
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": {
+      "containsNull": false,
+      "elementType": "integer",
+      "type": "array"
+     }
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_sha1]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "86f7e437faa5a7fce15d1ddcb9eaeaea377667b8"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "84a516841ba77a5b4648de2cd0dfcb30ea46dbb4"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_sha2]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "2e7d2c03a9507ae265ecf5b5356885a53393a2029d241394997265a1a25aefc6"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_signum]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     1.0
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     -1.0
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     0.0
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "double"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_size]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     0
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     1
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_slice]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     [
+      2,
+      3
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     [
+      2,
+      3
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     [
+      2,
+      3
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     [
+      2,
+      3
+     ]
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": {
+      "containsNull": false,
+      "elementType": "integer",
+      "type": "array"
+     }
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_sort_array_desc]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     [
+      3,
+      2,
+      1
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     [
+      3,
+      2,
+      1
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     [
+      3,
+      2,
+      1
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     [
+      3,
+      2,
+      1
+     ]
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": {
+      "containsNull": false,
+      "elementType": "integer",
+      "type": "array"
+     }
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_soundex]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "R163"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "R163"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "R163"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "R163"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_split]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     [
+      "a",
+      "b",
+      "",
+      "c"
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     [
+      "a",
+      "b",
+      "",
+      "c"
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     [
+      "a",
+      "b",
+      "",
+      "c"
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     [
+      "a",
+      "b",
+      "",
+      "c"
+     ]
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": {
+      "containsNull": false,
+      "elementType": "string",
+      "type": "array"
+     }
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_split_limit]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     [
+      "a",
+      "b,c"
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     [
+      "a",
+      "b,c"
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     [
+      "a",
+      "b,c"
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     [
+      "a",
+      "b,c"
+     ]
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": {
+      "containsNull": false,
+      "elementType": "string",
+      "type": "array"
+     }
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_sqrt]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     2.2360679775
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     3.16227766017
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     0.0
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "double"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_startswith]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     false
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     true
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     false
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "boolean"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_stddev]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "dept",
+     "eng"
+    ],
+    [
+     "r",
+     3.53553390593
+    ]
+   ],
+   [
+    [
+     "dept",
+     "ops"
+    ],
+    [
+     "r",
+     3.53553390593
+    ]
+   ],
+   [
+    [
+     "dept",
+     null
+    ],
+    [
+     "r",
+     null
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "double"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_struct]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     [
+      [
+       "id",
+       1
+      ],
+      [
+       "s",
+       "a"
+      ]
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     [
+      [
+       "id",
+       2
+      ],
+      [
+       "s",
+       null
+      ]
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     [
+      [
+       "id",
+       3
+      ],
+      [
+       "s",
+       "c"
+      ]
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     [
+      [
+       "id",
+       4
+      ],
+      [
+       "s",
+       ""
+      ]
+     ]
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": {
+      "fields": [
+       {
+        "metadata": {},
+        "name": "id",
+        "nullable": true,
+        "type": "integer"
+       },
+       {
+        "metadata": {},
+        "name": "s",
+        "nullable": true,
+        "type": "string"
+       }
+      ],
+      "type": "struct"
+     }
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_substring]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "bcd"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "bcd"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "bcd"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "bcd"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_substring_index]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "a.b"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "a.b"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "a.b"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "a.b"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_sum]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "dept",
+     "eng"
+    ],
+    [
+     "r",
+     55
+    ]
+   ],
+   [
+    [
+     "dept",
+     "ops"
+    ],
+    [
+     "r",
+     85
+    ]
+   ],
+   [
+    [
+     "dept",
+     null
+    ],
+    [
+     "r",
+     30
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "long"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_sum_distinct]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "dept",
+     "eng"
+    ],
+    [
+     "r",
+     55
+    ]
+   ],
+   [
+    [
+     "dept",
+     "ops"
+    ],
+    [
+     "r",
+     85
+    ]
+   ],
+   [
+    [
+     "dept",
+     null
+    ],
+    [
+     "r",
+     30
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "long"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_sum_over_partition]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     55
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     55
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     85
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     85
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "r",
+     85
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "r",
+     30
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "long"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_sum_when]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "dept",
+     "eng"
+    ],
+    [
+     "r",
+     1
+    ]
+   ],
+   [
+    [
+     "dept",
+     "ops"
+    ],
+    [
+     "r",
+     2
+    ]
+   ],
+   [
+    [
+     "dept",
+     null
+    ],
+    [
+     "r",
+     1
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "long"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_to_date]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "date:2024-05-17"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "date:2024-02-29"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "date:2023-12-31"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "date"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_to_json]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "{\"id\":1,\"s\":\"a\"}"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "{\"id\":2}"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "{\"id\":3,\"s\":\"c\"}"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "{\"id\":4,\"s\":\"\"}"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_to_timestamp]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "datetime:2024-05-17T13:45:10"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "datetime:2024-02-29T00:00:00"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "datetime:2023-12-31T23:59:59"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "timestamp"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_to_utc_timestamp]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "datetime:2024-05-17T16:45:10"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "datetime:2024-02-29T03:00:00"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "datetime:2024-01-01T02:59:59"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "timestamp"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_transform]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     [
+      10,
+      20
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     [
+      10,
+      20
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     [
+      10,
+      20
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     [
+      10,
+      20
+     ]
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": {
+      "containsNull": false,
+      "elementType": "integer",
+      "type": "array"
+     }
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_translate]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "hippo"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "hippo"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "hippo"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "hippo"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_trim]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "a"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "c"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     ""
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_trunc_year]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "date:2024-01-01"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "date:2024-01-01"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "date:2023-01-01"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "date"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_try_add]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     null
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_try_divide_by_zero]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     null
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "double"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_unix_timestamp]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     1715953510
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     1709164800
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     1704067199
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "long"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_upper]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "A"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "C"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     ""
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_uuid]": {
+  "condition": null,
+  "error": null,
+  "rows": null,
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_variance]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "dept",
+     "eng"
+    ],
+    [
+     "r",
+     12.5
+    ]
+   ],
+   [
+    [
+     "dept",
+     "ops"
+    ],
+    [
+     "r",
+     12.5
+    ]
+   ],
+   [
+    [
+     "dept",
+     null
+    ],
+    [
+     "r",
+     null
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "double"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_weekofyear]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     20
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     9
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     52
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_when]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "small"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     "big"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "big"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "zero"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_xxhash64]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     -6698625589789238999
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     8420071140774656230
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     6258084186791473711
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     -8344648708406692296
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "long"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_year]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     2024
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     2024
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     2023
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ }
+}

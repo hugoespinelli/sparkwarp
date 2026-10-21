@@ -1,0 +1,765 @@
+{
+ "test_ordering[accidental_collect_list_order]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "dept",
+     null
+    ],
+    [
+     "ids",
+     [
+      6
+     ]
+    ]
+   ],
+   [
+    [
+     "dept",
+     "eng"
+    ],
+    [
+     "ids",
+     [
+      1,
+      2
+     ]
+    ]
+   ],
+   [
+    [
+     "dept",
+     "ops"
+    ],
+    [
+     "ids",
+     [
+      3,
+      4,
+      5
+     ]
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "ids",
+     "nullable": false,
+     "type": {
+      "containsNull": false,
+      "elementType": "integer",
+      "type": "array"
+     }
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_ordering[accidental_distinct_order]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "dept",
+     null
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_ordering[accidental_drop_duplicates_order]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "dept",
+     "ops"
+    ]
+   ],
+   [
+    [
+     "dept",
+     null
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_ordering[accidental_filter_keeps_insertion_order]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_ordering[accidental_first_in_group]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "dept",
+     null
+    ],
+    [
+     "f",
+     "dave"
+    ]
+   ],
+   [
+    [
+     "dept",
+     "eng"
+    ],
+    [
+     "f",
+     "alice"
+    ]
+   ],
+   [
+    [
+     "dept",
+     "ops"
+    ],
+    [
+     "f",
+     "carol"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "f",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_ordering[accidental_group_by_order]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "dept",
+     "eng"
+    ],
+    [
+     "count",
+     2
+    ]
+   ],
+   [
+    [
+     "dept",
+     "ops"
+    ],
+    [
+     "count",
+     3
+    ]
+   ],
+   [
+    [
+     "dept",
+     null
+    ],
+    [
+     "count",
+     1
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "count",
+     "nullable": false,
+     "type": "long"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_ordering[accidental_left_join_order]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "order_id",
+     1
+    ]
+   ],
+   [
+    [
+     "order_id",
+     2
+    ]
+   ],
+   [
+    [
+     "order_id",
+     5
+    ]
+   ],
+   [
+    [
+     "order_id",
+     3
+    ]
+   ],
+   [
+    [
+     "order_id",
+     4
+    ]
+   ],
+   [
+    [
+     "order_id",
+     6
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "order_id",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_ordering[accidental_union_appends_in_order]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ]
+   ],
+   [
+    [
+     "id",
+     1
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_ordering[order_by_ascending_puts_nulls_first]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "age",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "age",
+     25
+    ]
+   ],
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "age",
+     30
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "age",
+     30
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "age",
+     40
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "age",
+     45
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "age",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_ordering[order_by_descending_puts_nulls_last]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "age",
+     45
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "age",
+     40
+    ]
+   ],
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "age",
+     30
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "age",
+     30
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "age",
+     25
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "age",
+     null
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "age",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_ordering[order_by_explicit_nulls_last]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "age",
+     25
+    ]
+   ],
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "age",
+     30
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "age",
+     30
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "age",
+     40
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "age",
+     45
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "age",
+     null
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "age",
+     "nullable": true,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_ordering[sort_within_limit]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "name",
+     "alice"
+    ],
+    [
+     "age",
+     30
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "name",
+     "bob"
+    ],
+    [
+     "age",
+     25
+    ],
+    [
+     "dept",
+     "eng"
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "name",
+     "carol"
+    ],
+    [
+     "age",
+     40
+    ],
+    [
+     "dept",
+     "ops"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "name",
+     "nullable": true,
+     "type": "string"
+    },
+    {
+     "metadata": {},
+     "name": "age",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "dept",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ }
+}
