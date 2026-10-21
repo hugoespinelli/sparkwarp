@@ -3973,6 +3973,35 @@
    "type": "struct"
   }
  },
+ "test_trap[union_by_name_string_and_boolean]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "c",
+     false
+    ]
+   ],
+   [
+    [
+     "c",
+     true
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "c",
+     "nullable": true,
+     "type": "boolean"
+    }
+   ],
+   "type": "struct"
+  }
+ },
  "test_trap[window_lag_lead_defaults]": {
   "condition": null,
   "error": null,
@@ -4162,6 +4191,89 @@
     {
      "metadata": {},
      "name": "r",
+     "nullable": false,
+     "type": "integer"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_trap[window_order_by_case_on_function_result]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "rn",
+     1
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "rn",
+     2
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "rn",
+     1
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "rn",
+     2
+    ]
+   ],
+   [
+    [
+     "id",
+     5
+    ],
+    [
+     "rn",
+     3
+    ]
+   ],
+   [
+    [
+     "id",
+     6
+    ],
+    [
+     "rn",
+     1
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "rn",
      "nullable": false,
      "type": "integer"
     }

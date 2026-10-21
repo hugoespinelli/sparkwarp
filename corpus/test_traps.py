@@ -514,6 +514,31 @@ SQL = [
     ),
 ]
 
+REAL_USAGE = [
+    Case(
+        "window_order_by_case_on_function_result",
+        lambda s: P(s).select(
+            "id",
+            F.row_number()
+            .over(
+                Window.partitionBy("dept").orderBy(
+                    F.when(F.length("name") > 3, 0).otherwise(1),
+                    "id",
+                )
+            )
+            .alias("rn"),
+        ),
+        gap=KnownGap("GAP-014"),
+    ),
+    Case(
+        "union_by_name_string_and_boolean",
+        lambda s: s.createDataFrame([("true",)], "c string").unionByName(
+            s.createDataFrame([(False,)], "c boolean")
+        ),
+        gap=KnownGap("GAP-017"),
+    ),
+]
+
 ALL_CASES = (
     NULL_LOGIC
     + COERCION
@@ -526,6 +551,7 @@ ALL_CASES = (
     + JOINS
     + SQL
     + NULLABILITY_FLAGS
+    + REAL_USAGE
 )
 
 

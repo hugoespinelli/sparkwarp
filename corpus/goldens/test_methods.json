@@ -1,4 +1,10 @@
 {
+ "test_method[action_catalog_clear_cache]": {
+  "condition": null,
+  "error": null,
+  "rows": null,
+  "schema": null
+ },
  "test_method[action_collect]": {
   "condition": null,
   "error": null,
@@ -220,6 +226,12 @@
   ],
   "schema": null
  },
+ "test_method[action_is_cached_after_unpersist]": {
+  "condition": null,
+  "error": null,
+  "rows": false,
+  "schema": null
+ },
  "test_method[action_is_empty]": {
   "condition": null,
   "error": null,
@@ -236,6 +248,12 @@
   "condition": null,
   "error": null,
   "rows": "struct<id:int,name:string,age:int,dept:string>",
+  "schema": null
+ },
+ "test_method[action_set_log_level]": {
+  "condition": null,
+  "error": null,
+  "rows": null,
   "schema": null
  },
  "test_method[action_spark_context_is_unsupported]": {
