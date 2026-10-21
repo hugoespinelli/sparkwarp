@@ -1,31 +1,98 @@
-# sparkwarp
+<h1 align="center">sparkwarp</h1>
 
-Run existing PySpark DataFrame unit tests in milliseconds, with no JVM.
+<p align="center">
+  <b>Run your existing PySpark tests in milliseconds. No JVM, no test rewrites.</b>
+</p>
 
-Status: pre-release. Not on PyPI yet.
+<p align="center">
+  <a href="https://github.com/hugoespinelli/sparkwarp/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/hugoespinelli/sparkwarp/actions/workflows/ci.yml/badge.svg"></a>
+  <img alt="Python 3.10+" src="https://img.shields.io/badge/python-3.10%2B-2a78d6">
+  <img alt="PySpark 4" src="https://img.shields.io/badge/pyspark-4.x-eb6834">
+  <img alt="License: Apache-2.0" src="https://img.shields.io/badge/license-Apache--2.0-52514e">
+  <img alt="Status: pre-release" src="https://img.shields.io/badge/status-pre--release-898781">
+</p>
 
-## Quickstart
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/benchmark-suite-dark.svg">
+    <img alt="Bar chart. The same 42 PySpark tests take 31.7 seconds on local Spark and 2.8 seconds on sparkwarp, 11 times faster." src="docs/assets/benchmark-suite-light.svg" width="760">
+  </picture>
+</p>
+<p align="center"><i>The same 42 lakehouse-style tests, same code, same conftest. Only <code>SPARKWARP=1</code> differs.</i></p>
+
+- **Fast.** About 25 ms per test instead of about 360 ms. The JVM, Py4J and the Spark
+  scheduler drop out of the loop.
+- **Zero edits.** Your `SparkSession.builder...getOrCreate()` conftest, your `F.*` calls and
+  your `assertDataFrameEqual` stay as they are. You set one environment variable.
+- **Honest about differences.** A corpus of 329 cases, recorded on real Spark, checks the
+  engine. Every known difference is a test and is listed in [`KNOWN_GAPS.md`](KNOWN_GAPS.md).
+- **Real Spark stays one switch away.** `SPARKWARP=0` runs the same suite on the JVM, so
+  CI keeps a parity lane.
+
+## Why sparkwarp exists
+
+PySpark tests are slow even when the data is tiny. Each action, such as `count()` or
+`collect()`, pays a fixed cost before any data moves. Python calls the JVM through Py4J,
+Catalyst plans the query, and the scheduler builds stages and tasks as if for a cluster.
+On a laptop that costs 300 to 400 ms per action, whether the DataFrame has 4 rows or
+4 billion. Config tuning (`local[1]`, UI off, codegen off) makes execution cheaper, but
+the fixed cost stays.
+
+Teams then wait. A suite of a few thousand Spark tests takes 15 to 30 minutes, so developers run
+only part of it, and regressions reach the pull request late. At the medians above,
+2,000 tests would take about 12 minutes on local Spark and under a minute on sparkwarp.
+That is an estimate from the benchmark, not a measurement of your suite.
+
+sparkwarp makes the inner loop fast without asking you to rewrite tests against a new API.
+It keeps PySpark and swaps only the engine underneath. Use it for unit tests on small data.
+Production keeps running on Spark.
+
+## Installation
+
+sparkwarp is not on PyPI yet. Until the first release, build it from source:
 
 ```bash
-pip install sparkwarp            # from a local wheel until the first release
+git clone https://github.com/hugoespinelli/sparkwarp.git && cd sparkwarp
+pip install .
 ```
 
-Requires PySpark 4 (it installs `pyspark[connect]>=4`) and Python 3.10+. sparkwarp is off
-until you switch it on.
+After the release:
 
-**Shape 1: your conftest already builds a session.** Run it unchanged, except for
-`spark.sparkContext` calls (see below):
+```bash
+pip install sparkwarp
+```
+
+Requirements: Python 3.10+, PySpark 4 (installed as `pyspark[connect]>=4`), pytest 8+.
+No Java is needed. sparkwarp does nothing until you switch it on, so installing it does
+not change how your suite runs.
+
+## Usage
+
+### Your conftest already builds a session
+
+Change nothing in the code. Run:
 
 ```bash
 SPARKWARP=1 pytest
 ```
 
-Your existing `SparkSession.builder.master("local[1]")...getOrCreate()` now returns a
-session on Sail. sparkwarp drops the `master` setting for you, because PySpark refuses a
-master URL in Connect mode. `unittest` classes that build the session in `setUpClass` work
-the same way.
+A conftest like this one now gets a session on Sail:
 
-**Shape 2: no session fixture yet.** Use the one the plugin provides:
+```python
+@pytest.fixture(scope="session")
+def spark():
+    session = SparkSession.builder.master("local[1]").appName("tests").getOrCreate()
+    yield session
+    session.stop()
+```
+
+sparkwarp drops the `master` setting for you, because PySpark refuses a master URL in
+Spark Connect mode. `unittest` classes that build the session in `setUpClass` work the
+same way.
+
+### You have no session fixture yet
+
+Use the one that the plugin provides:
 
 ```python
 def test_filter(spark):
@@ -37,57 +104,114 @@ def test_filter(spark):
 pytest --sparkwarp
 ```
 
-**Parity lane: the same suite on real Spark.** Leave sparkwarp off and your own fixture
-runs on the JVM as before. sparkwarp never starts a JVM itself.
+The `spark` fixture is function-scoped, so every test gets the live session, even if older
+code stopped it. A session-scoped fixture of your own should build its session with
+`SparkSession.builder...getOrCreate()` instead of requesting `spark`.
+
+### Keep a parity lane on real Spark
 
 ```bash
-SPARKWARP=0 pytest        # or simply: pytest
+SPARKWARP=0 pytest      # or plain `pytest`: your own fixture, on the JVM
 ```
 
-**Outside pytest:**
+Run this lane in CI, nightly or on merge. It is the guard against the few gaps that change
+results without an error (see [How faithful is it](#how-faithful-is-it)).
+
+### Tests that need real Spark
+
+```python
+@pytest.mark.spark_only
+def test_reads_through_the_rdd_api(spark):
+    ...
+```
+
+`spark_only` works on a test, a class or a module (`pytestmark`). sparkwarp skips those
+tests on Sail and gives the reason (shown with `pytest -rs`). They run when sparkwarp is
+off. When a test fails because Spark Connect or Sail does not support a feature, such as
+`df.rdd` or `spark.sparkContext`, the failure report gets a short sparkwarp section that
+says so.
+
+### Outside pytest
 
 ```python
 import sparkwarp
 
-spark = sparkwarp.session()                        # Sail, UTC, ANSI on
-sparkwarp.stop()                                   # optional; runs at exit anyway
-spark = sparkwarp.session(timezone="Asia/Tokyo")   # a new session in another timezone
+spark = sparkwarp.session()          # Sail, ANSI on, timezone UTC
+spark.range(3).count()
+sparkwarp.stop()                     # optional; it also runs at exit
 ```
 
-Inside a sparkwarp pytest run the plugin owns the session. `sparkwarp.stop()` there is
-ignored with a warning, and the plugin stops everything when the run ends.
-
-**The `spark` fixture is function-scoped**, so each test gets the live session even if
-older code stopped it. A session-scoped fixture of your own should build its session with
-`SparkSession.builder...getOrCreate()` instead of requesting `spark`. That lands on Sail
-when sparkwarp is on and on your JVM when it is off.
-
-**`spark.sparkContext` does not exist on Spark Connect.** A conftest line such as
-`spark.sparkContext.setLogLevel("ERROR")` fails under sparkwarp. Remove it, or guard it
-with `pyspark.sql.utils.is_remote()`. A shim for `setLogLevel` is planned for 0.2.
-
-**Subprocesses.** A child process inherits `SPARK_REMOTE` but not sparkwarp's builder
-patch, so a child that builds its own session fails in Connect mode. Pass
-`env=sparkwarp.clean_environ()` to `subprocess.run`: the child gets the environment as it
-was before sparkwarp, and runs real Spark.
+### Switches
 
 | Switch | Effect |
 |---|---|
 | `SPARKWARP=1` | Run on Sail |
-| `--sparkwarp` | Run on Sail; wins over `SPARKWARP=0` |
-| `SPARKWARP=0` or unset | Off: your own fixture, real Spark |
+| `pytest --sparkwarp` | Run on Sail; wins over `SPARKWARP=0` |
+| `SPARKWARP=0` or unset | Off: your own fixture, on real Spark |
 
-Contract on Sail: Spark 4 semantics with ANSI mode on and session timezone UTC. A
-timezone you set on your own builder or with `spark.conf.set` wins.
-Known differences from Spark are listed in `KNOWN_GAPS.md`; each one is a test.
+On Sail the session uses Spark 4 semantics with ANSI mode on and session timezone UTC. A
+timezone that you set on your builder or with `spark.conf.set` wins. A test that starts a
+subprocess should pass `env=sparkwarp.clean_environ()`, because the child does not inherit
+sparkwarp's routing.
+
+## How it works
+
+```mermaid
+flowchart LR
+    T["your tests<br/>F.col, DataFrame, assertDataFrameEqual"] --> C["PySpark Spark Connect client<br/>builds a query plan in Python"]
+    C -- "one gRPC call per action" --> S["Sail<br/>Rust engine, in the pytest process"]
+    S -- "Arrow batches" --> C
+```
+
+PySpark 4 ships a [Spark Connect](https://spark.apache.org/docs/latest/spark-connect-overview.html)
+client. With it, `F.col`, `DataFrame` and `Window` build a query plan in plain Python, and
+only an action sends that plan to a server, in one call. sparkwarp starts
+[Sail](https://github.com/lakehq/sail), a Spark Connect server written in Rust, inside the
+pytest process. It then points PySpark at Sail with two environment variables and a small
+patch to `SparkSession.Builder`. Your tests keep calling the real PySpark API, so there is
+no second API to keep in sync with Spark.
+
+## Benchmarks
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/benchmark-per-test-dark.svg">
+    <img alt="Strip chart of each test's time on a log scale. Local Spark tests take a median of 364 ms; sparkwarp tests take a median of 25 ms." src="docs/assets/benchmark-per-test-light.svg" width="760">
+  </picture>
+</p>
+
+| Engine | Suite wall time | Median per test | p90 per test |
+|---|---|---|---|
+| Real Spark, `local[1]`, tuned | 31.7 s | 364 ms | 686 ms |
+| sparkwarp (Sail) | 2.8 s | 25 ms | 34 ms |
+
+The suite in [`benchmarks/`](benchmarks) is 42 tests shaped like a real lakehouse repo.
+They are transformer classes with a `process(df)` method, tested with `createDataFrame`,
+`F.*`, `Window`, `groupBy().agg()`, joins, `unionByName`, `from_json`, `explode`,
+`regexp_replace`, `date_trunc`, `spark.sql()` on temp views and `assertDataFrameEqual`.
+Both rows use the same test bodies and the same conftest.
+
+Method: median of 3 runs, one pytest process per engine, on Linux x86_64 with 16 CPUs,
+Python 3.11, PySpark 4.2.0 and pysail 0.7.2. The Spark side already uses every setting the
+guides recommend: `local[1]`, UI off, adaptive execution off, one shuffle partition,
+whole-stage codegen off. The slowest test on each engine is the first one, which starts the
+session: about 12 s on Spark, mostly JVM start, and about 150 ms on Sail.
+
+Reproduce it (Java 17+ is needed only for the Spark side):
+
+```bash
+uv sync --extra test --group dev
+uv run python -m benchmarks.run --runs 3 --java-home /path/to/jdk17
+uv run python -m benchmarks.chart        # redraws the charts in docs/assets
+```
 
 ## How faithful is it?
 
-A corpus of 329 cases checks Sail against real Spark: ten semantic traps (null
+A corpus of 329 cases checks Sail against real Spark. It covers ten semantic traps (null
 logic, coercion, ANSI casts, arbitrary rows from deduplication, window frames, Java regex,
-timestamps, schema, joins, SQL), the `F.*` functions lakehouse code uses, the DataFrame
-methods and actions, and row order. Real
-Spark recorded every expected result; CI re-checks them on both engines.
+timestamps, schema, joins and SQL), the `F.*` functions that lakehouse code uses, the
+DataFrame methods and actions, and row order. Real Spark recorded every expected result,
+and CI checks them again on both engines.
 
 | Area | Cases | Match Spark on Sail |
 |---|---|---|
@@ -97,81 +221,39 @@ Spark recorded every expected result; CI re-checks them on both engines.
 | Row order | 12 | 8 |
 
 Matches are compared the way `assertDataFrameEqual` compares by default. Every difference
-is a test and is listed with its severity in [`KNOWN_GAPS.md`](KNOWN_GAPS.md); the full
-per-case table is [`docs/SUPPORT.md`](docs/SUPPORT.md). Five gaps change results without
-an error (four value gaps plus row order), so keep a `SPARKWARP=0` lane on CI. The [FAQ](docs/FAQ.md) explains why.
+is a test, listed with its severity in [`KNOWN_GAPS.md`](KNOWN_GAPS.md). The full table,
+case by case, is [`docs/SUPPORT.md`](docs/SUPPORT.md). Five gaps change results without
+an error: four value gaps plus row order. That is why the parity lane matters.
 
-## Tests that need real Spark
+## Limitations
 
-```python
-@pytest.mark.spark_only
-def test_merge_into_delta(spark): ...
-```
+- PySpark 4 and Spark 4 semantics with ANSI mode on. Spark 3.5 legacy behaviour is out of
+  scope.
+- No `df.rdd`, no `spark.sparkContext`, no streaming, no `DeltaTable` Python API. Mark such
+  tests `spark_only`.
+- `isinstance(spark, pyspark.sql.SparkSession)` is `False` under Spark Connect.
+- Meant for unit tests on small inputs, not for benchmarking production jobs.
 
-`spark_only` works on a test, a class, or a module (`pytestmark`). sparkwarp skips such
-tests on Sail and gives the reason (shown with `pytest -rs`); they run when sparkwarp is off. When a test fails on Sail
-because a feature is unsupported (`df.rdd`, `spark.sparkContext`, an unknown function),
-the failure report gets a short sparkwarp section that points to `KNOWN_GAPS.md` and
-`spark_only`.
+The [FAQ](docs/FAQ.md) covers why sparkwarp uses Sail and not sqlframe, Sparkless or
+pysparkling, and what to do about each gap.
 
-## Benchmark: the same tests on real Spark and on Sail
+## Contributing
 
-`benchmarks/` is a 42-test suite shaped like a real lakehouse repo: transformer classes with a
-`process(df) -> DataFrame` method, tested with `createDataFrame`, `F.*`, `Window`,
-`groupBy().agg()`, joins, `unionByName`, `from_json` + `explode`, `regexp_replace`,
-`date_trunc`, `spark.sql()` on temp views, and `assertDataFrameEqual`. The test bodies are
-identical for both engines, and so is the session fixture in `benchmarks/conftest.py`:
-it is an ordinary `SparkSession.builder.master("local[1]")...getOrCreate()`. Only the
-`SPARKWARP` switch differs between the two rows.
+Contributions are welcome, and the most useful one is a new corpus case. Each case is one
+line of Python. If it shows a difference between Sail and Spark, the project learns
+something, and so do other users. Bug reports with a minimal repro, docs fixes and upstream
+reports to Sail help too.
 
-Benchmark: 42 tests, median of 3 runs, one pytest process per engine.
-Machine: Linux x86_64, 16 CPUs (x86_64), Python 3.11.13, pyspark 4.2.0, pysail 0.7.2.
+[`CONTRIBUTING.md`](CONTRIBUTING.md) has the development setup, how to add a corpus case,
+how to record goldens on real Spark, and the checks every pull request must pass.
 
-| Engine | Suite wall time | Median per test | p90 per test | Slowest test | Status |
-|---|---|---|---|---|---|
-| sail | 2.5 s | 27 ms | 38 ms | 101 ms (test_totals_per_country) | green, 2 known gaps (xfail) |
-| spark | 29.1 s | 375 ms | 676 ms | 10143 ms (test_totals_per_country) | all green |
+## Acknowledgements
 
-Speedup: suite 11.8x, median test 14x.
-
-Notes on reading it:
-
-- Spark numbers already include every tuning the guides recommend (`local[1]`, UI off,
-  adaptive off, `shuffle.partitions=1`, whole-stage codegen off, Arrow off). The floor is the
-  engine, not the config.
-- The slowest test on each engine is the first one to run; it carries session start
-  (about 7 s of JVM start on Spark; on Sail, imports plus a 6 ms server start).
-- "Known gaps" are tests that pass on Spark and are a strict `xfail` on Sail, listed in
-  `KNOWN_GAPS.md`. They run on both engines and fail loudly the day Sail fixes them.
-
-Run it yourself (Java 17+ is needed only for the Spark side):
-
-```bash
-uv sync --extra test --group dev
-uv run python -m benchmarks.run --runs 3 --java-home /path/to/jdk17   # both engines
-SPARKWARP=1 uv run pytest benchmarks -q                                 # Sail
-SPARKWARP=0 uv run pytest benchmarks -q                                 # real Spark
-```
-
-The runner starts one pytest process per engine, unsets `SPARK_HOME` so PySpark uses its own
-jars, and writes `benchmarks/RESULTS.md`.
-
-## Developing sparkwarp
-
-```bash
-uv sync --extra test --group dev
-uv run pytest -q                                   # package tests (Sail)
-SPARKWARP=1 uv run pytest corpus -q                # corpus on Sail
-SPARKWARP=0 uv run pytest corpus -q                # corpus on real Spark (Java 17+)
-SPARKWARP=0 SPARKWARP_RECORD=1 uv run pytest corpus -q   # re-record goldens from real Spark
-uv run python -m corpus.support_page               # regenerate docs/SUPPORT.md
-```
-
-A new corpus case is one `Case(...)` line in `corpus/test_*.py`. Record its golden on real
-Spark, then run it on Sail. If Sail differs, add the gap to `KNOWN_GAPS.md` and pass
-`gap=KnownGap("GAP-0NN")`. Draft upstream reports for Sail live in
-[`docs/upstream-issues.md`](docs/upstream-issues.md).
+sparkwarp is a thin layer. The engine is [Sail](https://github.com/lakehq/sail) by
+LakeSail, and the API is Apache Spark's own
+[Spark Connect](https://spark.apache.org/docs/latest/spark-connect-overview.html) client.
+The test-suite shape came from the many teams who run thousands of PySpark tests every day.
 
 ## License
 
-Apache-2.0.
+[Apache-2.0](LICENSE).
