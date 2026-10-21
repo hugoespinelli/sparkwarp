@@ -18,7 +18,7 @@ dependencies = [
     "pyspark[connect]>=4.0,<5",
     "pysail>=0.7.2,<0.8",
     "pandas>=2,<3",
-    "pytest>=7",
+    "pytest>=8",
 ]
 
 [project.optional-dependencies]
@@ -39,6 +39,20 @@ path = "src/sparkwarp/__init__.py"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/sparkwarp"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src",
+    "tests",
+    "corpus",
+    "benchmarks",
+    "docs",
+    "README.md",
+    "LICENSE",
+    "KNOWN_GAPS.md",
+    "CHANGELOG.md",
+    "pyproject.toml",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

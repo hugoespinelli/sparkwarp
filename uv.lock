@@ -1139,7 +1139,7 @@ requires-dist = [
     { name = "pandas", specifier = ">=2,<3" },
     { name = "pysail", specifier = ">=0.7.2,<0.8" },
     { name = "pyspark", extras = ["connect"], specifier = ">=4.0,<5" },
-    { name = "pytest", specifier = ">=7" },
+    { name = "pytest", specifier = ">=8" },
     { name = "pytest", marker = "extra == 'test'", specifier = ">=8" },
 ]
 provides-extras = ["test"]
