@@ -35,6 +35,22 @@ jobs:
       - run: SPARKWARP=1 uv run pytest corpus -q
       - run: uv run python -m benchmarks.run --engines sail --runs 1 --max-sail-seconds 30 --output /tmp/sail-results.md --json /tmp/sail-results.json
 
+  test-pyspark-versions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        pyspark: ["4.0.0", "4.1.1"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.11"
+      - run: uv sync --extra test --group dev
+      - run: uv pip install "pyspark[connect]==${{ matrix.pyspark }}"
+      - run: uv run --no-sync pytest -q
+      - run: SPARKWARP=1 uv run --no-sync pytest corpus -q
+
   parity-spark:
     runs-on: ubuntu-latest
     timeout-minutes: 15
