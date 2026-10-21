@@ -2,7 +2,7 @@
 
 Run existing PySpark DataFrame unit tests in milliseconds, with no JVM.
 
-Status: pre-release (0.1.0.dev0). Not on PyPI yet.
+Status: pre-release. Not on PyPI yet.
 
 ## Quickstart
 
@@ -79,7 +79,40 @@ was before sparkwarp, and runs real Spark.
 
 Contract on Sail: Spark 4 semantics with ANSI mode on and session timezone UTC. A
 timezone you set on your own builder or with `spark.conf.set` wins.
-Known differences from Spark are listed in `benchmarks/KNOWN_GAPS.md`; each one is a test.
+Known differences from Spark are listed in `KNOWN_GAPS.md`; each one is a test.
+
+## How faithful is it?
+
+A corpus of 329 cases checks Sail against real Spark: ten semantic traps (null
+logic, coercion, ANSI casts, arbitrary rows from deduplication, window frames, Java regex,
+timestamps, schema, joins, SQL), the `F.*` functions lakehouse code uses, the DataFrame
+methods and actions, and row order. Real
+Spark recorded every expected result; CI re-checks them on both engines.
+
+| Area | Cases | Match Spark on Sail |
+|---|---|---|
+| Functions | 170 | 165 |
+| DataFrame methods and actions | 59 | 54 |
+| Semantic traps | 88 | 74 |
+| Row order | 12 | 8 |
+
+Matches are compared the way `assertDataFrameEqual` compares by default. Every difference
+is a test and is listed with its severity in [`KNOWN_GAPS.md`](KNOWN_GAPS.md); the full
+per-case table is [`docs/SUPPORT.md`](docs/SUPPORT.md). Five gaps change results without
+an error (four value gaps plus row order), so keep a `SPARKWARP=0` lane on CI. The [FAQ](docs/FAQ.md) explains why.
+
+## Tests that need real Spark
+
+```python
+@pytest.mark.spark_only
+def test_merge_into_delta(spark): ...
+```
+
+`spark_only` works on a test, a class, or a module (`pytestmark`). sparkwarp skips such
+tests on Sail and gives the reason (shown with `pytest -rs`); they run when sparkwarp is off. When a test fails on Sail
+because a feature is unsupported (`df.rdd`, `spark.sparkContext`, an unknown function),
+the failure report gets a short sparkwarp section that points to `KNOWN_GAPS.md` and
+`spark_only`.
 
 ## Benchmark: the same tests on real Spark and on Sail
 
@@ -109,7 +142,7 @@ Notes on reading it:
 - The slowest test on each engine is the first one to run; it carries session start
   (about 7 s of JVM start on Spark; on Sail, imports plus a 6 ms server start).
 - "Known gaps" are tests that pass on Spark and are a strict `xfail` on Sail, listed in
-  `benchmarks/KNOWN_GAPS.md`. They run on both engines and fail loudly the day Sail fixes them.
+  `KNOWN_GAPS.md`. They run on both engines and fail loudly the day Sail fixes them.
 
 Run it yourself (Java 17+ is needed only for the Spark side):
 
@@ -123,58 +156,22 @@ SPARKWARP=0 uv run pytest benchmarks -q                                 # real S
 The runner starts one pytest process per engine, unsets `SPARK_HOME` so PySpark uses its own
 jars, and writes `benchmarks/RESULTS.md`.
 
-## Spike 1 verdict (2026-10-20): Spark Connect client + Sail server
-
-Question: can `pyspark.sql.connect` be the API layer, so the package only supplies an engine?
-
-Answer: yes. The engine already exists. [Sail](https://github.com/lakehq/sail) (`pysail`) is a
-Rust Spark Connect server on Arrow + DataFusion. PySpark 4.1.1 client + pysail 0.7.2 ran the
-brief's filter test unchanged, including `createDataFrame`, `F.*`, `Window`, `spark.sql`,
-temp views, a Python UDF and `assertDataFrameEqual`.
-
-What the client does without any server (verified, `spikes/01_...py`):
-
-- `F.col("a") + F.lit(1)` builds a pure-Python protobuf `Expression`. No JVM, no socket.
-- `SparkSession.builder.remote(...).getOrCreate()` DOES contact the server on PySpark 4.1.1
-  (`_cleanup_ml_cache -> get_configs`). A session needs a live gRPC server, so a JVM-free
-  engine must speak Spark Connect gRPC. Sail does.
-
-Measured on this laptop (`spikes/02_...py`, `spikes/bench/`), one process, Sail in-process:
-
-| Step | Cost |
-|---|---|
-| `import pyspark.sql.connect` + pysail | 0.6 to 1.6 s, once |
-| Sail server start (background thread) | 6 ms |
-| Session create | 4 to 6 ms |
-| `createDataFrame` (4 rows, explicit schema) | 18 to 28 ms first, then ~2 ms |
-| One `count()` on a warm session | 7 ms median (Spark: 300 to 400 ms) |
-| Brief's filter test with `assertDataFrameEqual` | 23 ms median |
-| 300 parametrized filter tests under pytest | 10.5 s wall, incl. 1.6 s imports (~30 ms/test) |
-
-Semantic traps from the brief, Sail 0.7.2 vs Spark 4 ANSI defaults:
-
-| Trap | Sail | Matches Spark 4? |
-|---|---|---|
-| `when(null > 1, "a").otherwise("b")` -> "b"; `v != 5` drops null | yes | yes |
-| `cast("abc" as int)` raises; `try_cast` -> null; `ansi.enabled=false` -> null | yes | yes |
-| `lit(1)/lit(2)` -> double; `createDataFrame` int -> bigint; nullable flags kept | yes | yes |
-| `size(null)` -> null; Java regex `\d`; `trunc` -> date; running-sum default frame | yes | yes (Spark 3.5 non-ANSI gives -1 for size) |
-| `coalesce(int_col, "x")` schema | `int` | NO: Spark 4 ANSI gives `bigint` (both raise on "x" at runtime) |
-| Unsupported: `df.rdd`, unknown SQL function | raises loud | yes |
-
-Not measured here: real Spark on the same machine (Spark 4 needs Java 17; only Java 11 here).
-Spark figures come from the brief.
-
-Open gaps to carry into the paired corpus: `coalesce` least-common-type, Spark 3.5 vs 4
-behaviour switches (`sizeOfNull`, ANSI), Delta `MERGE` (Sail claims support; untested),
-`assertDataFrameEqual` needs `pandas<3` on PySpark 4.1.1.
-
-## Reproduce
+## Developing sparkwarp
 
 ```bash
-uv venv --python 3.11 .venv
-uv pip install --python .venv/bin/python "pyspark[connect]==4.1.1" "pandas<3" pysail pytest
-.venv/bin/python spikes/01_connect_client_without_server.py   # steps 1-5 only; STEP6=1 shows the hang
-.venv/bin/python spikes/02_sail_timing_and_semantics.py
-cd spikes/bench && ../../.venv/bin/python -m pytest -q .
+uv sync --extra test --group dev
+uv run pytest -q                                   # package tests (Sail)
+SPARKWARP=1 uv run pytest corpus -q                # corpus on Sail
+SPARKWARP=0 uv run pytest corpus -q                # corpus on real Spark (Java 17+)
+SPARKWARP=0 SPARKWARP_RECORD=1 uv run pytest corpus -q   # re-record goldens from real Spark
+uv run python -m corpus.support_page               # regenerate docs/SUPPORT.md
 ```
+
+A new corpus case is one `Case(...)` line in `corpus/test_*.py`. Record its golden on real
+Spark, then run it on Sail. If Sail differs, add the gap to `KNOWN_GAPS.md` and pass
+`gap=KnownGap("GAP-0NN")`. Draft upstream reports for Sail live in
+[`docs/upstream-issues.md`](docs/upstream-issues.md).
+
+## License
+
+Apache-2.0.
