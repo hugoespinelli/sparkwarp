@@ -1,5 +1,32 @@
 # Changelog
 
+## 0.2.0 (unreleased)
+
+Fixes from the first real-world run: an 8,181-test lakehouse suite on PySpark 4.0.0.
+
+- Common conftest lines now work under sparkwarp: `spark.sparkContext.setLogLevel(...)`
+  (plus `applicationId`, `defaultParallelism`, `version`), `spark.catalog.clearCache()`,
+  and `spark.stop()` in teardown. Other `sparkContext` members still fail loudly.
+- `spark.stop()` from user code no longer closes the shared (default) session while
+  sparkwarp owns it, so libraries that cache a Spark Connect session at import (such as
+  cuallee) keep working; sparkwarp closes it when the run ends. Any other session is stopped
+  for real. A held stop keeps conf values and temp views (ADOPT-008).
+- `localCheckpoint()` and `checkpoint()` work: each run gets a temporary checkpoint
+  directory. A `SAIL_EXECUTION__CHECKPOINT__PATH` you set yourself wins.
+- Failures caused by columns nested too deep for the Spark Connect client get the
+  sparkwarp hint.
+- PySpark 4.0 and 4.1: sparkwarp holds the shared release-pool shutdown while it owns the
+  engine and runs it once at engine stop, so a garbage-collected session no longer
+  deadlocks or breaks the live one. PySpark 4.2 fixed the same bug with an idle-only
+  shutdown.
+- Tested on PySpark 4.0, 4.1 and 4.2 in CI.
+- Corpus grows to 342 cases. New registered gaps: array index from a column or expression
+  (GAP-013), windows ordered by a `CASE WHEN` on a function result (GAP-014), `is_cached`
+  after `unpersist()` (GAP-015), `input_file_name()` (GAP-016), `unionByName` of string and
+  boolean (GAP-017), `md5()` before `distinct()` or a union (GAP-018), and the protobuf
+  nesting limit (ADOPT-007).
+- README: a "Before your first run" checklist.
+
 ## 0.1.0 (2026-10-21)
 
 First release. Run an existing PySpark 4 test suite on Sail, with no JVM.
