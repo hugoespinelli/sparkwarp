@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import math
 import os
 import platform
@@ -32,6 +33,8 @@ SPARKWARP_SWITCH = {EngineName.SAIL: "1", EngineName.SPARK: "0"}
 BENCH_DIR = Path(__file__).parent
 PROJECT_DIR = BENCH_DIR.parent
 DEFAULT_OUTPUT = BENCH_DIR / "RESULTS.md"
+DEFAULT_JSON = BENCH_DIR / "results.json"
+JSON_INDENT = 1
 SPARK_HOME_ENV_VAR = "SPARK_HOME"
 JAVA_HOME_ENV_VAR = "JAVA_HOME"
 PATH_ENV_VAR = "PATH"
@@ -181,6 +184,33 @@ class MachineInfo:
         )
 
 
+class ResultsJson:
+    """The raw numbers behind the table, for the README charts."""
+
+    def __init__(self, results: list[EngineResult], runs: int) -> None:
+        self._results = results
+        self._runs = runs
+
+    def render(self) -> str:
+        engines = {r.engine.value: self._engine(r) for r in self._results}
+        payload = {
+            "runs": self._runs,
+            "machine": MachineInfo.render(),
+            "engines": engines,
+        }
+        return json.dumps(payload, indent=JSON_INDENT, sort_keys=True) + "\n"
+
+    @staticmethod
+    def _engine(result: EngineResult) -> dict[str, object]:
+        return {
+            "wall_median_seconds": result.wall_median,
+            "wall_seconds": [run.wall_seconds for run in result.runs],
+            "per_test_median_seconds": result.per_test_median,
+            "per_test_p90_seconds": result.per_test_p90,
+            "test_median_seconds": result.test_medians,
+        }
+
+
 class ResultsTable:
     """Renders the comparison as the markdown block the README embeds."""
 
@@ -269,6 +299,7 @@ class BenchmarkCli:
         ]
         table = ResultsTable(results, args.runs).render()
         args.output.write_text(table + "\n")
+        args.json.write_text(ResultsJson(results, args.runs).render())
         print(table)
         problems = SpeedGate(args.max_sail_seconds).violations(results)
         for problem in problems:
@@ -281,6 +312,7 @@ class BenchmarkCli:
         parser.add_argument("--engines", default=self.DEFAULT_ENGINES)
         parser.add_argument("--java-home", default=os.environ.get(JAVA_HOME_ENV_VAR))
         parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
+        parser.add_argument("--json", type=Path, default=DEFAULT_JSON)
         parser.add_argument("--max-sail-seconds", type=float, default=None)
         return parser
 

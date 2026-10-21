@@ -33,7 +33,7 @@ jobs:
       - run: uv run pytest -q
       - run: SPARKWARP=1 uv run pytest benchmarks -q
       - run: SPARKWARP=1 uv run pytest corpus -q
-      - run: uv run python -m benchmarks.run --engines sail --runs 1 --max-sail-seconds 30 --output /tmp/sail-results.md
+      - run: uv run python -m benchmarks.run --engines sail --runs 1 --max-sail-seconds 30 --output /tmp/sail-results.md --json /tmp/sail-results.json
 
   parity-spark:
     runs-on: ubuntu-latest
