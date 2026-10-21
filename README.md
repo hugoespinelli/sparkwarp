@@ -24,7 +24,7 @@
   scheduler drop out of the loop.
 - **Zero edits.** Your `SparkSession.builder...getOrCreate()` conftest, your `F.*` calls and
   your `assertDataFrameEqual` stay as they are. You set one environment variable.
-- **Honest about differences.** A corpus of 329 cases, recorded on real Spark, checks the
+- **Honest about differences.** A corpus of 342 cases, recorded on real Spark, checks the
   engine. Every known difference is a test and is listed in [`KNOWN_GAPS.md`](https://github.com/hugoespinelli/sparkwarp/blob/main/KNOWN_GAPS.md).
 - **Real Spark stays one switch away.** `SPARKWARP=0` runs the same suite on the JVM, so
   CI keeps a parity lane.
@@ -67,6 +67,35 @@ pip install .
 Requirements: Python 3.10+, PySpark 4 (installed as `pyspark[connect]>=4`), pytest 8+.
 No Java is needed. sparkwarp does nothing until you switch it on, so installing it does
 not change how your suite runs.
+
+## Before your first run
+
+sparkwarp already handles the lines that most conftests contain:
+
+| Your code does | Under sparkwarp |
+|---|---|
+| `SparkSession.builder.master("local[1]")...getOrCreate()` | Lands on Sail; the master URL is dropped |
+| `spark.sparkContext.setLogLevel("WARN")` | Accepted. `applicationId`, `defaultParallelism` and `version` work too |
+| `spark.catalog.clearCache()` in teardown | Accepted; Sail keeps no cache |
+| `spark.stop()` in a teardown | Held: the shared session stays open until the run ends, so libraries that cached it (cuallee does) keep working. Its conf values and temp views carry over to later tests (ADOPT-008) |
+| `df.localCheckpoint()` or `df.checkpoint()` | Works: each run gets a temporary checkpoint directory |
+| `pytest -n auto` (pytest-xdist) | Supported: each worker starts its own Sail |
+
+Mark these `@pytest.mark.spark_only` before the first run, because Sail or Spark Connect
+cannot run them:
+
+- Delta's `DeltaTable` Python API, `pyspark.ml`, streaming and `df.rdd`.
+- Anything on `spark.sparkContext` beyond the stub: `parallelize`, `wholeTextFiles`, the
+  Hadoop configuration, `_jvm`.
+- Java-only regex features: look-ahead, look-behind and backreferences.
+- `F.input_file_name()`.
+- Columns nested more than about 48 calls deep, such as one `regexp_replace` per character.
+  Collapsing the chain into one `F.translate` usually fixes the test instead.
+
+One known pattern needs a one-word change instead: `F.md5(c)` followed by `distinct()` or a
+union fails on Sail; write `F.md5(c).cast("string")`.
+
+[`KNOWN_GAPS.md`](https://github.com/hugoespinelli/sparkwarp/blob/main/KNOWN_GAPS.md) lists every known difference, with a test for each.
 
 ## Usage
 
@@ -130,8 +159,8 @@ def test_reads_through_the_rdd_api(spark):
 `spark_only` works on a test, a class or a module (`pytestmark`). sparkwarp skips those
 tests on Sail and gives the reason (shown with `pytest -rs`). They run when sparkwarp is
 off. When a test fails because Spark Connect or Sail does not support a feature, such as
-`df.rdd` or `spark.sparkContext`, the failure report gets a short sparkwarp section that
-says so.
+`df.rdd`, a `spark.sparkContext` member beyond the stub, or a column nested too deep for
+the Spark Connect client, the failure report gets a short sparkwarp section that says so.
 
 ### Outside pytest
 
@@ -209,7 +238,7 @@ uv run python -m benchmarks.chart        # redraws the charts in docs/assets
 
 ## How faithful is it?
 
-A corpus of 329 cases checks Sail against real Spark. It covers ten semantic traps (null
+A corpus of 342 cases checks Sail against real Spark. It covers ten semantic traps (null
 logic, coercion, ANSI casts, arbitrary rows from deduplication, window frames, Java regex,
 timestamps, schema, joins and SQL), the `F.*` functions that lakehouse code uses, the
 DataFrame methods and actions, and row order. Real Spark recorded every expected result,
@@ -217,22 +246,24 @@ and CI checks them again on both engines.
 
 | Area | Cases | Match Spark on Sail |
 |---|---|---|
-| Functions | 170 | 165 |
-| DataFrame methods and actions | 59 | 54 |
-| Semantic traps | 88 | 74 |
+| Functions | 178 | 167 |
+| DataFrame methods and actions | 62 | 56 |
+| Semantic traps | 90 | 74 |
 | Row order | 12 | 8 |
 
 Matches are compared the way `assertDataFrameEqual` compares by default. Every difference
 is a test, listed with its severity in [`KNOWN_GAPS.md`](https://github.com/hugoespinelli/sparkwarp/blob/main/KNOWN_GAPS.md). The full table,
-case by case, is [`docs/SUPPORT.md`](https://github.com/hugoespinelli/sparkwarp/blob/main/docs/SUPPORT.md). Five gaps change results without
-an error: four value gaps plus row order. That is why the parity lane matters.
+case by case, is [`docs/SUPPORT.md`](https://github.com/hugoespinelli/sparkwarp/blob/main/docs/SUPPORT.md). Six gaps change results without
+an error: five value gaps plus row order. That is why the parity lane matters.
 
 ## Limitations
 
 - PySpark 4 and Spark 4 semantics with ANSI mode on. Spark 3.5 legacy behaviour is out of
   scope.
-- No `df.rdd`, no `spark.sparkContext`, no streaming, no `DeltaTable` Python API. Mark such
-  tests `spark_only`.
+- No `df.rdd`, no streaming, no `DeltaTable` Python API, no `pyspark.ml`, and only a stub of
+  `spark.sparkContext`. Mark such tests `spark_only`.
+- Columns nested more than about 48 function calls deep exceed the Spark Connect client's
+  protobuf limit.
 - `isinstance(spark, pyspark.sql.SparkSession)` is `False` under Spark Connect.
 - Meant for unit tests on small inputs, not for benchmarking production jobs.
 

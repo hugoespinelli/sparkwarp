@@ -19,17 +19,20 @@ PySpark API. The JVM, Py4J and the scheduler drop out, and an action takes 5 to 
 ## Do I need to change my tests?
 
 Usually not. Set `SPARKWARP=1`. Your conftest's `SparkSession.builder...getOrCreate()`
-lands on Sail. Six Spark Connect client differences can need attention, each with a
-workaround in the adoption table of `KNOWN_GAPS.md`: `spark.sparkContext` calls, `df.rdd`,
-`df.toJSON()` returning rows, `isinstance` checks on the session or on `groupBy()` results,
-and tests that start subprocesses.
+lands on Sail. sparkwarp also accepts the common conftest lines: `setLogLevel`,
+`catalog.clearCache()`, `spark.stop()` in teardown and `localCheckpoint()`. A few Spark
+Connect client differences can still need attention, each with a workaround in the adoption
+table of `KNOWN_GAPS.md`: `spark.sparkContext` beyond the stub, `df.rdd`, `df.toJSON()`
+returning rows, `isinstance` checks on the session or on `groupBy()` results, columns nested
+too deep for protobuf, and tests that start subprocesses. The README's "Before your first
+run" section is the checklist.
 
 ## Can I trust a green run?
 
-Only together with a parity lane. Sail matches real Spark on 301 of the 329 corpus cases.
-Most of the rest raise loudly or differ only in schema details, but four gaps change
-values silently (GAP-004, GAP-009, GAP-010, GAP-012), and row order without `orderBy`
-differs (ORDER-001). Run the same suite with `SPARKWARP=0` on CI, nightly or on merge, and the
+Only together with a parity lane. Sail matches real Spark on 305 of the 342 corpus cases.
+Most of the rest raise loudly or differ only in schema details, but five gaps change
+values silently (GAP-004, GAP-009, GAP-010, GAP-012, GAP-015), and row order without
+`orderBy` differs (ORDER-001). Run the same suite with `SPARKWARP=0` on CI, nightly or on merge, and the
 parity lane catches the rest. sparkwarp is a fast inner loop, not a replacement for real
 Spark in CI.
 
