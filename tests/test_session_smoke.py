@@ -1,12 +1,14 @@
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator
 
 import pytest
-from pyspark.sql import DataFrame, SparkSession
+from pyspark.sql import Column, DataFrame, GroupedData, Row, SparkSession, Window
 from pyspark.sql import functions as F
 from pyspark.sql.types import IntegerType, StringType, StructField, StructType
+from pyspark.sql.window import WindowSpec
 from pyspark.testing.utils import assertDataFrameEqual
 
 import sparkwarp
+from corpus.gaps import KnownGap
 
 SCHEMA = StructType(
     [StructField("id", IntegerType()), StructField("name", StringType())]
@@ -24,12 +26,46 @@ def test_dataframes_are_pyspark_dataframes(spark: SparkSession) -> None:
     assert isinstance(df, DataFrame)
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="ADOPT-001: Connect SparkSession does not subclass the classic one",
-)
+@KnownGap("ADOPT-001").mark(on_sail=True)
 def test_session_is_a_classic_sparksession_instance(spark: SparkSession) -> None:
     assert isinstance(spark, SparkSession)
+
+
+class ApiObjects:
+    """Objects user code type-checks, built on the session under test."""
+
+    def __init__(self, spark: SparkSession) -> None:
+        self.df = spark.createDataFrame([(1, "a")], SCHEMA)
+
+    def get(self, kind: str) -> object:
+        builders: dict[str, Callable[[], object]] = {
+            "schema": lambda: self.df.schema,
+            "row": lambda: self.df.first(),
+            "column": lambda: F.col("id"),
+            "window": lambda: Window.orderBy("id"),
+            "grouped": lambda: self.df.groupBy("id"),
+        }
+        return builders[kind]()
+
+
+@pytest.mark.parametrize(
+    ("kind", "expected_class"),
+    [
+        ("schema", StructType),
+        ("row", Row),
+        ("column", Column),
+        ("window", WindowSpec),
+        pytest.param(
+            "grouped",
+            GroupedData,
+            marks=KnownGap("ADOPT-006").mark(on_sail=True),
+        ),
+    ],
+)
+def test_api_object_passes_isinstance(
+    spark: SparkSession, kind: str, expected_class: type
+) -> None:
+    assert isinstance(ApiObjects(spark).get(kind), expected_class)
 
 
 def test_filter_and_count(spark: SparkSession) -> None:

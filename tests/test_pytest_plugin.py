@@ -1,4 +1,5 @@
 import os
+import re
 from collections.abc import Iterator
 
 import pytest
@@ -321,3 +322,124 @@ def test_activation_set_by_an_env_plugin_is_seen(pytester: pytest.Pytester) -> N
         "-p", "envsetter", "-p", "no:cacheprovider", timeout=SUBPROCESS_TIMEOUT_SECONDS
     )
     result.assert_outcomes(passed=1)
+
+
+SPARK_ONLY_SUITE = """
+import pytest
+
+
+
+@pytest.mark.spark_only
+def test_marked_function(spark):
+    raise AssertionError("must not run on Sail")
+
+
+@pytest.mark.spark_only
+class TestMarkedClass:
+    def test_inside(self, spark):
+        raise AssertionError("must not run on Sail")
+
+
+def test_unmarked(spark):
+    assert spark.range(1).count() == 1
+"""
+
+SPARK_ONLY_MODULE = """
+import pytest
+
+pytestmark = pytest.mark.spark_only
+
+
+def test_in_marked_module(spark):
+    raise AssertionError("must not run on Sail")
+"""
+
+
+def test_spark_only_tests_are_skipped_on_sail(pytester: pytest.Pytester) -> None:
+    pytester.makepyfile(test_marks=SPARK_ONLY_SUITE, test_module=SPARK_ONLY_MODULE)
+    result = pytester.runpytest_subprocess(
+        "--sparkwarp",
+        "-rs",
+        "-p",
+        "no:cacheprovider",
+        timeout=SUBPROCESS_TIMEOUT_SECONDS,
+    )
+    result.assert_outcomes(passed=1, skipped=3)
+    result.stdout.fnmatch_lines(["*spark_only: needs real Spark*SPARKWARP=0*"])
+
+
+def test_spark_only_tests_run_when_sparkwarp_is_off(pytester: pytest.Pytester) -> None:
+    pytester.makepyfile(
+        SPARK_ONLY_MODULE.replace(
+            'raise AssertionError("must not run on Sail")', "assert True"
+        ).replace("(spark)", "()")
+    )
+    result = pytester.runpytest_subprocess(
+        "-p", "no:cacheprovider", timeout=SUBPROCESS_TIMEOUT_SECONDS
+    )
+    result.assert_outcomes(passed=1)
+
+
+UNSUPPORTED_FEATURE = """
+def test_uses_rdd(spark):
+    spark.range(3).rdd.count()
+
+
+def test_uses_spark_context(spark):
+    spark.sparkContext.setLogLevel("ERROR")
+
+
+def test_plain_failure(spark):
+    assert spark.range(1).count() == 2
+
+
+def test_python_bug_with_not_supported_message(spark):
+    sorted([r.v for r in spark.createDataFrame([(1,), (None,)], "v int").collect()])
+
+
+def test_user_error_with_not_supported_message(spark):
+    raise ValueError("currency EUR not supported yet")
+
+
+def test_wrapped_unsupported_error(spark):
+    try:
+        spark.range(1).rdd.count()
+    except Exception as error:
+        raise RuntimeError("the job failed") from error
+"""
+
+
+def test_hint_only_for_unsupported_pyspark_features(pytester: pytest.Pytester) -> None:
+    pytester.makepyfile(UNSUPPORTED_FEATURE)
+    result = pytester.runpytest_subprocess(
+        "--sparkwarp", "-p", "no:cacheprovider", timeout=SUBPROCESS_TIMEOUT_SECONDS
+    )
+    result.assert_outcomes(failed=6)
+    hinted = UnsupportedHints(result.stdout.lines).tests_with_hint()
+    expected = {
+        "test_uses_rdd",
+        "test_uses_spark_context",
+        "test_wrapped_unsupported_error",
+    }
+    assert hinted == expected
+
+
+class UnsupportedHints:
+    """Maps each failure section in pytest's output to whether it carries the hint."""
+
+    FAILURE_HEADER = re.compile(r"^_+ (test_\w+) _+$")
+    HINT_TEXT = "hit a feature that Spark Connect or Sail does not support"
+
+    def __init__(self, lines: list[str]) -> None:
+        self._lines = lines
+
+    def tests_with_hint(self) -> set[str]:
+        hinted: set[str] = set()
+        current: str | None = None
+        for line in self._lines:
+            header = self.FAILURE_HEADER.match(line)
+            if header:
+                current = header.group(1)
+            elif current and self.HINT_TEXT in line:
+                hinted.add(current)
+        return hinted
