@@ -21,6 +21,12 @@ dependencies = [
     "pytest>=8",
 ]
 
+[project.urls]
+Homepage = "https://github.com/hugoespinelli/sparkwarp"
+Repository = "https://github.com/hugoespinelli/sparkwarp"
+Issues = "https://github.com/hugoespinelli/sparkwarp/issues"
+Changelog = "https://github.com/hugoespinelli/sparkwarp/blob/main/CHANGELOG.md"
+
 [project.optional-dependencies]
 test = ["pytest>=8"]
 
@@ -51,6 +57,7 @@ include = [
     "LICENSE",
     "KNOWN_GAPS.md",
     "CHANGELOG.md",
+    "CONTRIBUTING.md",
     "pyproject.toml",
 ]
 
