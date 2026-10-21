@@ -229,21 +229,66 @@ class ResultsTable:
         )
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--runs", type=int, default=3)
-    parser.add_argument("--engines", default="sail,spark")
-    parser.add_argument("--java-home", default=os.environ.get(JAVA_HOME_ENV_VAR))
-    parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
-    args = parser.parse_args()
+class SpeedGate:
+    """Fails the run when an engine's median suite time exceeds its budget."""
 
-    results: list[EngineResult] = []
-    for name in args.engines.split(","):
+    def __init__(self, max_sail_seconds: float | None) -> None:
+        self._max_sail_seconds = max_sail_seconds
+
+    def violations(self, results: list[EngineResult]) -> list[str]:
+        problems = [
+            f"{r.engine.value}: test failures" for r in results if not r.all_green
+        ]
+        if self._max_sail_seconds is None:
+            return problems
+        sail = next((r for r in results if r.engine is EngineName.SAIL), None)
+        if sail is None:
+            return [*problems, "a Sail budget was set but sail was not measured"]
+        too_slow = sail.wall_median > self._max_sail_seconds
+        if too_slow:
+            problems.append(
+                f"sail: {sail.wall_median:.1f} s, "
+                f"over the {self._max_sail_seconds} s budget"
+            )
+        return problems
+
+
+class BenchmarkCli:
+    """Runs each engine, writes the results table, and applies the speed gate."""
+
+    DEFAULT_RUNS = 3
+    DEFAULT_ENGINES = "sail,spark"
+    ENGINE_SEPARATOR = ","
+    EXIT_GATE_FAILED = 1
+
+    def run(self, argv: list[str]) -> int:
+        args = self._parser().parse_args(argv)
+        results = [
+            self._measure(name, args)
+            for name in args.engines.split(self.ENGINE_SEPARATOR)
+        ]
+        table = ResultsTable(results, args.runs).render()
+        args.output.write_text(table + "\n")
+        print(table)
+        problems = SpeedGate(args.max_sail_seconds).violations(results)
+        for problem in problems:
+            print(f"GATE FAILED: {problem}")
+        return self.EXIT_GATE_FAILED if problems else 0
+
+    def _parser(self) -> argparse.ArgumentParser:
+        parser = argparse.ArgumentParser(description=__doc__)
+        parser.add_argument("--runs", type=int, default=self.DEFAULT_RUNS)
+        parser.add_argument("--engines", default=self.DEFAULT_ENGINES)
+        parser.add_argument("--java-home", default=os.environ.get(JAVA_HOME_ENV_VAR))
+        parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
+        parser.add_argument("--max-sail-seconds", type=float, default=None)
+        return parser
+
+    def _measure(self, name: str, args: argparse.Namespace) -> EngineResult:
         engine = EngineName(name.strip())
         result = EngineResult(engine)
-        invocation = PytestInvocation(
-            engine, args.java_home if engine is EngineName.SPARK else None
-        )
+        java_home = args.java_home if engine is EngineName.SPARK else None
+        invocation = PytestInvocation(engine, java_home)
         for i in range(args.runs):
             timing = invocation.run()
             result.runs.append(timing)
@@ -253,12 +298,8 @@ def main() -> None:
                 f"{timing.failed} failed, {timing.known_gaps} known gaps",
                 flush=True,
             )
-        results.append(result)
-
-    table = ResultsTable(results, args.runs).render()
-    args.output.write_text(table + "\n")
-    print(table)
+        return result
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(BenchmarkCli().run(sys.argv[1:]))
