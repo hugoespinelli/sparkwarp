@@ -44,7 +44,7 @@ appear against any Spark Connect server.
 | ADOPT-001 | `isinstance(spark, pyspark.sql.SparkSession)` is `False`. `DataFrame`, `Column` and `Window` pass. | Check `pyspark.sql.utils.is_remote()`, or accept both session classes. | `tests/test_session_smoke.py` (strict xfail) |
 | ADOPT-006 | `isinstance(df.groupBy(...), pyspark.sql.GroupedData)` is `False`, like the session in ADOPT-001. `StructType`, `Row`, `Column` and `WindowSpec` pass. | Avoid `isinstance` checks on grouped data, or accept both classes. | `tests/test_session_smoke.py` (strict xfail) |
 | ADOPT-002 | Child processes inherit the Connect routing but not sparkwarp's builder patch. | `subprocess.run(..., env=sparkwarp.clean_environ())` | `tests/test_runtime.py` (asserts the inherited routing and the clean env) |
-| ADOPT-003 | `spark.sparkContext` does not exist, so `setLogLevel` in a conftest fails. | Remove the line or guard it with `is_remote()`. A shim is planned (backlog A2.6). | `corpus/test_methods.py`: `action_spark_context_is_unsupported` |
+| ADOPT-003 | `spark.sparkContext` does not exist, so `setLogLevel` in a conftest fails. | Remove the line or guard it with `is_remote()`. A shim is planned for 0.2. | `corpus/test_methods.py`: `action_spark_context_is_unsupported` |
 | ADOPT-004 | `df.toJSON()` returns a DataFrame of `value` rows, not string rows. | `[r.value for r in df.select(F.to_json(F.struct("*")).alias("value")).collect()]` gives the same strings on both engines. | `corpus/test_methods.py`: `action_to_json` |
 | ADOPT-005 | `df.rdd` is not implemented. | Out of scope; mark such tests `@pytest.mark.spark_only`. | `corpus/test_methods.py`: `action_rdd_is_unsupported` |
 
