@@ -117,3 +117,82 @@ spark.createDataFrame([(25,), (30,)], "age int").describe("age").collect()
 Spark: rows in the order `count, mean, stddev, min, max`, which the API documents. Sail:
 the same values in another order, and the order changes from run to run (five runs
 gave five different orders; one was `stddev, count, max, min, mean`).
+
+## 12. Array index from a column or an expression fails (GAP-013)
+
+```python
+df = spark.createDataFrame([(["a", "b", "c"], 1)], "parts array<string>, i int")
+df.select(F.col("parts")[F.col("i")]).collect()
+df.select(F.col("parts")[F.size("parts") - 1]).collect()
+```
+
+Spark: `b` and `c`. Sail: the first raises `Cast error: Cannot cast string 'i' to value of
+Int64 type`, the second raises `invalid argument: extraction must be a literal`.
+`F.element_at("parts", F.col("i") + 1)` and `F.get("parts", F.col("i"))` work.
+
+## 13. Window ordered by a CASE WHEN on a function result fails to plan (GAP-014)
+
+```python
+df = spark.createDataFrame([(1, "bob", "eng"), (2, "carol", "eng")], "id int, name string, dept string")
+w = Window.partitionBy("dept").orderBy(F.when(F.length("name") > 3, 0).otherwise(1))
+df.select(F.row_number().over(w)).collect()
+```
+
+Spark: row numbers. Sail: `Error during planning: Plan: ["BoundedWindowAggExec: ...`. It
+fails for `row_number`, `rank` and `sum` alike. A `CASE WHEN` on a plain column, or on a
+string comparison such as `F.upper("name") == "BOB"`, plans fine.
+
+## 14. unionByName of string and boolean columns fails to plan (GAP-017)
+
+```python
+a = spark.createDataFrame([("true",)], "c string")
+b = spark.createDataFrame([(False,)], "c boolean")
+a.unionByName(b).collect()
+```
+
+Spark 4 (ANSI): casts the string side to boolean, `[True, False]`. Sail: `Incompatible inputs
+for Union: Previous inputs were of type Utf8, but got incompatible ...`.
+
+## 15. is_cached stays True after unpersist (GAP-015)
+
+```python
+df = spark.range(3)
+df.cache(); df.count(); df.unpersist()
+df.is_cached
+```
+
+Spark: `False`. Sail: `True`. Persist and unpersist are logged as no-ops.
+
+## 16. input_file_name() is not implemented (GAP-016)
+
+```python
+spark.range(1).select(F.input_file_name()).collect()
+```
+
+Spark: `[Row(input_file_name()='')]` for in-memory data, and the file path for file sources.
+Sail: `UnsupportedOperationException: function: input_file_name`.
+
+## 17. catalog.clearCache() is unsupported
+
+```python
+spark.catalog.clearCache()
+```
+
+Spark: no-op when nothing is cached. Sail: `UnsupportedOperationException:
+PlanNode::ClearCache`. Since persist is already a no-op on Sail, accepting `ClearCache` as a
+no-op would match. sparkwarp works around it today.
+
+## 18. md5 returns Utf8View, which set operations pass to the client (GAP-018)
+
+```python
+df = spark.createDataFrame([("a",), ("b",)], "k string")
+df.select(F.md5("k").alias("v")).distinct().collect()
+df.select(F.md5("k").alias("v")).union(df.select("k")).collect()
+```
+
+Spark: two rows of hex strings. Sail: PySpark 4.0, 4.1 and 4.2 all raise
+`[UNSUPPORTED_DATA_TYPE_FOR_ARROW_CONVERSION] string_view is not supported in conversion to
+Arrow` during `collect()`. `df.schema` says `string`; only the Arrow batch carries `Utf8View`.
+A plain projection, `orderBy`, `groupBy` and joins are fine, and `sha1`, `sha2` and `lower`
+return `Utf8`. Suggested fix: return `Utf8` from `md5` like the other hash functions, or cast
+`Utf8View` to `Utf8` at the Spark Connect result boundary.

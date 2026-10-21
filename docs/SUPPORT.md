@@ -6,9 +6,9 @@ Each row is a corpus case that runs on real Spark and on Sail. *matches Spark* m
 
 | Area | Cases | Match Spark | Differ |
 |---|---|---|---|
-| Functions | 170 | 165 | 5 |
-| DataFrame methods and actions | 59 | 54 | 5 |
-| Semantic traps | 88 | 74 | 14 |
+| Functions | 178 | 167 | 11 |
+| DataFrame methods and actions | 62 | 56 | 6 |
+| Semantic traps | 90 | 74 | 16 |
 | Row order | 12 | 8 | 4 |
 
 ## Functions
@@ -187,6 +187,14 @@ Covers the `F.*` functions lakehouse code uses.
 | `fn_posexplode` | matches Spark |
 | `fn_explode_map` | differs: GAP-011 (loud) |
 | `fn_inline` | matches Spark |
+| `fn_array_index_from_column` | differs: GAP-013 (loud) |
+| `fn_array_index_from_expression` | differs: GAP-013 (loud) |
+| `fn_element_at_column_index` | matches Spark |
+| `fn_input_file_name` | differs: GAP-016 (loud) |
+| `fn_md5_then_distinct` | differs: GAP-018 (loud) |
+| `fn_md5_then_union` | differs: GAP-018 (loud) |
+| `fn_regexp_replace_chain_at_the_limit` | matches Spark |
+| `fn_deep_regexp_replace_chain` | differs: ADOPT-007 (client) |
 
 ## DataFrame methods and actions
 
@@ -253,6 +261,9 @@ Covers DataFrame API calls.
 | `action_to_json` | differs: ADOPT-004 (client) |
 | `action_rdd_is_unsupported` | differs: ADOPT-005 (client) |
 | `action_spark_context_is_unsupported` | differs: ADOPT-003 (client) |
+| `action_is_cached_after_unpersist` | differs: GAP-015 (silent) |
+| `action_set_log_level` | matches Spark |
+| `action_catalog_clear_cache` | matches Spark |
 
 ## Semantic traps
 
@@ -348,6 +359,8 @@ Covers the rules where engines usually differ.
 | `metadata_of_dict_agg_alias` | differs: GAP-008 (schema) |
 | `nullable_flag_of_when_otherwise` | differs: GAP-008 (schema) |
 | `nullable_flag_of_cast_literal` | differs: GAP-008 (schema) |
+| `window_order_by_case_on_function_result` | differs: GAP-014 (loud) |
+| `union_by_name_string_and_boolean` | differs: GAP-017 (loud) |
 
 ## Row order
 
