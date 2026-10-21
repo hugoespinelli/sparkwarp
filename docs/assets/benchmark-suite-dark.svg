@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="222" viewBox="0 0 760 222" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img">
+  <title>42 PySpark tests, whole suite</title>
+  <desc>Real Spark 31.7 s, sparkwarp 2.8 s, 11.2x faster.</desc>
+  <rect width="760" height="222" rx="8" fill="#1a1a19"/>
+  <text x="24.0" y="30.0" fill="#f0efec" font-size="17" font-weight="600" text-anchor="start">42 PySpark tests, whole suite</text>
+  <text x="24.0" y="50.0" fill="#c3c2b7" font-size="13" font-weight="400" text-anchor="start">Median wall time of 3 runs, same test code. Lower is better.</text>
+  <line x1="200.0" y1="76.0" x2="200.0" y2="180.0" stroke="#383835" stroke-width="1"/>
+  <text x="200.0" y="198.0" fill="#898781" font-size="12" font-weight="400" text-anchor="middle">0 s</text>
+  <line x1="297.5" y1="76.0" x2="297.5" y2="180.0" stroke="#2c2c2a" stroke-width="1"/>
+  <text x="297.5" y="198.0" fill="#898781" font-size="12" font-weight="400" text-anchor="middle">10 s</text>
+  <line x1="395.0" y1="76.0" x2="395.0" y2="180.0" stroke="#2c2c2a" stroke-width="1"/>
+  <text x="395.0" y="198.0" fill="#898781" font-size="12" font-weight="400" text-anchor="middle">20 s</text>
+  <line x1="492.5" y1="76.0" x2="492.5" y2="180.0" stroke="#2c2c2a" stroke-width="1"/>
+  <text x="492.5" y="198.0" fill="#898781" font-size="12" font-weight="400" text-anchor="middle">30 s</text>
+  <line x1="590.0" y1="76.0" x2="590.0" y2="180.0" stroke="#2c2c2a" stroke-width="1"/>
+  <text x="590.0" y="198.0" fill="#898781" font-size="12" font-weight="400" text-anchor="middle">40 s</text>
+  <path d="M200.0,90.0 H505.5 Q509.5,90.0 509.5,94.0 V110.0 Q509.5,114.0 505.5,114.0 H200.0 Z" fill="#d95926"/>
+  <text x="519.5" y="107.0" fill="#f0efec" font-size="14" font-weight="600" text-anchor="start">31.7 s</text>
+  <path d="M200.0,142.0 H223.6 Q227.6,142.0 227.6,146.0 V162.0 Q227.6,166.0 223.6,166.0 H200.0 Z" fill="#3987e5"/>
+  <text x="237.6" y="159.0" fill="#f0efec" font-size="14" font-weight="600" text-anchor="start">2.8 s  ·  11x faster</text>
+  <text x="186.0" y="100.0" fill="#f0efec" font-size="14" font-weight="600" text-anchor="end">real Spark</text>
+  <text x="186.0" y="116.0" fill="#898781" font-size="12" font-weight="400" text-anchor="end">local[1] JVM, tuned</text>
+  <text x="186.0" y="152.0" fill="#f0efec" font-size="14" font-weight="600" text-anchor="end">sparkwarp</text>
+  <text x="186.0" y="168.0" fill="#898781" font-size="12" font-weight="400" text-anchor="end">Sail, no JVM</text>
+</svg>

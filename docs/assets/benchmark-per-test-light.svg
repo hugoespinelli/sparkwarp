@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="246" viewBox="0 0 760 246" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img">
+  <title>Every test, one dot each</title>
+  <desc>Median time per test: real Spark 364 ms, sparkwarp 25 ms.</desc>
+  <rect width="760" height="246" rx="8" fill="#fcfcfb"/>
+  <text x="24.0" y="30.0" fill="#0b0b0b" font-size="17" font-weight="600" text-anchor="start">Every test, one dot each</text>
+  <text x="24.0" y="50.0" fill="#52514e" font-size="13" font-weight="400" text-anchor="start">Median of 3 runs per test, log scale. Each row's slowest dot is the first test (session start).</text>
+  <line x1="243.5" y1="76.0" x2="243.5" y2="196.0" stroke="#e1e0d9" stroke-width="1"/>
+  <text x="243.5" y="214.0" fill="#898781" font-size="12" font-weight="400" text-anchor="middle">10 ms</text>
+  <line x1="387.8" y1="76.0" x2="387.8" y2="196.0" stroke="#e1e0d9" stroke-width="1"/>
+  <text x="387.8" y="214.0" fill="#898781" font-size="12" font-weight="400" text-anchor="middle">100 ms</text>
+  <line x1="532.2" y1="76.0" x2="532.2" y2="196.0" stroke="#e1e0d9" stroke-width="1"/>
+  <text x="532.2" y="214.0" fill="#898781" font-size="12" font-weight="400" text-anchor="middle">1 s</text>
+  <line x1="676.5" y1="76.0" x2="676.5" y2="196.0" stroke="#e1e0d9" stroke-width="1"/>
+  <text x="676.5" y="214.0" fill="#898781" font-size="12" font-weight="400" text-anchor="middle">10 s</text>
+  <circle cx="388.4" cy="100.4" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="411.5" cy="102.8" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="429.7" cy="105.2" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="433.4" cy="107.6" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="439.2" cy="110.0" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="447.2" cy="112.4" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="448.4" cy="114.8" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="448.7" cy="117.2" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="450.3" cy="119.6" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="451.7" cy="100.4" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="453.3" cy="102.8" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="456.3" cy="105.2" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="456.5" cy="107.6" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="456.9" cy="110.0" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="457.1" cy="112.4" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="460.2" cy="114.8" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="461.5" cy="117.2" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="461.5" cy="119.6" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="464.2" cy="100.4" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="465.6" cy="102.8" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="466.9" cy="105.2" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="470.5" cy="107.6" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="471.7" cy="110.0" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="471.7" cy="112.4" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="472.7" cy="114.8" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="477.3" cy="117.2" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="478.7" cy="119.6" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="478.8" cy="100.4" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="481.6" cy="102.8" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="481.8" cy="105.2" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="484.6" cy="107.6" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="488.8" cy="110.0" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="489.5" cy="112.4" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="490.6" cy="114.8" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="492.6" cy="117.2" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="495.9" cy="119.6" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="496.8" cy="100.4" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="508.6" cy="102.8" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="523.8" cy="105.2" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="548.8" cy="107.6" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="557.2" cy="110.0" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="687.5" cy="112.4" r="4.5" fill="#eb6834" stroke="#fcfcfb" stroke-width="1.5"/>
+  <line x1="468.7" y1="94.0" x2="468.7" y2="126.0" stroke="#0b0b0b" stroke-width="2"/>
+  <text x="468.7" y="89.0" fill="#0b0b0b" font-size="12" font-weight="600" text-anchor="middle">median 364 ms</text>
+  <circle cx="229.5" cy="152.4" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="229.5" cy="154.8" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="243.5" cy="157.2" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="249.4" cy="159.6" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="259.9" cy="162.0" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="259.9" cy="164.4" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="264.6" cy="166.8" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="264.6" cy="169.2" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="268.9" cy="171.6" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="268.9" cy="152.4" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="268.9" cy="154.8" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="283.7" cy="157.2" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="286.9" cy="159.6" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="290.0" cy="162.0" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="292.9" cy="164.4" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="292.9" cy="166.8" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="292.9" cy="169.2" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="295.7" cy="171.6" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="298.3" cy="152.4" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="298.3" cy="154.8" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="300.9" cy="157.2" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="300.9" cy="159.6" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="303.4" cy="162.0" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="305.7" cy="164.4" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="305.7" cy="166.8" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="305.7" cy="169.2" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="308.0" cy="171.6" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="308.0" cy="152.4" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="310.2" cy="154.8" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="314.4" cy="157.2" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="316.4" cy="159.6" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="316.4" cy="162.0" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="316.4" cy="164.4" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="316.4" cy="166.8" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="318.3" cy="169.2" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="320.2" cy="171.6" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="320.2" cy="152.4" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="320.2" cy="154.8" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="325.5" cy="157.2" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="325.5" cy="159.6" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="328.8" cy="162.0" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <circle cx="411.5" cy="164.4" r="4.5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="1.5"/>
+  <line x1="300.9" y1="146.0" x2="300.9" y2="178.0" stroke="#0b0b0b" stroke-width="2"/>
+  <text x="300.9" y="141.0" fill="#0b0b0b" font-size="12" font-weight="600" text-anchor="middle">median 25 ms</text>
+  <text x="186.0" y="108.0" fill="#0b0b0b" font-size="14" font-weight="600" text-anchor="end">real Spark</text>
+  <text x="186.0" y="124.0" fill="#898781" font-size="12" font-weight="400" text-anchor="end">local[1] JVM, tuned</text>
+  <text x="186.0" y="160.0" fill="#0b0b0b" font-size="14" font-weight="600" text-anchor="end">sparkwarp</text>
+  <text x="186.0" y="176.0" fill="#898781" font-size="12" font-weight="400" text-anchor="end">Sail, no JVM</text>
+</svg>
