@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.2.0 (unreleased)
+## 0.2.0 (2026-10-21)
 
 Fixes from the first real-world run: an 8,181-test lakehouse suite on PySpark 4.0.0.
 
