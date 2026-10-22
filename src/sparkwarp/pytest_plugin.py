@@ -81,6 +81,16 @@ class SparkwarpSession:
             if needs_real_spark:
                 item.add_marker(skip)
 
+    def pytest_terminal_summary(
+        self, terminalreporter: pytest.TerminalReporter
+    ) -> None:
+        runtime = Runtime.current()
+        if runtime is None:
+            return
+        line = runtime.engine.routing_summary().line()
+        if line is not None:
+            terminalreporter.write_line(line)
+
     @pytest.hookimpl(wrapper=True)
     def pytest_runtest_makereport(
         self, call: pytest.CallInfo[None]

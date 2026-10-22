@@ -6,7 +6,7 @@ import os
 
 from pyspark.sql import SparkSession
 
-from sparkwarp.config import Ownership
+from sparkwarp.config import JVM_DIR_ENV_VAR, Ownership
 from sparkwarp.environment import EnvironmentPatch
 from sparkwarp.errors import (
     EngineConflictError,
@@ -51,5 +51,8 @@ def clean_environ() -> dict[str, str]:
     """
     running = Runtime.current()
     if running is None:
-        return EnvironmentPatch.inherited().undone_on(os.environ)
-    return running.environ_for_children(os.environ)
+        environ = EnvironmentPatch.inherited().undone_on(os.environ)
+    else:
+        environ = running.environ_for_children(os.environ)
+    environ.pop(JVM_DIR_ENV_VAR, None)
+    return environ

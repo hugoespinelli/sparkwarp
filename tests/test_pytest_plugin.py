@@ -1,3 +1,4 @@
+import json
 import os
 import re
 from collections.abc import Iterator
@@ -7,10 +8,14 @@ import pytest
 from sparkwarp.config import (
     ACTIVATION_ENV_VAR,
     CONNECT_MODE_ENV_VAR,
+    JVM_DEPTH_ENV_VAR,
+    JVM_DIR_ENV_VAR,
+    JVM_ENV_VAR,
     MASTER_ENV_VAR,
     REMOTE_ENV_VAR,
     Ownership,
 )
+from sparkwarp.jvm_server import JavaRuntime, ServerRecord
 from sparkwarp.runtime import Runtime
 
 SUBPROCESS_TIMEOUT_SECONDS = 120
@@ -505,10 +510,87 @@ def test_deep_chain(spark):
 
 
 def test_a_column_100_calls_deep_runs_in_a_plugin_run(
-    pytester: pytest.Pytester,
+    pytester: pytest.Pytester, monkeypatch: pytest.MonkeyPatch
 ) -> None:
+    monkeypatch.setenv(JVM_ENV_VAR, "0")
+    monkeypatch.setenv(JVM_DEPTH_ENV_VAR, "0")
     pytester.makepyfile(DEEP_EXPRESSION)
     result = pytester.runpytest_subprocess(
         "--sparkwarp", "-p", "no:cacheprovider", timeout=SUBPROCESS_TIMEOUT_SECONDS
     )
     result.assert_outcomes(passed=1)
+
+
+DEEP_AND_SHALLOW = """
+from pyspark.sql import functions as F
+
+
+def chain(depth):
+    column = F.col("s")
+    for _ in range(depth):
+        column = F.regexp_replace(column, "a", "b")
+    return column
+
+
+def test_too_deep(spark):
+    spark.createDataFrame([("a",)], "s string").select(chain(70)).collect()
+
+
+def test_shallow(spark):
+    spark.createDataFrame([("a",)], "s string").select(chain(40)).collect()
+"""
+
+
+def test_without_a_jvm_a_too_deep_column_fails_fast_with_the_hint(
+    pytester: pytest.Pytester, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv(JVM_ENV_VAR, "0")
+    pytester.makepyfile(DEEP_AND_SHALLOW)
+    result = pytester.runpytest_subprocess(
+        "--sparkwarp", "-p", "no:cacheprovider", timeout=SUBPROCESS_TIMEOUT_SECONDS
+    )
+    result.assert_outcomes(passed=1, failed=1)
+    assert UnsupportedHints(result.stdout.lines).tests_with_hint() == {"test_too_deep"}
+
+
+SHARED_SERVER = """
+import json
+import os
+from pathlib import Path
+
+from pyspark.sql import functions as F
+
+
+def test_deep_on_worker(spark):
+    column = F.col("s")
+    for _ in range(100):
+        column = F.regexp_replace(column, "a", "b")
+    assert spark.createDataFrame([("a",)], "s string").select(column).first()[0] == "b"
+    state = Path(os.environ["SPARKWARP_JVM_DIR"]) / "server.json"
+    record = json.loads(state.read_text())
+    Path(os.environ["SEEN_DIR"], f"{os.getpid()}.json").write_text(json.dumps(record))
+"""
+
+
+@pytest.mark.skipif(not JavaRuntime.available(), reason="needs a Java runtime")
+def test_xdist_workers_share_one_jvm_server_that_stops_with_the_run(
+    pytester: pytest.Pytester, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    seen = pytester.mkdir("seen")
+    monkeypatch.setenv("SEEN_DIR", str(seen))
+    monkeypatch.delenv(JVM_ENV_VAR, raising=False)
+    monkeypatch.delenv(JVM_DIR_ENV_VAR, raising=False)
+    pytester.makepyfile(test_one=SHARED_SERVER, test_two=SHARED_SERVER)
+    result = pytester.runpytest_subprocess(
+        "--sparkwarp",
+        "-p",
+        "no:cacheprovider",
+        "-n",
+        "2",
+        timeout=SUBPROCESS_TIMEOUT_SECONDS * 3,
+    )
+    result.assert_outcomes(passed=2)
+    records = [json.loads(path.read_text()) for path in seen.iterdir()]
+    assert len(records) == 2 and records[0] == records[1]
+    assert not ServerRecord(**records[0]).alive()
+    result.stdout.fnmatch_lines(["sparkwarp: 2 queries ran on the JVM*"])
