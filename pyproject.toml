@@ -72,7 +72,7 @@ files = ["src", "corpus", "benchmarks"]
 python_version = "3.10"
 
 [[tool.mypy.overrides]]
-module = ["pysail.*", "pyspark.*", "pyarrow.*", "google.protobuf.*"]
+module = ["pysail.*", "pyspark.*", "pyarrow.*", "google.protobuf.*", "google._upb.*"]
 ignore_missing_imports = true
 
 [tool.ruff]

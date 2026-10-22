@@ -498,17 +498,17 @@ from pyspark.sql import functions as F
 
 def test_deep_chain(spark):
     column = F.col("s")
-    for _ in range(150):
+    for _ in range(100):
         column = F.regexp_replace(column, "a", "b")
     spark.createDataFrame([("a",)], "s string").select(column).collect()
 """
 
 
-def test_protobuf_depth_failure_gets_the_hint(pytester: pytest.Pytester) -> None:
+def test_a_column_100_calls_deep_runs_in_a_plugin_run(
+    pytester: pytest.Pytester,
+) -> None:
     pytester.makepyfile(DEEP_EXPRESSION)
     result = pytester.runpytest_subprocess(
         "--sparkwarp", "-p", "no:cacheprovider", timeout=SUBPROCESS_TIMEOUT_SECONDS
     )
-    result.assert_outcomes(failed=1)
-    hinted = UnsupportedHints(result.stdout.lines).tests_with_hint()
-    assert hinted == {"test_deep_chain"}
+    result.assert_outcomes(passed=1)

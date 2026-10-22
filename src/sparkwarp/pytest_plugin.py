@@ -6,7 +6,6 @@ import os
 from collections.abc import Generator, Mapping
 
 import pytest
-from google.protobuf.message import DecodeError
 from pyspark.errors import PySparkException
 from pyspark.sql import SparkSession
 
@@ -19,7 +18,6 @@ from sparkwarp.config import (
     HINT_SECTION_TITLE,
     ON_FLAG_VALUES,
     PLUGIN_NAME,
-    PROTOBUF_DEPTH_SIGNAL,
     SPARK_ONLY_MARKER,
     SPARK_ONLY_MARKER_HELP,
     SPARK_ONLY_SKIP_REASON,
@@ -111,11 +109,6 @@ class UnsupportedFeature:
 
     @staticmethod
     def is_unsupported(error: BaseException) -> bool:
-        too_deep_for_protobuf = isinstance(error, DecodeError) and (
-            PROTOBUF_DEPTH_SIGNAL in str(error)
-        )
-        if too_deep_for_protobuf:
-            return True
         if not isinstance(error, PySparkException):
             return False
         known_condition = error.getCondition() in UNSUPPORTED_CONDITIONS
