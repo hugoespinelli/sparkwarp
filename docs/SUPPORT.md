@@ -6,7 +6,7 @@ Each row is a corpus case that runs on real Spark and on Sail. *matches Spark* m
 
 | Area | Cases | Match Spark | Differ |
 |---|---|---|---|
-| Functions | 178 | 167 | 11 |
+| Functions | 181 | 169 | 12 |
 | DataFrame methods and actions | 64 | 58 | 6 |
 | Semantic traps | 90 | 74 | 16 |
 | Row order | 12 | 8 | 4 |
@@ -191,8 +191,11 @@ Covers the `F.*` functions lakehouse code uses.
 | `fn_array_index_from_expression` | differs: GAP-013 (loud) |
 | `fn_element_at_column_index` | matches Spark |
 | `fn_input_file_name` | differs: GAP-016 (loud) |
-| `fn_md5_then_distinct` | differs: GAP-018 (loud) |
-| `fn_md5_then_union` | differs: GAP-018 (loud) |
+| `fn_md5_then_distinct` | matches Spark |
+| `fn_md5_then_union` | matches Spark |
+| `fn_unhex_of_md5` | differs: GAP-019 (loud) |
+| `fn_split_of_md5` | differs: GAP-019 (loud) |
+| `fn_regexp_extract_of_md5` | differs: GAP-019 (loud) |
 | `fn_regexp_replace_chain_at_the_limit` | matches Spark |
 | `fn_deep_regexp_replace_chain` | differs: ADOPT-007 (client) |
 

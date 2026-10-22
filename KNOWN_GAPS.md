@@ -10,7 +10,7 @@ Everything sparkwarp knows to differ from real Spark 4 (ANSI mode), each pinned 
   engine gaps: they run on both engines against Spark goldens and are strict `xfail`s on Sail.
 - Behaviour that sparkwarp itself chooses (ADOPT-008) is pinned in the package's own tests.
 
-Versions: PySpark 4.2.0, pysail 0.7.2, checked 2026-10-21.
+Versions: PySpark 4.2.0, pysail 0.7.2, checked 2026-10-22.
 
 **Severity.** *Silent*: Sail returns a result where Spark returns a different one or raises,
 so a test can pass on Sail and fail on Spark. *Loud*: Sail raises where Spark does not, or
@@ -35,7 +35,7 @@ both raise with different classes, so the difference shows up as an error on Sai
 | GAP-014 | loud | A window ordered by a `CASE WHEN` whose condition compares a numeric function result, such as `F.when(F.length("name") > 3, 0).otherwise(1)`, fails to plan (`BoundedWindowAggExec`), for any window function. A `CASE WHEN` on a plain column or a string comparison works. | `corpus/test_traps.py`: `window_order_by_case_on_function_result` |
 | GAP-016 | loud | `F.input_file_name()` is not implemented. On real Spark it returns an empty string for in-memory data. | `corpus/test_functions.py`: `fn_input_file_name` |
 | GAP-017 | loud | `unionByName` of a string column with a boolean column fails to plan on Sail ("Incompatible inputs for Union"). Spark 4 in ANSI mode casts the string to boolean (and raises only on text like `"x"`). | `corpus/test_traps.py`: `union_by_name_string_and_boolean` |
-| GAP-018 | loud | `F.md5(...)` followed by `distinct()`, `union()` or `unionByName()` fails on `collect()` with `UNSUPPORTED_DATA_TYPE_FOR_ARROW_CONVERSION: string_view`. Sail returns `md5` as Arrow `Utf8View` and set operations pass that type through to the client; `sha1`, `sha2` and other string functions return plain strings. `toPandas()` is not affected. Workaround: `F.md5(c).cast("string")` before the set operation. | `corpus/test_functions.py`: `fn_md5_then_distinct`, `fn_md5_then_union` |
+| GAP-019 | loud | `F.md5(...)` passed to `unhex`, `split` or `regexp_extract` fails inside Sail (`could not cast array of type Utf8View` / `Could not downcast arguments`). Sail returns `md5` as Arrow `Utf8View`, which these functions do not accept. Other string functions (`upper`, `concat`, `substring`, `sha2`, `like`) are fine. Workaround: `F.md5(c).cast("string")`. Still present in Sail `main`. | `corpus/test_functions.py`: `fn_unhex_of_md5`, `fn_split_of_md5`, `fn_regexp_extract_of_md5` |
 | GAP-001 | schema | `unionByName(allowMissingColumns=True)` types the missing column as `void`. Spark uses the other side's type. | `corpus/test_traps.py`, `benchmarks/test_joins_and_unions.py` |
 | GAP-002 | schema | `datediff` returns `long`. Spark returns `int`. | `corpus/test_traps.py`, `corpus/test_functions.py`, `benchmarks/test_time_nulls_sql.py` |
 | GAP-003 | schema | `coalesce(int_col, "7")` is `int`. Spark ANSI widens to `long`. | `corpus/test_traps.py`: `coerce_coalesce_int_string_schema` |
@@ -63,6 +63,15 @@ These come from choices sparkwarp makes, not from the Spark Connect client or fr
 | ID | What differs | Workaround | Pinned by |
 |---|---|---|---|
 | ADOPT-008 | Under sparkwarp, `spark.stop()` on the shared session is held, so state carries over: `spark.conf.set(...)` values and temp views survive into later test classes. Real Spark's `stop()` gives the next `getOrCreate()` a fresh session. | Reset what a test changes in its own teardown (`spark.conf.unset(key)`, `spark.catalog.dropTempView(name)`), or give temp views unique names. | `tests/test_compat.py` (asserts the carry-over) |
+
+## Closed gaps
+
+Kept so that IDs in old logs and reports still lead somewhere. The IDs are in backticks so
+that a corpus case cannot be tagged with a closed gap.
+
+| ID | Closed in | How |
+|---|---|---|
+| `GAP-018` | 0.3.0 | `F.md5(...)` before `distinct()` or a union failed on `collect()` with `string_view is not supported`. sparkwarp now casts Arrow view types in every result to plain types before PySpark reads them, with pyarrow 18 or newer (older pyarrow cannot cast view types, and the old error stays). Also fixed in Sail `main` (lakehq/sail#2837), not yet released. The same `Utf8View` still breaks some functions inside Sail: GAP-019. |
 
 ## Advice
 

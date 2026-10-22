@@ -24,7 +24,7 @@
   scheduler drop out of the loop.
 - **Zero edits.** Your `SparkSession.builder...getOrCreate()` conftest, your `F.*` calls and
   your `assertDataFrameEqual` stay as they are. You set one environment variable.
-- **Honest about differences.** A corpus of 344 cases, recorded on real Spark, checks the
+- **Honest about differences.** A corpus of 347 cases, recorded on real Spark, checks the
   engine. Every known difference is a test and is listed in [`KNOWN_GAPS.md`](https://github.com/hugoespinelli/sparkwarp/blob/main/KNOWN_GAPS.md).
 - **Real Spark stays one switch away.** `SPARKWARP=0` runs the same suite on the JVM, so
   CI keeps a parity lane.
@@ -93,8 +93,8 @@ cannot run them:
 - Columns nested more than about 48 calls deep, such as one `regexp_replace` per character.
   Collapsing the chain into one `F.translate` usually fixes the test instead.
 
-One known pattern needs a one-word change instead: `F.md5(c)` followed by `distinct()` or a
-union fails on Sail; write `F.md5(c).cast("string")`.
+One known pattern needs a one-word change instead: `F.md5(c)` passed to `unhex`, `split` or
+`regexp_extract` fails on Sail (GAP-019); write `F.md5(c).cast("string")`.
 
 [`KNOWN_GAPS.md`](https://github.com/hugoespinelli/sparkwarp/blob/main/KNOWN_GAPS.md) lists every known difference, with a test for each.
 
@@ -199,9 +199,11 @@ PySpark 4 ships a [Spark Connect](https://spark.apache.org/docs/latest/spark-con
 client. With it, `F.col`, `DataFrame` and `Window` build a query plan in plain Python, and
 only an action sends that plan to a server, in one call. sparkwarp starts
 [Sail](https://github.com/lakehq/sail), a Spark Connect server written in Rust, inside the
-pytest process. It then points PySpark at Sail with two environment variables and a small
-patch to `SparkSession.Builder`. Your tests keep calling the real PySpark API, so there is
-no second API to keep in sync with Spark.
+pytest process. It then points PySpark at Sail with two environment variables and a few
+small, reversible patches: to `SparkSession.Builder`, to the conftest calls that Spark
+Connect lacks, and to result batches, which it converts from Arrow view types to the plain
+types PySpark reads. Your tests keep calling the real PySpark API, so there is no second API
+to keep in sync with Spark.
 
 ## Benchmarks
 
@@ -239,7 +241,7 @@ uv run python -m benchmarks.chart        # redraws the charts in docs/assets
 
 ## How faithful is it?
 
-A corpus of 344 cases checks Sail against real Spark. It covers ten semantic traps (null
+A corpus of 347 cases checks Sail against real Spark. It covers ten semantic traps (null
 logic, coercion, ANSI casts, arbitrary rows from deduplication, window frames, Java regex,
 timestamps, schema, joins and SQL), the `F.*` functions that lakehouse code uses, the
 DataFrame methods and actions, and row order. Real Spark recorded every expected result,
@@ -247,7 +249,7 @@ and CI checks them again on both engines.
 
 | Area | Cases | Match Spark on Sail |
 |---|---|---|
-| Functions | 178 | 167 |
+| Functions | 181 | 169 |
 | DataFrame methods and actions | 64 | 58 |
 | Semantic traps | 90 | 74 |
 | Row order | 12 | 8 |
