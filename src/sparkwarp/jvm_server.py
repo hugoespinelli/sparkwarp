@@ -223,13 +223,16 @@ class SharedJvmServer:
         return self._record.url
 
     def stop(self) -> None:
-        """Stop the server and drop the state directory; only the owner does this."""
-        if not self.owned:
-            return
-        record = self._read()
-        if record is not None:
-            ProcessGroup(record.pid).stop()
-        self._directory.release()
+        """Stop the server and drop the state directory; only the owner does this.
+
+        Another process leaves the server running for the rest of the run.
+        """
+        if self.owned:
+            record = self._read()
+            if record is not None:
+                ProcessGroup(record.pid).stop()
+            self._directory.release()
+        self._forget_finished_launches()
 
     def _running_record(self) -> ServerRecord:
         with DirectoryLock(self._directory.path / SERVER_LOCK_FILE):
@@ -241,6 +244,7 @@ class SharedJvmServer:
                 return record
             if record is not None:
                 ProcessGroup(record.pid).stop()
+                self._forget_finished_launches()
             record = self._launch()
             state = self._directory.path / SERVER_STATE_FILE
             AtomicFile(state).write(json.dumps(asdict(record)))
@@ -254,6 +258,10 @@ class SharedJvmServer:
         except RuntimeError as error:
             AtomicFile(self._directory.path / FAILURE_FILE).write(str(error))
             raise
+
+    def _forget_finished_launches(self) -> None:
+        """Polls launches reaped elsewhere, so Popen does not warn they still run."""
+        self._launches = [launch for launch in self._launches if launch.running()]
 
     def _shared_failure(self) -> str | None:
         failure = self._directory.path / FAILURE_FILE
@@ -336,6 +344,9 @@ class ServerLaunch:
         with self._stopped_on_failure(record, log_path):
             self._wait_until_ready(process, record)
         return record
+
+    def running(self) -> bool:
+        return self.process is not None and self.process.poll() is None
 
     def _command(self, home: Path, port: int) -> list[str]:
         watchdog = [
