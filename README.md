@@ -90,8 +90,6 @@ cannot run them:
   Hadoop configuration, `_jvm`.
 - Java-only regex features: look-ahead, look-behind and backreferences.
 - `F.input_file_name()`.
-- Columns nested more than about 48 calls deep, such as one `regexp_replace` per character.
-  Collapsing the chain into one `F.translate` usually fixes the test instead.
 
 One known pattern needs a one-word change instead: `F.md5(c)` passed to `unhex`, `split` or
 `regexp_extract` fails on Sail (GAP-019); write `F.md5(c).cast("string")`.
@@ -160,8 +158,8 @@ def test_reads_through_the_rdd_api(spark):
 `spark_only` works on a test, a class or a module (`pytestmark`). sparkwarp skips those
 tests on Sail and gives the reason (shown with `pytest -rs`). They run when sparkwarp is
 off. When a test fails because Spark Connect or Sail does not support a feature, such as
-a `df.rdd` or `spark.sparkContext` member beyond the stubs, or a column nested too deep for
-the Spark Connect client, the failure report gets a short sparkwarp section that says so.
+a `df.rdd` or `spark.sparkContext` member beyond the stubs, the failure report gets a short
+sparkwarp section that says so.
 
 ### Outside pytest
 
@@ -199,11 +197,14 @@ PySpark 4 ships a [Spark Connect](https://spark.apache.org/docs/latest/spark-con
 client. With it, `F.col`, `DataFrame` and `Window` build a query plan in plain Python, and
 only an action sends that plan to a server, in one call. sparkwarp starts
 [Sail](https://github.com/lakehq/sail), a Spark Connect server written in Rust, inside the
-pytest process. It then points PySpark at Sail with two environment variables and a few
-small, reversible patches: to `SparkSession.Builder`, to the conftest calls that Spark
+pytest process, with a 32 MB thread stack unless you set `SAIL_RUNTIME__STACK_SIZE`. It
+then points PySpark at Sail with two environment variables and a few small patches,
+removed when the run ends: to `SparkSession.Builder`, to the conftest calls that Spark
 Connect lacks, and to result batches, which it converts from Arrow view types to the plain
-types PySpark reads. Your tests keep calling the real PySpark API, so there is no second API
-to keep in sync with Spark.
+types PySpark reads. It also turns off the protobuf (upb) depth limit, which stops PySpark
+on columns nested about 48 calls deep. That switch is process-wide, also lifts upb's 64 MB
+message cap, and is turned off again at the end. Your tests keep calling the real PySpark
+API, so there is no second API to keep in sync with Spark.
 
 ## Benchmarks
 
@@ -249,7 +250,7 @@ and CI checks them again on both engines.
 
 | Area | Cases | Match Spark on Sail |
 |---|---|---|
-| Functions | 181 | 169 |
+| Functions | 181 | 170 |
 | DataFrame methods and actions | 64 | 58 |
 | Semantic traps | 90 | 74 |
 | Row order | 12 | 8 |
@@ -265,8 +266,9 @@ an error: five value gaps plus row order. That is why the parity lane matters.
   scope.
 - No `df.rdd` beyond `isEmpty()`, no streaming, no `DeltaTable` Python API, no
   `pyspark.ml`, and only a stub of `spark.sparkContext`. Mark such tests `spark_only`.
-- Columns nested more than about 48 function calls deep exceed the Spark Connect client's
-  protobuf limit.
+- Deeply nested columns, such as one `regexp_replace` per character, run but are slow on
+  Sail (150 calls take about 4 s). Real Spark overflows its stack from about 350 calls; past
+  about 495, PySpark's client raises `RecursionError` (ADOPT-009).
 - `isinstance(spark, pyspark.sql.SparkSession)` is `False` under Spark Connect.
 - Meant for unit tests on small inputs, not for benchmarking production jobs.
 
