@@ -52,9 +52,11 @@ default. Spark 3.5 legacy behaviour (casts returning null, `size(null) = -1`) is
 
 ## What about Delta Lake, RDDs, streaming and UDFs?
 
-Plain Python UDFs work. `df.rdd` (beyond `isEmpty()`), streaming and the `DeltaTable`
-Python API do not. Mark those tests `@pytest.mark.spark_only`: sparkwarp skips them on
-Sail, and your parity lane runs them on real Spark.
+Plain Python UDFs work, and so do Delta tables through `spark.read.format("delta")` and
+`df.write.format("delta")`. `df.rdd` (beyond `isEmpty()`), streaming, `pyspark.ml`
+(ADOPT-011) and the `DeltaTable` Python API (ADOPT-012) do not. Mark those tests
+`@pytest.mark.spark_only`: sparkwarp skips them on Sail, and your parity lane runs them on
+real Spark.
 
 ## Does sparkwarp touch production code?
 
