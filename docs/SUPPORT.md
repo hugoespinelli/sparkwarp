@@ -7,7 +7,7 @@ Each row is a corpus case that runs on real Spark and on Sail. *matches Spark* m
 | Area | Cases | Match Spark | Differ |
 |---|---|---|---|
 | Functions | 178 | 167 | 11 |
-| DataFrame methods and actions | 62 | 56 | 6 |
+| DataFrame methods and actions | 64 | 58 | 6 |
 | Semantic traps | 90 | 74 | 16 |
 | Row order | 12 | 8 | 4 |
 
@@ -262,6 +262,8 @@ Covers DataFrame API calls.
 | `action_rdd_is_unsupported` | differs: ADOPT-005 (client) |
 | `action_spark_context_is_unsupported` | differs: ADOPT-003 (client) |
 | `action_is_cached_after_unpersist` | differs: GAP-015 (silent) |
+| `action_rdd_is_empty` | matches Spark |
+| `action_rdd_is_empty_on_empty_frame` | matches Spark |
 | `action_set_log_level` | matches Spark |
 | `action_catalog_clear_cache` | matches Spark |
 

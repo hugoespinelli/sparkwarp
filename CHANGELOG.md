@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.0 (unreleased)
+
+- `df.rdd.isEmpty()` works under sparkwarp. Other `rdd` members still fail loudly
+  (ADOPT-005). Code that detects Spark Connect with `try: df.rdd` now takes the classic
+  branch; use `pyspark.sql.utils.is_remote()` instead.
+
 ## 0.2.0 (2026-10-21)
 
 Fixes from the first real-world run: an 8,181-test lakehouse suite on PySpark 4.0.0.

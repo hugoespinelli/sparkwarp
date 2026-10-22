@@ -53,7 +53,7 @@ appear against any Spark Connect server.
 | ADOPT-002 | Child processes inherit the Connect routing but not sparkwarp's builder patch. | `subprocess.run(..., env=sparkwarp.clean_environ())` | `tests/test_runtime.py` (asserts the inherited routing and the clean env) |
 | ADOPT-003 | `spark.sparkContext` does not exist under Spark Connect. Since 0.2.0, sparkwarp provides a stub: `setLogLevel`, `applicationId`, `defaultParallelism` and `version` work; any other member still raises. Code that detects Connect with `try: spark.sparkContext` / `except` now takes the classic branch; check `pyspark.sql.utils.is_remote()` instead. | Mark tests that need the real `SparkContext` (`parallelize`, `wholeTextFiles`, Hadoop config) `spark_only`. | `corpus/test_methods.py`: `action_spark_context_is_unsupported` |
 | ADOPT-004 | `df.toJSON()` returns a DataFrame of `value` rows, not string rows. | `[r.value for r in df.select(F.to_json(F.struct("*")).alias("value")).collect()]` gives the same strings on both engines. | `corpus/test_methods.py`: `action_to_json` |
-| ADOPT-005 | `df.rdd` is not implemented. | Out of scope; mark such tests `@pytest.mark.spark_only`. | `corpus/test_methods.py`: `action_rdd_is_unsupported` |
+| ADOPT-005 | `df.rdd` is not implemented. Since 0.3.0, sparkwarp provides a stub: `df.rdd.isEmpty()` works; any other member still raises. Code that detects Connect with `try: df.rdd` / `except` now takes the classic branch; check `pyspark.sql.utils.is_remote()` instead. | Use `df.isEmpty()`, or mark tests that need a real RDD (`map`, `collect`, `getNumPartitions`) `@pytest.mark.spark_only`. | `corpus/test_methods.py`: `action_rdd_is_unsupported`; the stub by `action_rdd_is_empty`, `action_rdd_is_empty_on_empty_frame` and `tests/test_compat.py` |
 | ADOPT-007 | The Spark Connect client serializes a column as nested protobuf messages, limited to 100 levels. About 48 nested function calls fit (47 when the column also gets an `.alias()`); more raises `DecodeError: ... MaxDepth`. Real Spark has no such limit. | Collapse character-by-character chains into one call (`F.translate` for single-character maps, or one `regexp_replace` with an alternation), or mark the test `spark_only`. | `corpus/test_functions.py`: `fn_regexp_replace_chain_at_the_limit` (47 deep plus an alias, works), `fn_deep_regexp_replace_chain` (60 deep, fails) |
 
 ## sparkwarp behaviour (not Spark Connect)
@@ -70,4 +70,4 @@ These come from choices sparkwarp makes, not from the Spark Connect client or fr
 - Always `orderBy` before asserting row order, or use `assertDataFrameEqual`, which ignores
   order by default.
 - For GAP-006, assert `pytest.raises(Exception)`. The class and the message both differ.
-- For GAP-007 and ADOPT-005, mark the test `@pytest.mark.spark_only`.
+- For GAP-007, and for ADOPT-005 beyond `df.rdd.isEmpty()`, mark the test `@pytest.mark.spark_only`.
