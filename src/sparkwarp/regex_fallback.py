@@ -55,9 +55,16 @@ class PatternScan:
         "(?<!",
         "(?>",
     )
-    LOOK_BEHIND: ClassVar[tuple[str, ...]] = ("(?<=", "(?<!")
+    POSSESSIVE_AFTER_GROUP: ClassVar[re.Pattern[str]] = re.compile(
+        r"(?:[?*+]|\{[0-9]+(?:,[0-9]*)?\})\+"
+    )
+    SURROGATES: ClassVar[range] = range(0xD800, 0xE000)
+    CODE_POINT_DIGITS: ClassVar[int] = 16
     SAME_GROUPS: ClassVar[tuple[str, ...]] = ("(?:", "(?i:")
     CASE_INSENSITIVE: ClassVar[str] = "(?i)"
+    GUARDED: ClassVar[str] = "guarded"
+    CAPTURE: ClassVar[str] = "capture"
+    PLAIN_GROUP: ClassVar[str] = "plain"
     NAMED_GROUP: ClassVar[re.Pattern[str]] = re.compile(r"\(\?<([A-Za-z][A-Za-z0-9]*)>")
     NAMED_BACKREFERENCE: ClassVar[re.Pattern[str]] = re.compile(
         r"\\k<([A-Za-z][A-Za-z0-9]*)>"
@@ -72,8 +79,8 @@ class PatternScan:
         self._text = text
         self._out: list[str] = []
         self.rust_rejects = False
-        self.has_look_behind = False
         self._translatable = True
+        self._open_groups: list[str] = []
         index = 0
         while index < len(text) and self._translatable:
             index = self._step(index)
@@ -92,6 +99,8 @@ class PatternScan:
             return self._group(index)
         if char == "{":
             return self._copy(self.QUANTIFIER.match(self._text, index))
+        if char == ")":
+            return self._close_group(index)
         self._out.append(self.PLAIN.get(char, char))
         return index + 1
 
@@ -103,7 +112,7 @@ class PatternScan:
             return named.end()
         numbered = self.NUMBERED_BACKREFERENCE.match(self._text, index)
         self.rust_rejects = self.rust_rejects or numbered is not None
-        escape = numbered or self.CODE_POINT.match(self._text, index)
+        escape = numbered or self._code_point(index)
         if escape is not None:
             return self._copy(escape)
         escaped = self._text[index + 1 : index + 2]
@@ -111,7 +120,7 @@ class PatternScan:
             self.rust_rejects = self.rust_rejects or escaped == "Z"
             self._out.append(self.ESCAPES[escaped])
             return index + 2
-        self._translatable = self._reads_alike(escaped)
+        self._translatable = self._translatable and self._reads_alike(escaped)
         self._out.append(self._text[index : index + 2])
         return index + 2
 
@@ -119,17 +128,38 @@ class PatternScan:
         rejected = self._first_prefix(self.RUST_REJECTED_GROUPS, index)
         if rejected is not None:
             self.rust_rejects = True
-            self.has_look_behind = self.has_look_behind or rejected in self.LOOK_BEHIND
+            self._open_groups.append(self.GUARDED)
             self._out.append(rejected)
             return index + len(rejected)
         named = self.NAMED_GROUP.match(self._text, index)
         if named is not None:
+            self._open_capture()
             self._out.append(f"(?P<{named.group(1)}>")
             return named.end()
         opener = self._shared_group(index)
-        self._translatable = opener is not None
+        self._translatable = self._translatable and opener is not None
+        if opener == "(":
+            self._open_capture()
+        elif opener != self.CASE_INSENSITIVE:
+            self._open_groups.append(self.PLAIN_GROUP)
         self._out.append(opener or "")
         return index + len(opener or "(")
+
+    def _open_capture(self) -> None:
+        """Java keeps captures made in look-around or atomic groups; Python does not."""
+        self._translatable = (
+            self._translatable and self.GUARDED not in self._open_groups
+        )
+        self._open_groups.append(self.CAPTURE)
+
+    def _close_group(self, index: int) -> int:
+        """Possessive quantifiers on groups also keep captures that Python resets."""
+        if self._open_groups:
+            self._open_groups.pop()
+        possessive = self.POSSESSIVE_AFTER_GROUP.match(self._text, index + 1)
+        self._translatable = self._translatable and possessive is None
+        self._out.append(")")
+        return index + 1
 
     def _shared_group(self, index: int) -> str | None:
         """A capturing, non-capturing or `(?i)` group, which both engines read alike."""
@@ -156,7 +186,7 @@ class PatternScan:
                 self._translatable = False
                 return len(self._text)
             end = member_end
-        self._translatable = end < len(self._text)
+        self._translatable = self._translatable and end < len(self._text)
         self._out.append(self._text[index : end + 1])
         return end + 1
 
@@ -167,14 +197,25 @@ class PatternScan:
             return None
         if self._text[index] != "\\":
             return index + 1
-        code_point = self.CODE_POINT.match(self._text, index)
+        code_point = self._code_point(index)
         if code_point is not None:
             return code_point.end()
         escaped = self._text[index + 1 : index + 2]
         return index + 2 if self._reads_alike(escaped) else None
 
+    def _code_point(self, index: int) -> re.Match[str] | None:
+        """A `\\xhh` or `\\uhhhh` escape; a surrogate half stops the translation."""
+        escape = self.CODE_POINT.match(self._text, index)
+        if escape is None:
+            return None
+        is_surrogate = (
+            int(escape.group()[2:], self.CODE_POINT_DIGITS) in self.SURROGATES
+        )
+        self._translatable = self._translatable and not is_surrogate
+        return escape
+
     def _copy(self, token: re.Match[str] | None) -> int:
-        self._translatable = token is not None
+        self._translatable = self._translatable and token is not None
         if token is None:
             return len(self._text)
         self._out.append(token.group())
@@ -212,7 +253,7 @@ class JavaPattern:
         compiled = self.compiled() if self.needs_python else None
         if compiled is None:
             return None
-        return JavaMatcher(compiled, self._scan.has_look_behind)
+        return JavaMatcher(compiled)
 
 
 class OutsideBmpError(ValueError):
@@ -224,30 +265,25 @@ class JavaMatcher:
     """`Matcher.find` semantics on top of `re`.
 
     After an empty match Java searches again from the next character, where Python's
-    `finditer` may start a longer match at the same place. Java also counts characters
-    outside the Basic Multilingual Plane as two units, so an empty match next to one,
-    or any look-behind over such text, raises instead of giving a different value.
+    `finditer` may start a longer match at the same place. Java matches text as UTF-16
+    code units, so text with a character outside the Basic Multilingual Plane raises
+    instead of risking a different value.
     """
 
     pattern: re.Pattern[str]
-    has_look_behind: bool
 
     LAST_BMP_CODE_POINT: ClassVar[int] = 0xFFFF
-    SPLIT_MESSAGE: ClassVar[str] = (
-        "sparkwarp's regex fallback cannot match Java here: an empty match sits next "
-        "to a character outside the Basic Multilingual Plane"
-    )
-    LOOK_BEHIND_MESSAGE: ClassVar[str] = (
-        "sparkwarp's regex fallback cannot match Java here: look-behind over text "
-        "with a character outside the Basic Multilingual Plane"
+    OUTSIDE_BMP_MESSAGE: ClassVar[str] = (
+        "sparkwarp's regex fallback cannot match Java on text with a character outside "
+        "the Basic Multilingual Plane"
     )
 
     def first(self, value: str) -> re.Match[str] | None:
-        self._check_look_behind(value)
+        self._check_text(value)
         return self.pattern.search(value)
 
     def all(self, value: str) -> list[re.Match[str]]:
-        self._check_look_behind(value)
+        self._check_text(value)
         matches: list[re.Match[str]] = []
         position = 0
         while position <= len(value):
@@ -255,24 +291,14 @@ class JavaMatcher:
             if match is None:
                 break
             matches.append(match)
-            position = self._next_position(value, match)
+            is_empty = match.start() == match.end()
+            position = match.end() + 1 if is_empty else match.end()
         return matches
 
-    def _next_position(self, value: str, match: re.Match[str]) -> int:
-        is_empty = match.start() == match.end()
-        if not is_empty:
-            return match.end()
-        splits_a_pair = self._outside_bmp(value[match.end() : match.end() + 1])
-        if splits_a_pair:
-            raise OutsideBmpError(self.SPLIT_MESSAGE)
-        return match.end() + 1
-
-    def _check_look_behind(self, value: str) -> None:
-        if self.has_look_behind and self._outside_bmp(value):
-            raise OutsideBmpError(self.LOOK_BEHIND_MESSAGE)
-
-    def _outside_bmp(self, text: str) -> bool:
-        return any(ord(char) > self.LAST_BMP_CODE_POINT for char in text)
+    def _check_text(self, value: str) -> None:
+        outside_bmp = any(ord(char) > self.LAST_BMP_CODE_POINT for char in value)
+        if outside_bmp:
+            raise OutsideBmpError(self.OUTSIDE_BMP_MESSAGE)
 
 
 class JavaReplacement:
