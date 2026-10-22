@@ -398,6 +398,13 @@ def test_a_pattern_rust_accepts_keeps_the_native_plan(spark: SparkSession) -> No
         r"a{(?=x)",
         r"\U00000041(?=x)",
         r"(a)\12",
+        r"(?=(b))c|a",
+        r"(?:(?>(a))x|a)",
+        r"(?:(?<=(a))x|b)",
+        r"(a)?+x|b(?!c)",
+        r"(?:a|(b))*+(?=x)",
+        r"\ud83d\ude00(?=x)",
+        r"[^\ud83d](?=x)",
     ],
 )
 def test_patterns_python_would_read_differently_keep_the_native_path(
@@ -423,8 +430,9 @@ def test_java_matching_rules_match_real_spark(
     [
         lambda: F.regexp_replace("s", r"x*(?!q)", "-"),
         lambda: F.regexp_extract("s", r"(?<=a.)x", 0),
+        lambda: F.col("s").rlike(r"(?!^)."),
     ],
-    ids=["empty_match_next_to_it", "look_behind_over_it"],
+    ids=["empty_match_next_to_it", "look_behind_over_it", "match_starting_inside_it"],
 )
 def test_text_outside_the_bmp_fails_where_java_would_differ(
     spark: SparkSession, make: Callable[[], Column]
