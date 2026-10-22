@@ -92,7 +92,7 @@ cannot run them:
   as `F.expr(...)`, in a pattern held in a column, in `split`, `regexp_count`,
   `regexp_substr` or `regexp_instr`, or next to syntax such as `\b`. A literal pattern in
   `regexp_extract`, `regexp_extract_all`, `regexp_replace`, `rlike`, `regexp` or
-  `regexp_like` works (GAP-007).
+  `regexp_like` works, except for the cases GAP-007 lists (and text with emoji, ADOPT-010).
 - `F.input_file_name()`.
 
 One known pattern needs a one-word change instead: `F.md5(c)` passed to `unhex`, `split` or
