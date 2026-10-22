@@ -8,7 +8,7 @@ Each row is a corpus case that runs on real Spark and on Sail. *matches Spark* m
 |---|---|---|---|
 | Functions | 181 | 170 | 11 |
 | DataFrame methods and actions | 64 | 58 | 6 |
-| Semantic traps | 90 | 74 | 16 |
+| Semantic traps | 93 | 78 | 15 |
 | Row order | 12 | 8 | 4 |
 
 ## Functions
@@ -320,8 +320,11 @@ Covers the rules where engines usually differ.
 | `regex_replace_digits` | matches Spark |
 | `regex_extract_group` | matches Spark |
 | `regex_rlike_anchor` | matches Spark |
-| `regex_lookahead` | differs: GAP-007 (loud) |
-| `regex_backreference` | differs: GAP-007 (loud) |
+| `regex_lookahead` | matches Spark |
+| `regex_backreference` | matches Spark |
+| `regex_lookbehind_extract` | matches Spark |
+| `regex_lookahead_extract_all` | matches Spark |
+| `regex_lookahead_in_sql_text` | differs: GAP-007 (loud) |
 | `regex_posix_class` | matches Spark |
 | `regex_replacement_group_ref` | matches Spark |
 | `regex_case_insensitive_flag` | matches Spark |

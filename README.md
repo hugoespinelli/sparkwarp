@@ -24,7 +24,7 @@
   scheduler drop out of the loop.
 - **Zero edits.** Your `SparkSession.builder...getOrCreate()` conftest, your `F.*` calls and
   your `assertDataFrameEqual` stay as they are. You set one environment variable.
-- **Honest about differences.** A corpus of 347 cases, recorded on real Spark, checks the
+- **Honest about differences.** A corpus of 350 cases, recorded on real Spark, checks the
   engine. Every known difference is a test and is listed in [`KNOWN_GAPS.md`](https://github.com/hugoespinelli/sparkwarp/blob/main/KNOWN_GAPS.md).
 - **Real Spark stays one switch away.** `SPARKWARP=0` runs the same suite on the JVM, so
   CI keeps a parity lane.
@@ -88,7 +88,11 @@ cannot run them:
 - Delta's `DeltaTable` Python API, `pyspark.ml`, streaming and `df.rdd` beyond `isEmpty()`.
 - Anything on `spark.sparkContext` beyond the stub: `parallelize`, `wholeTextFiles`, the
   Hadoop configuration, `_jvm`.
-- Java-only regex features: look-ahead, look-behind and backreferences.
+- Java-only regex features (look-ahead, look-behind, backreferences) inside SQL text such
+  as `F.expr(...)`, in a pattern held in a column, in `split`, `regexp_count`,
+  `regexp_substr` or `regexp_instr`, or next to syntax such as `\b`. A literal pattern in
+  `regexp_extract`, `regexp_extract_all`, `regexp_replace`, `rlike`, `regexp` or
+  `regexp_like` works (GAP-007).
 - `F.input_file_name()`.
 
 One known pattern needs a one-word change instead: `F.md5(c)` passed to `unhex`, `split` or
@@ -201,7 +205,9 @@ pytest process, with a 32 MB thread stack unless you set `SAIL_RUNTIME__STACK_SI
 then points PySpark at Sail with two environment variables and a few small patches,
 removed when the run ends: to `SparkSession.Builder`, to the conftest calls that Spark
 Connect lacks, and to result batches, which it converts from Arrow view types to the plain
-types PySpark reads. It also turns off the protobuf (upb) depth limit, which stops PySpark
+types PySpark reads. Regex functions whose literal pattern uses Java-only syntax, such as
+look-ahead or backreferences, run as Python UDFs on `re`, because Sail's Rust regex rejects
+them. It also turns off the protobuf (upb) depth limit, which stops PySpark
 on columns nested about 48 calls deep. That switch is process-wide, also lifts upb's 64 MB
 message cap, and is turned off again at the end. Your tests keep calling the real PySpark
 API, so there is no second API to keep in sync with Spark.
@@ -242,7 +248,7 @@ uv run python -m benchmarks.chart        # redraws the charts in docs/assets
 
 ## How faithful is it?
 
-A corpus of 347 cases checks Sail against real Spark. It covers ten semantic traps (null
+A corpus of 350 cases checks Sail against real Spark. It covers ten semantic traps (null
 logic, coercion, ANSI casts, arbitrary rows from deduplication, window frames, Java regex,
 timestamps, schema, joins and SQL), the `F.*` functions that lakehouse code uses, the
 DataFrame methods and actions, and row order. Real Spark recorded every expected result,
@@ -252,7 +258,7 @@ and CI checks them again on both engines.
 |---|---|---|
 | Functions | 181 | 170 |
 | DataFrame methods and actions | 64 | 58 |
-| Semantic traps | 90 | 74 |
+| Semantic traps | 93 | 78 |
 | Row order | 12 | 8 |
 
 Matches are compared the way `assertDataFrameEqual` compares by default. Every difference

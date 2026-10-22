@@ -16,6 +16,13 @@
   closed. Such columns are slow on Sail, and real Spark overflows from about 350 calls deep
   (ADOPT-009). The protobuf switch is process-wide while sparkwarp runs, and sparkwarp turns
   it off at the end even if something had turned it on before.
+- Java-only regex patterns (look-ahead, look-behind, backreferences, `\Z`, and atomic
+  groups on Python 3.11+) work in `regexp_extract`, `regexp_extract_all`, `regexp_replace`,
+  `rlike`, `regexp` and `regexp_like` when the pattern is a literal: sparkwarp runs them as
+  Python UDFs on `re`, translated to keep Java's meaning, with Spark's results and column
+  names. sparkwarp translates only syntax both engines read alike; other patterns, and the
+  same patterns in SQL text, still fail (GAP-007, narrowed). Where Java's UTF-16 matching
+  would differ on text with an emoji, the fallback fails loudly (ADOPT-010).
 
 ## 0.2.0 (2026-10-21)
 

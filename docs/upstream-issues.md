@@ -100,6 +100,10 @@ Tests that `pytest.raises` a specific class see the difference.
 
 ## 10. Java regex features: lookaround and backreferences (GAP-007)
 
+Status: sparkwarp routes the `F.*` regex functions with such literal patterns to Python
+since 0.3.0; SQL text still fails. Still worth filing (for example `fancy-regex` as a
+fallback in Sail).
+
 ```python
 spark.range(1).select(F.regexp_replace(F.lit("price100usd"), r"\d+(?=usd)", "N")).collect()
 spark.range(1).select(F.lit("abab").rlike(r"^(ab)\1$")).collect()
