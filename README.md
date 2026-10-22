@@ -268,7 +268,7 @@ an error: five value gaps plus row order. That is why the parity lane matters.
   `pyspark.ml`, and only a stub of `spark.sparkContext`. Mark such tests `spark_only`.
 - Deeply nested columns, such as one `regexp_replace` per character, run but are slow on
   Sail (150 calls take about 4 s). Real Spark overflows its stack from about 350 calls; past
-  about 495, PySpark's client raises `RecursionError` (ADOPT-009).
+  about 495 (990 on Python 3.12+), PySpark's client raises `RecursionError` (ADOPT-009).
 - `isinstance(spark, pyspark.sql.SparkSession)` is `False` under Spark Connect.
 - Meant for unit tests on small inputs, not for benchmarking production jobs.
 

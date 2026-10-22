@@ -14,7 +14,7 @@ from sparkwarp.engines import SailEngine, ServerSettings
 
 DEEP = 100
 BUILDABLE = 450
-PAST_PYTHON_RECURSION = 600
+PAST_PYTHON_RECURSION = 3000
 USER_STACK_SIZE = str(16 * 1024 * 1024)
 
 
@@ -87,6 +87,6 @@ def test_plans_build_up_to_python_recursion_limit(spark: SparkSession) -> None:
     frame = spark.createDataFrame([("abc",)], "s string")
     deep = frame.select(NestedPlan.column(BUILDABLE).alias("r"))
     assert deep._plan.to_proto(spark.client).ByteSize() > 0
-    deeper = frame.select(NestedPlan.column(PAST_PYTHON_RECURSION).alias("r"))
     with pytest.raises(RecursionError):
+        deeper = frame.select(NestedPlan.column(PAST_PYTHON_RECURSION).alias("r"))
         deeper._plan.to_proto(spark.client)
