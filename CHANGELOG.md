@@ -21,8 +21,8 @@
   `rlike`, `regexp` and `regexp_like` when the pattern is a literal: sparkwarp runs them as
   Python UDFs on `re`, translated to keep Java's meaning, with Spark's results and column
   names. sparkwarp translates only syntax both engines read alike; other patterns, and the
-  same patterns in SQL text, still fail (GAP-007, narrowed). Where Java's UTF-16 matching
-  would differ on text with an emoji, the fallback fails loudly (ADOPT-010).
+  same patterns in SQL text, still fail (GAP-007, narrowed). On text with an emoji, where
+  Java's UTF-16 matching can differ, the fallback fails loudly (ADOPT-010).
 
 ## 0.2.0 (2026-10-21)
 
