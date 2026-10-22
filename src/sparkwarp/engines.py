@@ -27,6 +27,8 @@ from sparkwarp.config import (
     DEFAULT_TIMEZONE,
     ENGINE_LABEL,
     LOCALHOST,
+    SAIL_STACK_SIZE_BYTES,
+    STACK_SIZE_ENV_VAR,
     TIMEZONE_KEY,
 )
 from sparkwarp.environment import (
@@ -41,38 +43,57 @@ from sparkwarp.errors import EngineStoppedError
 class CheckpointDir:
     """A per-engine temp directory for `localCheckpoint()` and `checkpoint()`.
 
-    Sail reads its configuration when the server object is built, so the setting
-    exists only while the server is built and started. It never reaches the process
-    environment or child processes.
     A path the user already set wins, and then sparkwarp creates nothing.
     """
 
     def __init__(self) -> None:
         self.path: Path | None = None
 
-    def launch(self) -> SparkConnectServer:
-        """Build and start a Sail server that knows where to checkpoint."""
+    def create(self) -> Path | None:
+        """A fresh directory, or None when the user chose a path."""
         user_chose_a_path = bool(os.environ.get(CHECKPOINT_ENV_VAR))
-        if user_chose_a_path:
-            return self._started()
-        self.path = Path(tempfile.mkdtemp(prefix=CHECKPOINT_DIR_PREFIX))
-        scoped = EnvironmentPatch(set_vars={CHECKPOINT_ENV_VAR: str(self.path)})
-        scoped.apply()
-        try:
-            return self._started()
-        finally:
-            scoped.restore()
-
-    @staticmethod
-    def _started() -> SparkConnectServer:
-        server = SparkConnectServer(LOCALHOST, ANY_FREE_PORT)
-        server.start(background=True)
-        return server
+        if not user_chose_a_path:
+            self.path = Path(tempfile.mkdtemp(prefix=CHECKPOINT_DIR_PREFIX))
+        return self.path
 
     def remove(self) -> None:
         path, self.path = self.path, None
         if path is not None:
             shutil.rmtree(path, ignore_errors=True)
+
+
+class ServerSettings:
+    """Sail settings that sparkwarp chooses, set only while the server starts.
+
+    Sail reads its configuration when a server object is built, so the settings never
+    reach the process environment or child processes. A value the user set wins. Sail
+    reads the stack size once per process, when the first server is built.
+    The larger thread stack lets Sail plan columns nested several hundred calls deep, so
+    PySpark's own recursion limit stops a deeper column before Sail can overflow.
+    """
+
+    def __init__(self, checkpoint_path: Path | None) -> None:
+        self._checkpoint_path = checkpoint_path
+
+    def scoped_vars(self) -> dict[str, str]:
+        scoped: dict[str, str] = {}
+        user_chose_a_stack_size = bool(os.environ.get(STACK_SIZE_ENV_VAR))
+        if not user_chose_a_stack_size:
+            scoped[STACK_SIZE_ENV_VAR] = str(SAIL_STACK_SIZE_BYTES)
+        if self._checkpoint_path is not None:
+            scoped[CHECKPOINT_ENV_VAR] = str(self._checkpoint_path)
+        return scoped
+
+    def launch(self) -> SparkConnectServer:
+        """Build and start a Sail server with these settings."""
+        scoped = EnvironmentPatch(set_vars=self.scoped_vars())
+        scoped.apply()
+        try:
+            server = SparkConnectServer(LOCALHOST, ANY_FREE_PORT)
+            server.start(background=True)
+            return server
+        finally:
+            scoped.restore()
 
 
 class SailEngine:
@@ -116,7 +137,7 @@ class SailEngine:
             raise EngineStoppedError()
         if self.prepared:
             return
-        server = self._checkpoint.launch()
+        server = ServerSettings(self._checkpoint.create()).launch()
         self._server = server
         host, port = server.listening_address
         self._environment = EnvironmentPatch.connect_to(ServerAddress(host, port))

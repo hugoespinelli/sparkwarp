@@ -8,6 +8,7 @@ from sparkwarp.config import (
     ANSI_KEY,
     CHECKPOINT_ENV_VAR,
     DEFAULT_TIMEZONE,
+    STACK_SIZE_ENV_VAR,
     TIMEZONE_KEY,
 )
 from sparkwarp.engines import SailEngine
@@ -49,16 +50,18 @@ def test_user_stop_is_held_and_the_session_stays_usable(sail: SailEngine) -> Non
     assert session.conf.get(TIMEZONE_KEY) == DEFAULT_TIMEZONE
 
 
-def test_checkpoint_dir_is_temporary_and_not_inherited(
+def test_scoped_server_settings_are_temporary_and_not_inherited(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     monkeypatch.delenv(CHECKPOINT_ENV_VAR, raising=False)
+    monkeypatch.delenv(STACK_SIZE_ENV_VAR, raising=False)
     sail = SailEngine()
     try:
         sail.start_session()
         checkpoint_dir = sail.checkpoint_dir
         assert checkpoint_dir is not None and checkpoint_dir.is_dir()
         assert CHECKPOINT_ENV_VAR not in os.environ
+        assert STACK_SIZE_ENV_VAR not in os.environ
     finally:
         sail.stop()
     assert not checkpoint_dir.exists()
