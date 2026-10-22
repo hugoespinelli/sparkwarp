@@ -238,6 +238,18 @@
   "rows": true,
   "schema": null
  },
+ "test_method[action_rdd_is_empty]": {
+  "condition": null,
+  "error": null,
+  "rows": false,
+  "schema": null
+ },
+ "test_method[action_rdd_is_empty_on_empty_frame]": {
+  "condition": null,
+  "error": null,
+  "rows": true,
+  "schema": null
+ },
  "test_method[action_rdd_is_unsupported]": {
   "condition": null,
   "error": null,
