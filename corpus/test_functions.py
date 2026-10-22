@@ -469,14 +469,19 @@ REAL_USAGE = [
     Case(
         "fn_md5_then_distinct",
         lambda s: Frames.numbers(s).select(F.md5("s").alias("h")).distinct(),
-        gap=KnownGap("GAP-018"),
     ),
     Case(
         "fn_md5_then_union",
         lambda s: Frames.numbers(s)
         .select(F.md5("s").alias("h"))
         .union(Frames.numbers(s).select("s")),
-        gap=KnownGap("GAP-018"),
+    ),
+    row("unhex_of_md5", lambda: F.unhex(F.md5("s")), gap=KnownGap("GAP-019")),
+    row("split_of_md5", lambda: F.split(F.md5("s"), "a"), gap=KnownGap("GAP-019")),
+    row(
+        "regexp_extract_of_md5",
+        lambda: F.regexp_extract(F.md5("s"), "([0-9a-f]{4})", 1),
+        gap=KnownGap("GAP-019"),
     ),
     row("regexp_replace_chain_at_the_limit", DeepChain.at_the_limit),
     row("deep_regexp_replace_chain", DeepChain.column, gap=KnownGap("ADOPT-007")),
