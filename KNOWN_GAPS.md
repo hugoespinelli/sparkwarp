@@ -5,9 +5,10 @@ Everything sparkwarp knows to differ from real Spark 4 (ANSI mode), each pinned 
 - Engine gaps are corpus cases that run on both engines. Real Spark recorded the expected
   results; on Sail each case is a strict `xfail`, so it fails the day the gap closes.
   ORDER-001 is the exception: Sail's order varies between runs, so it is a non-strict `xfail`.
-- Adoption gaps ADOPT-001, ADOPT-002 and ADOPT-006 are pinned in the package's own tests,
-  which run on Sail only. ADOPT-003, ADOPT-004 and ADOPT-005 are corpus cases like the engine
-  gaps: they run on both engines against Spark goldens and are strict `xfail`s on Sail.
+- Adoption gaps ADOPT-001, ADOPT-002 and ADOPT-006, and the out-of-scope ADOPT-011 and
+  ADOPT-012, are pinned in the package's own tests, which run on Sail only. ADOPT-003,
+  ADOPT-004 and ADOPT-005 are corpus cases like the engine gaps: they run on both engines
+  against Spark goldens and are strict `xfail`s on Sail.
 - Behaviour that sparkwarp itself chooses (ADOPT-008 to ADOPT-010) is pinned in the package's
   own tests, as far as a test can run in reasonable time; the row says what is measured only.
 
@@ -56,6 +57,16 @@ appear against any Spark Connect server.
 | ADOPT-004 | `df.toJSON()` returns a DataFrame of `value` rows, not string rows. | `[r.value for r in df.select(F.to_json(F.struct("*")).alias("value")).collect()]` gives the same strings on both engines. | `corpus/test_methods.py`: `action_to_json` |
 | ADOPT-005 | `df.rdd` is not implemented. Since 0.3.0, sparkwarp provides a stub: `df.rdd.isEmpty()` works; any other member still raises. Code that detects Connect with `try: df.rdd` / `except` now takes the classic branch; check `pyspark.sql.utils.is_remote()` instead. | Use `df.isEmpty()`, or mark tests that need a real RDD (`map`, `collect`, `getNumPartitions`) `@pytest.mark.spark_only`. | `corpus/test_methods.py`: `action_rdd_is_unsupported`; the stub by `action_rdd_is_empty`, `action_rdd_is_empty_on_empty_frame` and `tests/test_compat.py` |
 
+## Sail does not implement (out of scope)
+
+These raise on Sail but work on a real Spark 4 Spark Connect server (with Spark ML, or with
+the Delta Connect plugin). sparkwarp does not plan to cover them.
+
+| ID | What differs | Workaround | Pinned by |
+|---|---|---|---|
+| ADOPT-011 | Spark ML (`pyspark.ml`) under Spark Connect sends ML relations and ML commands, which Sail does not implement: a transformer fails with `UnsupportedOperationException: ML relation`, an estimator's `fit` with `ml command`. | Out of scope; mark such tests `@pytest.mark.spark_only`. | `tests/test_out_of_scope.py`: `ml_transformer`, `ml_estimator` |
+| ADOPT-012 | Delta's `DeltaTable` Python API (delta-spark) sends a Spark Connect extension relation, which Sail does not implement: `DeltaTable.forPath(...)` fails with `UnsupportedOperationException: extension relation`. Delta tables read and written through `spark.read.format("delta")` and `df.write.format("delta")` work on Sail. | Out of scope; mark such tests `@pytest.mark.spark_only`. | `tests/test_out_of_scope.py`: `connect_extension_relation` (a hand-built extension relation; delta-spark is not a test dependency) and `test_delta_tables_round_trip_through_read_and_write` |
+
 ## sparkwarp behaviour (not Spark Connect)
 
 These come from choices sparkwarp makes, not from the Spark Connect client or from Sail.
@@ -82,5 +93,6 @@ that a corpus case cannot be tagged with a closed gap.
 - Always `orderBy` before asserting row order, or use `assertDataFrameEqual`, which ignores
   order by default.
 - For GAP-006, assert `pytest.raises(Exception)`. The class and the message both differ.
-- For GAP-007 cases sparkwarp cannot route to Python, and for ADOPT-005 beyond
-  `df.rdd.isEmpty()`, mark the test `@pytest.mark.spark_only`.
+- For GAP-007 cases sparkwarp cannot route to Python, for ADOPT-005 beyond
+  `df.rdd.isEmpty()`, and for ADOPT-011 and ADOPT-012, mark the test
+  `@pytest.mark.spark_only`.

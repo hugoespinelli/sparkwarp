@@ -85,7 +85,8 @@ sparkwarp already handles the lines that most conftests contain:
 Mark these `@pytest.mark.spark_only` before the first run, because Sail or Spark Connect
 cannot run them:
 
-- Delta's `DeltaTable` Python API, `pyspark.ml`, streaming and `df.rdd` beyond `isEmpty()`.
+- Delta's `DeltaTable` Python API (ADOPT-012), `pyspark.ml` (ADOPT-011), streaming and
+  `df.rdd` beyond `isEmpty()`.
 - Anything on `spark.sparkContext` beyond the stub: `parallelize`, `wholeTextFiles`, the
   Hadoop configuration, `_jvm`.
 - Java-only regex features (look-ahead, look-behind, backreferences) inside SQL text such
@@ -270,8 +271,9 @@ an error: five value gaps plus row order. That is why the parity lane matters.
 
 - PySpark 4 and Spark 4 semantics with ANSI mode on. Spark 3.5 legacy behaviour is out of
   scope.
-- No `df.rdd` beyond `isEmpty()`, no streaming, no `DeltaTable` Python API, no
-  `pyspark.ml`, and only a stub of `spark.sparkContext`. Mark such tests `spark_only`.
+- No `df.rdd` beyond `isEmpty()`, no streaming, no `DeltaTable` Python API (ADOPT-012), no
+  `pyspark.ml` (ADOPT-011), and only a stub of `spark.sparkContext`. Mark such tests
+  `spark_only`.
 - Deeply nested columns, such as one `regexp_replace` per character, run but are slow on
   Sail (150 calls take about 4 s). Real Spark overflows its stack from about 350 calls; past
   about 495 (990 on Python 3.12+), PySpark's client raises `RecursionError` (ADOPT-009).

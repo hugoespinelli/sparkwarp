@@ -23,6 +23,9 @@
   names. sparkwarp translates only syntax both engines read alike; other patterns, and the
   same patterns in SQL text, still fail (GAP-007, narrowed). On text with an emoji, where
   Java's UTF-16 matching can differ, the fallback fails loudly (ADOPT-010).
+- Spark ML (ADOPT-011) and Delta's `DeltaTable` Python API (ADOPT-012) are registered as out
+  of scope: Sail rejects them with `UnsupportedOperationException`, and the failure report
+  gets the sparkwarp hint. Mark such tests `@pytest.mark.spark_only`.
 
 ## 0.2.0 (2026-10-21)
 
