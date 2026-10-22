@@ -5,6 +5,11 @@
 - `df.rdd.isEmpty()` works under sparkwarp. Other `rdd` members still fail loudly
   (ADOPT-005). Code that detects Spark Connect with `try: df.rdd` now takes the classic
   branch; use `pyspark.sql.utils.is_remote()` instead.
+- Results that Sail returns as Arrow `string_view` or `binary_view`, such as `md5()` before
+  `distinct()` or a union, now collect: sparkwarp casts them to plain strings and binaries
+  before PySpark reads them (GAP-018 closed). Needs pyarrow 18 or newer.
+- New registered gap: `md5()` passed to `unhex`, `split` or `regexp_extract` fails inside
+  Sail (GAP-019); cast it to string first.
 
 ## 0.2.0 (2026-10-21)
 

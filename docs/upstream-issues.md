@@ -184,6 +184,9 @@ no-op would match. sparkwarp works around it today.
 
 ## 18. md5 returns Utf8View, which set operations pass to the client (GAP-018)
 
+Status: fixed in Sail `main` by lakehq/sail#2837 (not yet released); do not file. sparkwarp
+casts view types on the client since 0.3.0.
+
 ```python
 df = spark.createDataFrame([("a",), ("b",)], "k string")
 df.select(F.md5("k").alias("v")).distinct().collect()
@@ -196,3 +199,18 @@ Arrow` during `collect()`. `df.schema` says `string`; only the Arrow batch carri
 A plain projection, `orderBy`, `groupBy` and joins are fine, and `sha1`, `sha2` and `lower`
 return `Utf8`. Suggested fix: return `Utf8` from `md5` like the other hash functions, or cast
 `Utf8View` to `Utf8` at the Spark Connect result boundary.
+
+## 19. md5's Utf8View breaks unhex, split and regexp_extract (GAP-019)
+
+```python
+df = spark.createDataFrame([("a",)], "s string")
+df.select(F.unhex(F.md5("s"))).collect()
+df.select(F.split(F.md5("s"), "a")).collect()
+df.select(F.regexp_extract(F.md5("s"), "([0-9a-f]{4})", 1)).collect()
+```
+
+Spark: one row each. Sail (0.7.2 and `main` after #2837): `could not cast array of type
+Utf8View to ...GenericByteArray` for `unhex`, and `Could not downcast arguments to arrow
+arrays` for `split` and `regexp_extract`. `upper`, `concat`, `substring`, `sha2` and `like`
+accept the same input. Suggested fix: return `Utf8` from `md5` like `sha1` and `sha2`, or
+accept `Utf8View` in these kernels.
