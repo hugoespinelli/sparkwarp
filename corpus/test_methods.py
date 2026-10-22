@@ -164,6 +164,8 @@ class CacheCycle:
 
 REAL_USAGE = [
     Case("action_is_cached_after_unpersist", CacheCycle(), gap=KnownGap("GAP-015")),
+    Case("action_rdd_is_empty", lambda s: P(s).rdd.isEmpty()),
+    Case("action_rdd_is_empty_on_empty_frame", lambda s: P(s).limit(0).rdd.isEmpty()),
     Case("action_set_log_level", lambda s: s.sparkContext.setLogLevel("WARN")),
     Case("action_catalog_clear_cache", lambda s: s.catalog.clearCache()),
 ]
