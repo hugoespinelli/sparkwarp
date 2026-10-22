@@ -1,8 +1,9 @@
 """Spark Connect compatibility shims for lines that most PySpark conftests contain.
 
 Each shim is a reversible class patch, installed while sparkwarp owns an engine:
-`spark.sparkContext.setLogLevel(...)`, `spark.catalog.clearCache()` and `spark.stop()`
-keep working. Anything else on `sparkContext` still fails as loudly as before.
+`spark.sparkContext.setLogLevel(...)`, `spark.catalog.clearCache()`, `spark.stop()` and
+`df.rdd.isEmpty()` keep working. Anything else on `sparkContext` or `rdd` still fails as
+loudly as before.
 """
 
 from __future__ import annotations
@@ -11,14 +12,18 @@ from collections.abc import Callable
 from types import MethodType
 from typing import NoReturn, cast
 
-from pyspark.errors import PySparkAttributeError
+from pyspark.errors import PySparkAttributeError, PySparkNotImplementedError
 from pyspark.sql.connect.catalog import Catalog as ConnectCatalog
 from pyspark.sql.connect.client.reattach import ExecutePlanResponseReattachableIterator
+from pyspark.sql.connect.dataframe import DataFrame as ConnectDataFrame
 from pyspark.sql.connect.session import SparkSession as ConnectSession
 
 from sparkwarp.config import (
     CLOSE_WITHOUT_ORIGINAL_ERROR,
+    FEATURE_PARAMETER,
     JVM_ONLY_CONDITION,
+    NOT_IMPLEMENTED_CONDITION,
+    RDD_FEATURE,
     STUB_ATTRIBUTE_PARAMETER,
     STUB_DEFAULT_PARALLELISM,
     STUB_PREFIX,
@@ -65,6 +70,33 @@ class StubbedSparkContext:
         return SparkContextStub(session)
 
 
+class DataFrameRddStub:
+    """`df.rdd.isEmpty()`: the one `RDD` call that asks only about the DataFrame."""
+
+    def __init__(self, frame: ConnectDataFrame) -> None:
+        self._frame = frame
+
+    def isEmpty(self) -> bool:  # noqa: N802 - PySpark's name
+        return self._frame.isEmpty()
+
+    def __getattr__(self, name: str) -> NoReturn:
+        raise PySparkNotImplementedError(
+            errorClass=NOT_IMPLEMENTED_CONDITION,
+            messageParameters={FEATURE_PARAMETER: RDD_FEATURE},
+        )
+
+
+class StubbedRdd:
+    """Descriptor that answers `df.rdd` with a stub."""
+
+    def __get__(
+        self, frame: ConnectDataFrame | None, owner: type | None = None
+    ) -> DataFrameRddStub | StubbedRdd:
+        if frame is None:
+            return self
+        return DataFrameRddStub(frame)
+
+
 class IgnoredCall:
     """Descriptor for a method that does nothing and returns None."""
 
@@ -84,6 +116,16 @@ class SparkContextPatch(ClassPatch):
 
     def _replacement(self, previous: object) -> object:
         return StubbedSparkContext()
+
+
+class RddPatch(ClassPatch):
+    """`df.rdd` answers `isEmpty()`; every other member still raises NOT_IMPLEMENTED."""
+
+    TARGET = ConnectDataFrame
+    ATTRIBUTE = "rdd"
+
+    def _replacement(self, previous: object) -> object:
+        return StubbedRdd()
 
 
 class ClearCachePatch(ClassPatch):
@@ -188,6 +230,7 @@ class CompatShims:
         self.release_pool = ReleasePoolPatch()
         self._patches: tuple[ClassPatch, ...] = (
             SparkContextPatch(),
+            RddPatch(),
             ClearCachePatch(),
             self.held_stop,
             self.release_pool,

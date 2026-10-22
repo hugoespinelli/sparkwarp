@@ -5,15 +5,21 @@ import threading
 from collections.abc import Iterator
 
 import pytest
-from pyspark.errors import PySparkAttributeError
+from pyspark.errors import PySparkAttributeError, PySparkNotImplementedError
 from pyspark.sql import SparkSession
 from pyspark.sql.connect.catalog import Catalog as ConnectCatalog
 from pyspark.sql.connect.client.reattach import (
     ExecutePlanResponseReattachableIterator as ReattachIterator,
 )
+from pyspark.sql.connect.dataframe import DataFrame as ConnectDataFrame
 from pyspark.sql.connect.session import SparkSession as ConnectSession
 
-from sparkwarp.config import JVM_ONLY_CONDITION, REMOTE_ENV_VAR, TIMEZONE_KEY
+from sparkwarp.config import (
+    JVM_ONLY_CONDITION,
+    NOT_IMPLEMENTED_CONDITION,
+    REMOTE_ENV_VAR,
+    TIMEZONE_KEY,
+)
 from sparkwarp.engines import SailEngine
 
 PYSPARK_SHARES_ONE_RELEASE_POOL = "shutdown" in vars(ReattachIterator)
@@ -44,6 +50,17 @@ def test_other_spark_context_attributes_still_fail_loudly(spark: SparkSession) -
     assert raised.value.getCondition() == JVM_ONLY_CONDITION
 
 
+def test_rdd_is_empty_answers_like_the_data_frame(spark: SparkSession) -> None:
+    assert spark.range(0).rdd.isEmpty() is True
+    assert spark.range(2).rdd.isEmpty() is False
+
+
+def test_other_rdd_members_still_fail_as_not_implemented(spark: SparkSession) -> None:
+    with pytest.raises(PySparkNotImplementedError) as raised:
+        spark.range(2).rdd.map(lambda row: row)
+    assert raised.value.getCondition() == NOT_IMPLEMENTED_CONDITION
+
+
 def test_clear_cache_is_a_no_op(spark: SparkSession) -> None:
     assert spark.catalog.clearCache() is None
 
@@ -62,6 +79,7 @@ def test_engine_stop_removes_every_shim() -> None:
     original_stop = ConnectSession.stop
     original_clear_cache = ConnectCatalog.clearCache
     original_shutdown = vars(ReattachIterator).get("shutdown")
+    original_rdd = vars(ConnectDataFrame).get("rdd")
     engine = SailEngine()
     try:
         engine.start_session()
@@ -70,6 +88,7 @@ def test_engine_stop_removes_every_shim() -> None:
     assert ConnectSession.stop is original_stop
     assert ConnectCatalog.clearCache is original_clear_cache
     assert vars(ReattachIterator).get("shutdown") is original_shutdown
+    assert vars(ConnectDataFrame).get("rdd") is original_rdd
     assert "sparkContext" not in vars(ConnectSession)
 
 
