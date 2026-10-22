@@ -259,11 +259,30 @@ JAVA_REGEX = [
         lambda s: one(s).select(
             F.regexp_replace(F.lit("price100usd"), r"\d+(?=usd)", "N").alias("r")
         ),
-        gap=KnownGap("GAP-007"),
     ),
     Case(
         "regex_backreference",
         lambda s: one(s).select(F.lit("abab").rlike(r"^(ab)\1$").alias("r")),
+    ),
+    Case(
+        "regex_lookbehind_extract",
+        lambda s: one(s).select(
+            F.regexp_extract(F.lit("aXb"), r"(?<=X)\w", 0).alias("r")
+        ),
+    ),
+    Case(
+        "regex_lookahead_extract_all",
+        lambda s: one(s).select(
+            F.regexp_extract_all(F.lit("100usd 7usd"), F.lit(r"(\d+)(?=usd)"), 1).alias(
+                "r"
+            )
+        ),
+    ),
+    Case(
+        "regex_lookahead_in_sql_text",
+        lambda s: one(s).select(
+            F.expr(r"regexp_extract('price100usd', '(\\d+)(?=usd)', 1)").alias("r")
+        ),
         gap=KnownGap("GAP-007"),
     ),
     Case(

@@ -2612,6 +2612,82 @@
    "type": "struct"
   }
  },
+ "test_trap[regex_lookahead_extract_all]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "r",
+     [
+      "100",
+      "7"
+     ]
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": {
+      "containsNull": true,
+      "elementType": "string",
+      "type": "array"
+     }
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_trap[regex_lookahead_in_sql_text]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "r",
+     "100"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_trap[regex_lookbehind_extract]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "r",
+     "b"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": false,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
  "test_trap[regex_posix_class]": {
   "condition": null,
   "error": null,
