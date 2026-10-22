@@ -22,14 +22,14 @@ Usually not. Set `SPARKWARP=1`. Your conftest's `SparkSession.builder...getOrCre
 lands on Sail. sparkwarp also accepts the common conftest lines: `setLogLevel`,
 `catalog.clearCache()`, `spark.stop()` in teardown and `localCheckpoint()`. A few Spark
 Connect client differences can still need attention, each with a workaround in the adoption
-table of `KNOWN_GAPS.md`: `spark.sparkContext` beyond the stub, `df.rdd`, `df.toJSON()`
+table of `KNOWN_GAPS.md`: `spark.sparkContext` and `df.rdd` beyond their stubs, `df.toJSON()`
 returning rows, `isinstance` checks on the session or on `groupBy()` results, columns nested
 too deep for protobuf, and tests that start subprocesses. The README's "Before your first
 run" section is the checklist.
 
 ## Can I trust a green run?
 
-Only together with a parity lane. Sail matches real Spark on 305 of the 342 corpus cases.
+Only together with a parity lane. Sail matches real Spark on 307 of the 344 corpus cases.
 Most of the rest raise loudly or differ only in schema details, but five gaps change
 values silently (GAP-004, GAP-009, GAP-010, GAP-012, GAP-015), and row order without
 `orderBy` differs (ORDER-001). Run the same suite with `SPARKWARP=0` on CI, nightly or on merge, and the
@@ -53,9 +53,9 @@ default. Spark 3.5 legacy behaviour (casts returning null, `size(null) = -1`) is
 
 ## What about Delta Lake, RDDs, streaming and UDFs?
 
-Plain Python UDFs work. `df.rdd`, streaming and the `DeltaTable` Python API do not. Mark
-those tests `@pytest.mark.spark_only`: sparkwarp skips them on Sail, and your parity lane
-runs them on real Spark.
+Plain Python UDFs work. `df.rdd` (beyond `isEmpty()`), streaming and the `DeltaTable`
+Python API do not. Mark those tests `@pytest.mark.spark_only`: sparkwarp skips them on
+Sail, and your parity lane runs them on real Spark.
 
 ## Does sparkwarp touch production code?
 
