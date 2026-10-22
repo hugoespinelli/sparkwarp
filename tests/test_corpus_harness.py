@@ -1,8 +1,10 @@
 """Unit tests for the corpus harness's guards; no Spark engine is needed."""
 
+import pytest
 from pyspark.errors import PySparkTypeError
 from pyspark.errors.exceptions.connect import AnalysisException
 
+from corpus.gaps import KnownGap, UnknownGapError
 from corpus.harness import Outcome
 
 
@@ -24,3 +26,9 @@ def test_the_client_flag_does_not_take_part_in_comparison() -> None:
 
 def test_exact_comparison_keeps_int_and_float_apart() -> None:
     assert not Outcome(rows=[1]).matches(Outcome(rows=[1.0]))
+
+
+def test_a_closed_gap_cannot_tag_a_case() -> None:
+    assert "GAP-018" not in KnownGap.registered_ids()
+    with pytest.raises(UnknownGapError):
+        KnownGap("GAP-018")

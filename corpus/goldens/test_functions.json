@@ -7819,6 +7819,69 @@
    "type": "struct"
   }
  },
+ "test_function[fn_regexp_extract_of_md5]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "0cc1"
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "4a8a"
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "d41d"
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "string"
+    }
+   ],
+   "type": "struct"
+  }
+ },
  "test_function[fn_regexp_replace]": {
   "condition": null,
   "error": null,
@@ -9256,6 +9319,82 @@
    "type": "struct"
   }
  },
+ "test_function[fn_split_of_md5]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     [
+      "0cc175b9c0f1b6",
+      "831c399e269772661"
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     [
+      "4",
+      "8",
+      "08f09d37b73795649038408b5f33"
+     ]
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     [
+      "d41d8cd98f00b204e9800998ecf8427e"
+     ]
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": {
+      "containsNull": false,
+      "elementType": "string",
+      "type": "array"
+     }
+    }
+   ],
+   "type": "struct"
+  }
+ },
  "test_function[fn_sqrt]": {
   "condition": null,
   "error": null,
@@ -10559,6 +10698,69 @@
      "name": "r",
      "nullable": true,
      "type": "double"
+    }
+   ],
+   "type": "struct"
+  }
+ },
+ "test_function[fn_unhex_of_md5]": {
+  "condition": null,
+  "error": null,
+  "rows": [
+   [
+    [
+     "id",
+     1
+    ],
+    [
+     "r",
+     "bytes:DMF1ucDxtqgxw5niaXcmYQ=="
+    ]
+   ],
+   [
+    [
+     "id",
+     2
+    ],
+    [
+     "r",
+     null
+    ]
+   ],
+   [
+    [
+     "id",
+     3
+    ],
+    [
+     "r",
+     "bytes:SooI8J03tzeVZJA4QItfMw=="
+    ]
+   ],
+   [
+    [
+     "id",
+     4
+    ],
+    [
+     "r",
+     "bytes:1B2M2Y8AsgTpgAmY7PhCfg=="
+    ]
+   ]
+  ],
+  "schema": {
+   "fields": [
+    {
+     "metadata": {},
+     "name": "id",
+     "nullable": true,
+     "type": "integer"
+    },
+    {
+     "metadata": {},
+     "name": "r",
+     "nullable": true,
+     "type": "binary"
     }
    ],
    "type": "struct"
