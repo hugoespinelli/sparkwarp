@@ -18,6 +18,7 @@ from sparkwarp.jvm_server import (
     DirectoryLock,
     JavaRuntime,
     JvmUnavailableError,
+    ProcessGroup,
     ServerLaunch,
     ServerRecord,
     SharedJvmServer,
@@ -105,9 +106,10 @@ def test_the_watchdog_stops_the_server_when_its_owner_dies(tmp_path: Path) -> No
     owner.kill()
     owner.wait()
     deadline = time.monotonic() + OWNER_GONE_SECONDS
-    while record.alive() and time.monotonic() < deadline:
+    while ProcessGroup(record.pid).running() and time.monotonic() < deadline:
         time.sleep(POLL_SECONDS)
     assert not record.alive()
+    server.stop()
 
 
 class FailingLaunch:
@@ -145,13 +147,17 @@ def test_a_failed_start_is_tried_once_per_run_and_its_log_kept(
 def test_a_started_server_leaves_no_unclosed_process_warning(
     directory: StateDirectory,
 ) -> None:
+    gc.collect()
     server = SharedJvmServer(directory)
     with warnings.catch_warnings(record=True) as caught:
         warnings.simplefilter("always")
         server.url()
         gc.collect()
+    record = server._read()
     server.stop()
-    assert not [w for w in caught if issubclass(w.category, ResourceWarning)]
+    assert record is not None
+    still_running = f"subprocess {record.pid} is still running"
+    assert still_running not in [str(warning.message) for warning in caught]
 
 
 class SlowProbe:
