@@ -2,8 +2,9 @@
 
 Each shim is a reversible class patch, installed while sparkwarp owns an engine:
 `spark.sparkContext.setLogLevel(...)`, `spark.catalog.clearCache()`, `spark.stop()` and
-`df.rdd.isEmpty()` keep working. Anything else on `sparkContext` or `rdd` still fails as
-loudly as before.
+`df.rdd.isEmpty()` keep working, and Arrow view types in results are cast to plain
+types (`arrow_views`). Anything else on `sparkContext` or `rdd` still fails as loudly as
+before.
 """
 
 from __future__ import annotations
@@ -18,6 +19,7 @@ from pyspark.sql.connect.client.reattach import ExecutePlanResponseReattachableI
 from pyspark.sql.connect.dataframe import DataFrame as ConnectDataFrame
 from pyspark.sql.connect.session import SparkSession as ConnectSession
 
+from sparkwarp.arrow_views import ViewTypesPatch
 from sparkwarp.config import (
     CLOSE_WITHOUT_ORIGINAL_ERROR,
     FEATURE_PARAMETER,
@@ -234,6 +236,7 @@ class CompatShims:
             ClearCachePatch(),
             self.held_stop,
             self.release_pool,
+            ViewTypesPatch(),
         )
 
     def close(self, session: ConnectSession) -> None:
