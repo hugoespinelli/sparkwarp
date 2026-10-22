@@ -3,8 +3,9 @@
 Each shim is installed while sparkwarp owns an engine and removed at stop:
 `spark.sparkContext.setLogLevel(...)`, `spark.catalog.clearCache()`, `spark.stop()` and
 `df.rdd.isEmpty()` keep working, Arrow view types in results are cast to plain types
-(`arrow_views`), and deeply nested columns get past the protobuf depth limit. Anything
-else on `sparkContext` or `rdd` still fails as loudly as before.
+(`arrow_views`), deeply nested columns get past the protobuf depth limit, and
+Java-only regex patterns run in Python (`regex_fallback`). Anything else on
+`sparkContext` or `rdd` still fails as loudly as before.
 """
 
 from __future__ import annotations
@@ -33,6 +34,7 @@ from sparkwarp.config import (
     UPB_BACKEND,
 )
 from sparkwarp.patches import ClassPatch, Shim
+from sparkwarp.regex_fallback import RegexFallbackPatch
 
 try:
     from google._upb import _message as _upb_message
@@ -275,6 +277,7 @@ class CompatShims:
             self.release_pool,
             ViewTypesPatch(),
             ProtobufDepthLimit(),
+            RegexFallbackPatch(),
         )
 
     def close(self, session: ConnectSession) -> None:
