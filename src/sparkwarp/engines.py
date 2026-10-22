@@ -38,6 +38,8 @@ from sparkwarp.environment import (
     SessionContractPatch,
 )
 from sparkwarp.errors import EngineStoppedError
+from sparkwarp.jvm_server import SharedJvmServer, StateDirectory
+from sparkwarp.router import JvmSession, PlanRouter, RoutingSummary
 
 
 class CheckpointDir:
@@ -107,7 +109,10 @@ class SailEngine:
         self._contract_patch = SessionContractPatch(
             self.contract, self.has_live_session
         )
-        self._shims = CompatShims()
+        self._jvm_session = JvmSession(self.contract)
+        self.router = PlanRouter(self._jvm_session)
+        self._shims = CompatShims(self.router)
+        self._jvm_server: SharedJvmServer | None = None
         self._checkpoint = CheckpointDir()
         self._stopped = False
 
@@ -145,6 +150,8 @@ class SailEngine:
         self._masterless_patch.install()
         self._contract_patch.install()
         self._shims.install()
+        self._jvm_server = SharedJvmServer(StateDirectory.claim())
+        self._jvm_session.attach(self._jvm_server)
 
     def start_session(self) -> SparkSession:
         """Return the live session; build one when none is open."""
@@ -164,6 +171,7 @@ class SailEngine:
         """Release everything, even if a step fails. Idempotent; the engine is spent."""
         self._stopped = True
         with ExitStack() as cleanup:
+            cleanup.callback(self._stop_jvm_server)
             cleanup.callback(self._checkpoint.remove)
             cleanup.callback(self._contract_patch.uninstall)
             cleanup.callback(self._masterless_patch.uninstall)
@@ -173,6 +181,7 @@ class SailEngine:
             cleanup.callback(self._stop_server)
             for session in self._live_sessions():
                 cleanup.callback(self._shims.close, session)
+            cleanup.callback(self._close_jvm_session)
 
     def _live_sessions(self) -> list[ConnectSession]:
         """Every open Connect session sparkwarp knows of: shared, active, and held.
@@ -187,6 +196,23 @@ class SailEngine:
         )
         unique = {id(s): s for s in candidates if s is not None}
         return [session for session in unique.values() if not session.is_stopped]
+
+    def routing_summary(self) -> RoutingSummary:
+        """What this run sent to the JVM, across the processes sharing the server."""
+        server = self._jvm_server
+        directory = server.directory if server is not None else None
+        return RoutingSummary(directory, self.router.counts)
+
+    def _close_jvm_session(self) -> None:
+        self._jvm_session.close(self._shims.close)
+
+    def _stop_jvm_server(self) -> None:
+        """Save this process's routing counts; the run's owner also stops the server."""
+        server, self._jvm_server = self._jvm_server, None
+        if server is None:
+            return
+        self.router.save_counts(server.directory)
+        server.stop()
 
     def _stop_server(self) -> None:
         server, self._server = self._server, None

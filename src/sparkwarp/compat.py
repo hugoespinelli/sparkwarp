@@ -35,6 +35,8 @@ from sparkwarp.config import (
 )
 from sparkwarp.patches import ClassPatch, Shim
 from sparkwarp.regex_fallback import RegexFallbackPatch
+from sparkwarp.router import PlanRouter
+from sparkwarp.routing import RoutingPatches
 
 try:
     from google._upb import _message as _upb_message
@@ -266,7 +268,7 @@ class ProtobufDepthLimit:
 class CompatShims:
     """Installs and removes all shims as one unit, skipping those that do not apply."""
 
-    def __init__(self) -> None:
+    def __init__(self, router: PlanRouter) -> None:
         self.held_stop = HeldStopPatch()
         self.release_pool = ReleasePoolPatch()
         self._patches: tuple[Shim, ...] = (
@@ -278,6 +280,7 @@ class CompatShims:
             ViewTypesPatch(),
             ProtobufDepthLimit(),
             RegexFallbackPatch(),
+            *RoutingPatches.for_router(router),
         )
 
     def close(self, session: ConnectSession) -> None:
