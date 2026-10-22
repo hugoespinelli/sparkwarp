@@ -80,7 +80,8 @@ sparkwarp already handles the lines that most conftests contain:
 | `df.rdd.isEmpty()` | Works, as `df.isEmpty()`. Other `df.rdd` members still fail |
 | `spark.stop()` in a teardown | Held: the shared session stays open until the run ends, so libraries that cached it (cuallee does) keep working. Its conf values and temp views carry over to later tests (ADOPT-008) |
 | `df.localCheckpoint()` or `df.checkpoint()` | Works: each run gets a temporary checkpoint directory |
-| `pytest -n auto` (pytest-xdist) | Supported: each worker starts its own Sail |
+| `pytest -n auto` (pytest-xdist) | Supported: each worker starts its own Sail; the workers share one JVM server when they need it |
+| A column nested 64+ levels deep, or an array index taken from a column | Runs on a JVM Spark Connect server when Java 17+ is installed (see "The JVM for what Sail is bad at"); without Java, a deep column fails fast with the `spark_only` hint |
 
 Mark these `@pytest.mark.spark_only` before the first run, because Sail or Spark Connect
 cannot run them:
@@ -183,6 +184,8 @@ sparkwarp.stop()                     # optional; it also runs at exit
 | `SPARKWARP=1` | Run on Sail |
 | `pytest --sparkwarp` | Run on Sail; wins over `SPARKWARP=0` |
 | `SPARKWARP=0` or unset | Off: your own fixture, on real Spark |
+| `SPARKWARP_JVM=0` | Never start the JVM server; deep columns fail fast instead |
+| `SPARKWARP_JVM_DEPTH=N` | Nesting depth from which a column leaves Sail, or fails fast without Java (default 64; `0` turns the limit off, as in 0.3.0) |
 
 On Sail the session uses Spark 4 semantics with ANSI mode on and session timezone UTC. A
 timezone that you set on your builder or with `spark.conf.set` wins. A test that starts a
@@ -212,6 +215,36 @@ them. It also turns off the protobuf (upb) depth limit, which stops PySpark
 on columns nested about 48 calls deep. That switch is process-wide, also lifts upb's 64 MB
 message cap, and is turned off again at the end. Your tests keep calling the real PySpark
 API, so there is no second API to keep in sync with Spark.
+
+### The JVM for what Sail is bad at
+
+Sail plans deeply nested columns slowly: a chain of 300 `regexp_replace` calls takes about
+50 s there and 0.3 s on Spark. It also cannot run a few things that Spark can (GAP-013,
+GAP-014, GAP-016, GAP-017). So sparkwarp routes those queries, and only those, to a Spark
+Connect server running on the JVM:
+
+- a query whose expressions nest 64 levels or deeper (each call, alias or column counts),
+  and its schema lookups;
+- a query that Sail rejects with one of those known gaps, such as an array indexed by a
+  column (a map looked up by a column works on Sail and stays there).
+
+Only a self-contained query moves: one built from inline data (`createDataFrame`, `range`)
+or from parquet, CSV, JSON, ORC or text files at absolute paths. A query that reads a temp
+view, a table, SQL text (`spark.sql`, `F.expr`, `selectExpr`, string filters), a function
+called by name, another format (Delta, JDBC) or a relative path stays on Sail, because
+that state or that reader lives there. So does inline Python code (a Python UDF,
+`mapInPandas`, `applyInPandas`, sparkwarp's own regex fallback): the JVM's Python worker
+would not see the test's imports or monkeypatches. `spark.conf` settings reach both engines.
+
+The JVM server comes from your installed PySpark and needs Java 17 or newer, found through
+`JAVA_HOME` or the `PATH`, on Linux or macOS (on Windows sparkwarp runs as if Java were
+missing). It starts the first time a query needs it (about 10 s), runs once
+per pytest run (pytest-xdist workers share it), uses about 450 MB, and stops when the run
+ends, even if the run crashes: a watchdog stops it once the run's main process is gone. If
+it cannot start, the Sail gaps raise as they do without Java and a too-deep column fails
+fast with the reason and the path of the server's log. The run's summary line counts what
+it ran. Every other query stays on Sail. To run on Sail only, as 0.3.0 did, set both
+`SPARKWARP_JVM=0` and `SPARKWARP_JVM_DEPTH=0`.
 
 ## Benchmarks
 
@@ -274,9 +307,9 @@ an error: five value gaps plus row order. That is why the parity lane matters.
 - No `df.rdd` beyond `isEmpty()`, no streaming, no `DeltaTable` Python API (ADOPT-012), no
   `pyspark.ml` (ADOPT-011), and only a stub of `spark.sparkContext`. Mark such tests
   `spark_only`.
-- Deeply nested columns, such as one `regexp_replace` per character, run but are slow on
-  Sail (150 calls take about 4 s). Real Spark overflows its stack from about 350 calls; past
-  about 495 (990 on Python 3.12+), PySpark's client raises `RecursionError` (ADOPT-009).
+- Deeply nested columns, such as one `regexp_replace` per character, run on the JVM when
+  Java is installed and fail fast otherwise. Over a temp view or table they stay on Sail,
+  where they are slow (150 calls take about 4 s) (ADOPT-009).
 - `isinstance(spark, pyspark.sql.SparkSession)` is `False` under Spark Connect.
 - Meant for unit tests on small inputs, not for benchmarking production jobs.
 

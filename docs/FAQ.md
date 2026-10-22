@@ -16,6 +16,15 @@ sparkwarp starts [Sail](https://github.com/lakehq/sail), a Spark Connect server 
 Rust, inside the pytest process, and points PySpark at it. Your tests keep calling the same
 PySpark API. The JVM, Py4J and the scheduler drop out, and an action takes 5 to 10 ms.
 
+## Do I need Java?
+
+No, but it helps. With Java 17+ installed on Linux or macOS, sparkwarp sends the few queries Sail is bad at
+(columns nested 64 levels or deeper, array indexes from a column, a handful of known Sail
+gaps) to a Spark Connect server on the JVM, started once per run and shared by
+pytest-xdist workers. Without Java, the deep columns fail fast with a hint to mark them
+`spark_only`, and the Sail gaps raise as before. `SPARKWARP_JVM_DEPTH=0` lets deep columns
+run on Sail, slowly, as in 0.3.0.
+
 ## Do I need to change my tests?
 
 Usually not. Set `SPARKWARP=1`. Your conftest's `SparkSession.builder...getOrCreate()`
@@ -65,4 +74,4 @@ No. It is a test dependency. It changes nothing unless `SPARKWARP=1` or `--spark
 ## How do I check the claims myself?
 
 Clone the repo and run the benchmark and the corpus on both engines. The README has the
-commands. Java 17+ is needed only for the real-Spark side.
+commands. Java 17+ is needed for the real-Spark side.
