@@ -1,9 +1,20 @@
-"""One reversible patch of one class attribute, the base of every sparkwarp shim."""
+"""The shim contract, and the reversible class-attribute patch behind most shims."""
 
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import ClassVar
+from typing import ClassVar, Protocol
+
+
+class Shim(Protocol):
+    """Anything sparkwarp installs while it owns an engine and removes at stop."""
+
+    @property
+    def applies(self) -> bool: ...
+
+    def install(self) -> None: ...
+
+    def uninstall(self) -> None: ...
 
 
 class Absent:

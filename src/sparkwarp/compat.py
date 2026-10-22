@@ -1,18 +1,19 @@
 """Spark Connect compatibility shims for lines that most PySpark conftests contain.
 
-Each shim is a reversible class patch, installed while sparkwarp owns an engine:
+Each shim is installed while sparkwarp owns an engine and removed at stop:
 `spark.sparkContext.setLogLevel(...)`, `spark.catalog.clearCache()`, `spark.stop()` and
-`df.rdd.isEmpty()` keep working, and Arrow view types in results are cast to plain
-types (`arrow_views`). Anything else on `sparkContext` or `rdd` still fails as loudly as
-before.
+`df.rdd.isEmpty()` keep working, Arrow view types in results are cast to plain types
+(`arrow_views`), and deeply nested columns get past the protobuf depth limit. Anything
+else on `sparkContext` or `rdd` still fails as loudly as before.
 """
 
 from __future__ import annotations
 
 from collections.abc import Callable
-from types import MethodType
+from types import MethodType, ModuleType
 from typing import NoReturn, cast
 
+from google.protobuf.internal import api_implementation
 from pyspark.errors import PySparkAttributeError, PySparkNotImplementedError
 from pyspark.sql.connect.catalog import Catalog as ConnectCatalog
 from pyspark.sql.connect.client.reattach import ExecutePlanResponseReattachableIterator
@@ -29,8 +30,16 @@ from sparkwarp.config import (
     STUB_ATTRIBUTE_PARAMETER,
     STUB_DEFAULT_PARALLELISM,
     STUB_PREFIX,
+    UPB_BACKEND,
 )
-from sparkwarp.patches import ClassPatch
+from sparkwarp.patches import ClassPatch, Shim
+
+try:
+    from google._upb import _message as _upb_message
+
+    UPB_MESSAGE: ModuleType | None = _upb_message
+except ImportError:
+    UPB_MESSAGE = None
 
 
 class SparkContextStub:
@@ -224,19 +233,48 @@ class ReleasePoolPatch(ClassPatch):
             original.__func__(self.TARGET)
 
 
+class ProtobufDepthLimit:
+    """Lifts the upb protobuf backend's 100-level decode limit while sparkwarp runs.
+
+    PySpark builds a column by copying each argument into its parent message, and upb
+    re-parses every copy with that limit, so more than about 48 nested calls fail.
+    The only switch upb offers also lifts its 64 MB message cap, for every protobuf
+    message in the process. upb has no getter for the switch, so stop turns it off
+    rather than restoring an earlier value.
+    """
+
+    def __init__(self) -> None:
+        self._installed = False
+
+    @property
+    def applies(self) -> bool:
+        return UPB_MESSAGE is not None and api_implementation.Type() == UPB_BACKEND
+
+    def install(self) -> None:
+        if UPB_MESSAGE is not None:
+            UPB_MESSAGE.SetAllowOversizeProtos(True)
+            self._installed = True
+
+    def uninstall(self) -> None:
+        if self._installed and UPB_MESSAGE is not None:
+            UPB_MESSAGE.SetAllowOversizeProtos(False)
+            self._installed = False
+
+
 class CompatShims:
-    """Installs and removes all shims as one unit, skipping those this PySpark lacks."""
+    """Installs and removes all shims as one unit, skipping those that do not apply."""
 
     def __init__(self) -> None:
         self.held_stop = HeldStopPatch()
         self.release_pool = ReleasePoolPatch()
-        self._patches: tuple[ClassPatch, ...] = (
+        self._patches: tuple[Shim, ...] = (
             SparkContextPatch(),
             RddPatch(),
             ClearCachePatch(),
             self.held_stop,
             self.release_pool,
             ViewTypesPatch(),
+            ProtobufDepthLimit(),
         )
 
     def close(self, session: ConnectSession) -> None:
