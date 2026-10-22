@@ -15,6 +15,8 @@ from corpus.harness import GoldenStore, ParityChecker
 UTC = "UTC"
 os.environ["TZ"] = UTC
 time.tzset()
+os.environ["SPARKWARP_JVM"] = "0"
+os.environ["SPARKWARP_JVM_DEPTH"] = "0"
 
 TUNED_FOR_TESTS: dict[str, str] = {
     "spark.ui.enabled": "false",

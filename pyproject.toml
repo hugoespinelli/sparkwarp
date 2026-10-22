@@ -34,7 +34,14 @@ test = ["pytest>=8"]
 sparkwarp = "sparkwarp.pytest_plugin"
 
 [dependency-groups]
-dev = ["pytest>=8", "mypy>=1.10", "ruff>=0.5", "black>=24", "pandas-stubs>=2,<3"]
+dev = [
+    "pytest>=8",
+    "mypy>=1.10",
+    "ruff>=0.5",
+    "black>=24",
+    "pandas-stubs>=2,<3",
+    "pytest-xdist>=3.6",
+]
 
 [build-system]
 requires = ["hatchling"]
