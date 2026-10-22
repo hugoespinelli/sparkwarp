@@ -1,6 +1,8 @@
 # Changelog
 
-## 0.3.0 (unreleased)
+## 0.3.0 (2026-10-22)
+
+Fixes for the gaps left by the second real-world run (8,181 tests on PySpark 4.0.0).
 
 - `df.rdd.isEmpty()` works under sparkwarp. Other `rdd` members still fail loudly
   (ADOPT-005). Code that detects Spark Connect with `try: df.rdd` now takes the classic
@@ -23,6 +25,9 @@
   names. sparkwarp translates only syntax both engines read alike; other patterns, and the
   same patterns in SQL text, still fail (GAP-007, narrowed). On text with an emoji, where
   Java's UTF-16 matching can differ, the fallback fails loudly (ADOPT-010).
+- Sail fixes for array indexes from a column (GAP-013) and windows ordered by a computed
+  key (GAP-014) are open upstream (lakehq/sail#2840, #2841); `input_file_name()` (GAP-016)
+  is fixed in Sail `main`. They arrive with a pysail release.
 - Spark ML (ADOPT-011) and Delta's `DeltaTable` Python API (ADOPT-012) are registered as out
   of scope: Sail rejects them with `UnsupportedOperationException`, and the failure report
   gets the sparkwarp hint. Mark such tests `@pytest.mark.spark_only`.
