@@ -214,3 +214,18 @@ Utf8View to ...GenericByteArray` for `unhex`, and `Could not downcast arguments 
 arrays` for `split` and `regexp_extract`. `upper`, `concat`, `substring`, `sha2` and `like`
 accept the same input. Suggested fix: return `Utf8` from `md5` like `sha1` and `sha2`, or
 accept `Utf8View` in these kernels.
+
+## 20. Planning time grows roughly cubically with expression nesting depth
+
+```python
+column = F.col("s")
+for _ in range(150):
+    column = F.regexp_replace(column, "a", "b")
+spark.createDataFrame([("abc",)], "s string").select(column).collect()
+```
+
+On pysail 0.7.2 and on Sail `main` as of 2026-10-22 (with the Spark Connect client's
+protobuf limit lifted and a 32 MB thread stack), one `collect()` takes 0.27 s at 60 nested
+calls, 1.2 s at 100, 4.2 s at 150, 9 s at 200 and about 90 s at 400; building the plan on
+the client takes milliseconds. With the
+default 8 MB stack, about 490 nested calls overflow a Sail thread and crash the process.

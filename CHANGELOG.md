@@ -10,6 +10,12 @@
   before PySpark reads them (GAP-018 closed). Needs pyarrow 18 or newer.
 - New registered gap: `md5()` passed to `unhex`, `split` or `regexp_extract` fails inside
   Sail (GAP-019); cast it to string first.
+- Columns nested more than about 48 calls deep, such as one `regexp_replace` per character,
+  now work: sparkwarp lifts the Spark Connect client's protobuf depth limit while it runs and
+  gives Sail a 32 MB thread stack (`SAIL_RUNTIME__STACK_SIZE`, unless you set it). ADOPT-007
+  closed. Such columns are slow on Sail, and real Spark overflows from about 350 calls deep
+  (ADOPT-009). The protobuf switch is process-wide while sparkwarp runs, and sparkwarp turns
+  it off at the end even if something had turned it on before.
 
 ## 0.2.0 (2026-10-21)
 

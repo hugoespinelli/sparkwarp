@@ -5,10 +5,11 @@ Everything sparkwarp knows to differ from real Spark 4 (ANSI mode), each pinned 
 - Engine gaps are corpus cases that run on both engines. Real Spark recorded the expected
   results; on Sail each case is a strict `xfail`, so it fails the day the gap closes.
   ORDER-001 is the exception: Sail's order varies between runs, so it is a non-strict `xfail`.
-- Adoption gaps ADOPT-001, ADOPT-002 and ADOPT-006 are pinned in the package's own tests, which
-  run on Sail only. ADOPT-003, ADOPT-004, ADOPT-005 and ADOPT-007 are corpus cases like the
-  engine gaps: they run on both engines against Spark goldens and are strict `xfail`s on Sail.
-- Behaviour that sparkwarp itself chooses (ADOPT-008) is pinned in the package's own tests.
+- Adoption gaps ADOPT-001, ADOPT-002 and ADOPT-006 are pinned in the package's own tests,
+  which run on Sail only. ADOPT-003, ADOPT-004 and ADOPT-005 are corpus cases like the engine
+  gaps: they run on both engines against Spark goldens and are strict `xfail`s on Sail.
+- Behaviour that sparkwarp itself chooses (ADOPT-008, ADOPT-009) is pinned in the package's
+  own tests, as far as a test can run in reasonable time; the row says what is measured only.
 
 Versions: PySpark 4.2.0, pysail 0.7.2, checked 2026-10-22.
 
@@ -54,7 +55,6 @@ appear against any Spark Connect server.
 | ADOPT-003 | `spark.sparkContext` does not exist under Spark Connect. Since 0.2.0, sparkwarp provides a stub: `setLogLevel`, `applicationId`, `defaultParallelism` and `version` work; any other member still raises. Code that detects Connect with `try: spark.sparkContext` / `except` now takes the classic branch; check `pyspark.sql.utils.is_remote()` instead. | Mark tests that need the real `SparkContext` (`parallelize`, `wholeTextFiles`, Hadoop config) `spark_only`. | `corpus/test_methods.py`: `action_spark_context_is_unsupported` |
 | ADOPT-004 | `df.toJSON()` returns a DataFrame of `value` rows, not string rows. | `[r.value for r in df.select(F.to_json(F.struct("*")).alias("value")).collect()]` gives the same strings on both engines. | `corpus/test_methods.py`: `action_to_json` |
 | ADOPT-005 | `df.rdd` is not implemented. Since 0.3.0, sparkwarp provides a stub: `df.rdd.isEmpty()` works; any other member still raises. Code that detects Connect with `try: df.rdd` / `except` now takes the classic branch; check `pyspark.sql.utils.is_remote()` instead. | Use `df.isEmpty()`, or mark tests that need a real RDD (`map`, `collect`, `getNumPartitions`) `@pytest.mark.spark_only`. | `corpus/test_methods.py`: `action_rdd_is_unsupported`; the stub by `action_rdd_is_empty`, `action_rdd_is_empty_on_empty_frame` and `tests/test_compat.py` |
-| ADOPT-007 | The Spark Connect client serializes a column as nested protobuf messages, limited to 100 levels. About 48 nested function calls fit (47 when the column also gets an `.alias()`); more raises `DecodeError: ... MaxDepth`. Real Spark has no such limit. | Collapse character-by-character chains into one call (`F.translate` for single-character maps, or one `regexp_replace` with an alternation), or mark the test `spark_only`. | `corpus/test_functions.py`: `fn_regexp_replace_chain_at_the_limit` (47 deep plus an alias, works), `fn_deep_regexp_replace_chain` (60 deep, fails) |
 
 ## sparkwarp behaviour (not Spark Connect)
 
@@ -63,6 +63,7 @@ These come from choices sparkwarp makes, not from the Spark Connect client or fr
 | ID | What differs | Workaround | Pinned by |
 |---|---|---|---|
 | ADOPT-008 | Under sparkwarp, `spark.stop()` on the shared session is held, so state carries over: `spark.conf.set(...)` values and temp views survive into later test classes. Real Spark's `stop()` gives the next `getOrCreate()` a fresh session. | Reset what a test changes in its own teardown (`spark.conf.unset(key)`, `spark.catalog.dropTempView(name)`), or give temp views unique names. | `tests/test_compat.py` (asserts the carry-over) |
+| ADOPT-009 | Under sparkwarp, with the default upb protobuf backend, columns nested up to about 495 calls deep run on Sail. Real Spark raises `StackOverflowError` from about 350 nested calls (measured with `regexp_replace` chains), so a test with a column 350 to 495 calls deep can pass under sparkwarp and fail on real Spark. Beyond about 495, PySpark's Spark Connect client raises `RecursionError` (about 200 with the pure-Python protobuf backend). Deep columns are also slow on Sail: planning time grows roughly with the cube of the depth (150 calls about 4 s, 200 about 9 s, 400 about 90 s). | Keep columns shallow: collapse a long `regexp_replace` chain into one `F.translate`, or into one `regexp_replace` with an alternation. Sail's thread stack bounds the depth it can plan: a `SAIL_RUNTIME__STACK_SIZE` you set below 32 MB, a Sail server built in the process before sparkwarp's, or a `sys.setrecursionlimit` far above its default can let a column deep enough to overflow that stack reach Sail, which crashes the test process. | `tests/test_deep_columns.py` pins the client side: a 450-call plan builds and a 600-call plan raises `RecursionError`. Real Spark's overflow at about 350 and Sail's timings are measured, not tested: one query in that range takes 35 to 90 s. |
 
 ## Closed gaps
 
@@ -71,6 +72,7 @@ that a corpus case cannot be tagged with a closed gap.
 
 | ID | Closed in | How |
 |---|---|---|
+| `ADOPT-007` | 0.3.0 | The Spark Connect client's protobuf backend (upb) stopped columns nested more than about 48 calls deep with `DecodeError: ... MaxDepth`. While sparkwarp runs, it lifts that limit and gives Sail's threads a 32 MB stack. upb's only switch is process-wide and also lifts its 64 MB message cap for every protobuf message in the process. What remains is ADOPT-009. |
 | `GAP-018` | 0.3.0 | `F.md5(...)` before `distinct()` or a union failed on `collect()` with `string_view is not supported`. sparkwarp now casts Arrow view types in every result to plain types before PySpark reads them, with pyarrow 18 or newer (older pyarrow cannot cast view types, and the old error stays). Also fixed in Sail `main` (lakehq/sail#2837), not yet released. The same `Utf8View` still breaks some functions inside Sail: GAP-019. |
 
 ## Advice
