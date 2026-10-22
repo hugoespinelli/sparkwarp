@@ -484,7 +484,7 @@ REAL_USAGE = [
         gap=KnownGap("GAP-019"),
     ),
     row("regexp_replace_chain_at_the_limit", DeepChain.at_the_limit),
-    row("deep_regexp_replace_chain", DeepChain.column, gap=KnownGap("ADOPT-007")),
+    row("deep_regexp_replace_chain", DeepChain.column),
 ]
 
 ALL_CASES = (
