@@ -1,19 +1,23 @@
 # Changelog
 
-## 0.4.0 (unreleased)
+## 0.4.0 (2026-10-23)
+
+Speed fix for the third real-world run, where 0.3.0 took an 8,181-test suite from 4.5 to
+19 minutes on deeply nested columns.
 
 - sparkwarp routes the queries Sail is bad at to a Spark Connect server on the JVM, when
-  Java 17+ is installed (Linux or macOS): columns nested 64 levels or deeper (and their schema lookups),
-  and queries Sail rejects with a known gap, such as an array indexed by a column (GAP-013,
-  GAP-014, GAP-016, GAP-017). Only self-contained queries move (inline data or files, no
-  inline Python code); the rest stay on Sail. The server comes from the installed PySpark,
-  starts on first need, is shared by pytest-xdist workers and stops with the run. A summary
-  line counts what it ran.
-- **Breaking:** without Java 17+, with `SPARKWARP_JVM=0`, or when the server fails to start, a column nested 64 levels or
-  deeper (`SPARKWARP_JVM_DEPTH`) now fails fast with the sparkwarp hint instead of running on
-  Sail. That undoes the 0.3.0 slowdown on suites with deep `regexp_replace` chains, but a
-  column of 64 to about 150 levels that ran in seconds on 0.3.0 now fails there;
-  `SPARKWARP_JVM=0` with `SPARKWARP_JVM_DEPTH=0` restores the 0.3.0 behaviour.
+  Java 17+ is installed (Linux or macOS): columns nested 64 levels or deeper (and their
+  schema lookups), and queries Sail rejects with a known gap, such as an array indexed by
+  a column (GAP-013, GAP-014, GAP-016, GAP-017). Only self-contained queries move (inline
+  data or files, no inline Python code); the rest stay on Sail. The server comes from the
+  installed PySpark, starts on first need, is shared by pytest-xdist workers and stops
+  with the run. A summary line counts what it ran.
+- **Breaking:** without Java 17+, with `SPARKWARP_JVM=0`, or when the server fails to
+  start, a column nested 64 levels or deeper (`SPARKWARP_JVM_DEPTH`) now fails fast with
+  the sparkwarp hint instead of running on Sail. That undoes the 0.3.0 slowdown on suites
+  with deep `regexp_replace` chains, but a column of 64 to about 150 levels that ran in
+  seconds on 0.3.0 now fails there; `SPARKWARP_JVM=0` with `SPARKWARP_JVM_DEPTH=0`
+  restores the 0.3.0 behaviour.
 - The JVM server runs under a watchdog that stops it if the pytest run dies, and a server
   that cannot start (a broken install) is tried once: the Sail gaps then raise as without
   Java, and a too-deep column fails fast naming why and where the server's log is.
