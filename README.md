@@ -260,6 +260,14 @@ it ran. Every other query stays on Sail. To run on Sail only, as 0.3.0 did, set 
 | Real Spark, `local[1]`, tuned | 31.7 s | 364 ms | 686 ms |
 | sparkwarp (Sail) | 2.8 s | 25 ms | 34 ms |
 
+That is one process and 42 shallow tests, where JVM start-up and per-action latency are
+most of Spark's time. A real suite looks different. On a private 8,181-test lakehouse suite
+with pytest-xdist, real Spark takes about 18 minutes (8 workers) and sparkwarp 0.4.0 takes
+12 minutes (16 workers) at 95.9% passing. What dominates there is not per-action latency
+but iterative pipelines whose plan grows every round, so each action re-plans every earlier
+round; that is the next thing being worked on. Expect the headline speed-up on short tests
+and a smaller one on long pipelines, until then.
+
 The suite in [`benchmarks/`](https://github.com/hugoespinelli/sparkwarp/tree/main/benchmarks) is 42 tests shaped like a real lakehouse repo.
 They are transformer classes with a `process(df)` method, tested with `createDataFrame`,
 `F.*`, `Window`, `groupBy().agg()`, joins, `unionByName`, `from_json`, `explode`,
