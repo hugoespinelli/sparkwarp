@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+- Experimental `SPARKWARP_CUT=1`: a loop that re-derives a DataFrame and runs an action
+  each round no longer re-sends and re-plans its whole history. An action on a large
+  DataFrame stores it on Sail first and runs on the stored rows; later plans that contain it
+  reuse the stored rows. A 30-round loop went from 33 s to 5.5 s. Off by default; only
+  DataFrames made entirely of allowlisted parts (inline rows, plain transformations, pure
+  built-in functions) are stored. The run's summary gains a "plans cut" line.
+
 ## 0.4.0 (2026-10-23)
 
 Speed fix for the third real-world run, where 0.3.0 took an 8,181-test suite from 4.5 to

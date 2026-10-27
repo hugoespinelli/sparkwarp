@@ -186,6 +186,7 @@ sparkwarp.stop()                     # optional; it also runs at exit
 | `SPARKWARP=0` or unset | Off: your own fixture, on real Spark |
 | `SPARKWARP_JVM=0` | Never start the JVM server; deep columns fail fast instead |
 | `SPARKWARP_JVM_DEPTH=N` | Nesting depth from which a column leaves Sail, or fails fast without Java (default 64; `0` turns the limit off, as in 0.3.0) |
+| `SPARKWARP_CUT=1` | Experimental: cut the lineage of loops that re-derive a DataFrame (see "Growing plans") |
 
 On Sail the session uses Spark 4 semantics with ANSI mode on and session timezone UTC. A
 timezone that you set on your builder or with `spark.conf.set` wins. A test that starts a
@@ -245,6 +246,30 @@ it cannot start, the Sail gaps raise as they do without Java and a too-deep colu
 fast with the reason and the path of the server's log. The run's summary line counts what
 it ran. Every other query stays on Sail. To run on Sail only, as 0.3.0 did, set both
 `SPARKWARP_JVM=0` and `SPARKWARP_JVM_DEPTH=0`.
+
+### Growing plans (experimental)
+
+Spark Connect sends a DataFrame's whole history with every action, and Sail plans it from
+scratch each time. A loop that re-derives a DataFrame and runs an action every round
+therefore re-plans every earlier round again: the cost grows with the square of the
+rounds. With `SPARKWARP_CUT=1`, an action on a large DataFrame first stores that DataFrame
+on Sail as a local checkpoint and then runs on the stored rows; later plans that contain
+the same DataFrame send the checkpoint instead of its history. On a 30-round loop with a
+56-deep column and a window per round, that takes the run from 33 s to 5.5 s with the same
+rows.
+
+Only DataFrames with more than 400 expressions are considered, and only when every part
+is on a short allowlist: inline rows (`createDataFrame`), plain transformations (select,
+filter, `withColumn`, join, union, group by, `dropDuplicates`, drop or fill nulls) and
+pure built-in functions (string, math, comparison, cast, `when`, basic aggregates, ranking
+windows). Anything else is never stored and runs exactly as without the cut: files,
+tables, views, SQL text, UDFs, functions registered by name, time and random functions,
+`orderBy`, `DataFrame.alias`, `range`, and any function not on the list. Actions that read only a
+few rows (`first`, `show`, `limit`, `tail`) never store. A conf change through
+`spark.conf` or SQL `SET`/`RESET` drops the session's stored DataFrames. Sail frees a
+stored DataFrame only when the session ends, so at most 64 are made per session. The cut
+matches the same DataFrame object, not an equal one rebuilt from scratch. It is off by
+default while it is new.
 
 ## Benchmarks
 
