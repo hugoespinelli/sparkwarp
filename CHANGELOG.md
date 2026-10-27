@@ -1,6 +1,9 @@
 # Changelog
 
-## Unreleased
+## 0.5.0 (2026-10-27)
+
+An experimental fix for the slowest tests of the third real-world run: loops that re-derive
+a DataFrame every round.
 
 - Experimental `SPARKWARP_CUT=1`: a loop that re-derives a DataFrame and runs an action
   each round no longer re-sends and re-plans its whole history. An action on a large
