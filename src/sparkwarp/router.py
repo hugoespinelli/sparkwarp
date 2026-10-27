@@ -22,13 +22,17 @@ from pyspark.sql.connect.session import SparkSession as ConnectSession
 
 from sparkwarp.config import (
     COMMAND,
+    COMMAND_TYPE,
     CONF_SET,
     CONF_WRITES,
     COUNTS_FILE_GLOB,
     COUNTS_FILE_PATTERN,
+    CUT_SUMMARY,
     DEEP_COLUMN_FEATURE,
+    DEEP_PLANS,
     DEFAULT_JVM_DEPTH,
     FEATURE_PARAMETER,
+    JVM_COUNTS,
     JVM_DEPTH_ENV_VAR,
     JVM_ENV_VAR,
     JVM_LOST,
@@ -37,12 +41,17 @@ from sparkwarp.config import (
     NO_JVM_SERVER,
     NOT_IMPLEMENTED_CONDITION,
     OFF_FLAG_VALUES,
+    OP_TYPE,
+    PLAN_NOUNS,
+    PLANS_CUT,
     QUERY_NOUNS,
     REGISTER_FUNCTION,
     ROUTING_SUMMARY,
     SAIL_GAP_SIGNALS,
+    SAIL_GAPS,
 )
 from sparkwarp.jvm_server import JavaRuntime, JvmUnavailableError, SharedJvmServer
+from sparkwarp.lineage import LineageCuts
 from sparkwarp.plan_shape import PlanShape
 
 
@@ -127,8 +136,7 @@ class JvmSession:
 
     def record_conf(self, operation: proto.ConfigRequest.Operation) -> None:
         """Keeps a write for the JVM; one the JVM rejects is not the user's error."""
-        kind = operation.WhichOneof("op_type")
-        if kind is None or kind not in CONF_WRITES:
+        if not ConfWrite.changes_conf(operation):
             return
         for key, single in ConfWrite.per_key(operation):
             self._conf_writes.pop(key, None)
@@ -194,10 +202,15 @@ class ConfWrite:
     """Splits a conf write into one operation per key, so only the last one is kept."""
 
     @staticmethod
+    def changes_conf(operation: proto.ConfigRequest.Operation) -> bool:
+        kind = operation.WhichOneof(OP_TYPE)
+        return kind is not None and kind in CONF_WRITES
+
+    @staticmethod
     def per_key(
         operation: proto.ConfigRequest.Operation,
     ) -> list[tuple[str, proto.ConfigRequest.Operation]]:
-        if operation.WhichOneof("op_type") == CONF_SET:
+        if operation.WhichOneof(OP_TYPE) == CONF_SET:
             return [(pair.key, ConfWrite._set(pair)) for pair in operation.set.pairs]
         return [(key, ConfWrite._unset(key)) for key in operation.unset.keys]
 
@@ -224,20 +237,30 @@ class PlanRouter:
         self._jvm_failure: str | None = None
         self.deep_plans = 0
         self.sail_gaps = 0
+        self.lineage = LineageCuts()
+
+    @property
+    def registered(self) -> frozenset[str]:
+        """Functions registered on Sail by name, lower-cased."""
+        return frozenset(name.lower() for name in self._registered)
 
     def is_jvm_client(self, client: SparkConnectClient) -> bool:
         session = self.jvm.opened
         return session is not None and client is session.client
 
-    def note_registration(self, plan: proto.Plan) -> None:
-        """A function registered on Sail by name; plans that call it stay on Sail."""
-        is_command = plan.WhichOneof("op_type") == COMMAND
+    def note_registration(self, plan: proto.Plan) -> bool:
+        """A function registered on Sail by name; plans that call it stay on Sail.
+
+        Returns whether `plan` registered one, since a new name can shadow a built-in.
+        """
+        is_command = plan.WhichOneof(OP_TYPE) == COMMAND
         registers = is_command and (
-            plan.command.WhichOneof("command_type") == REGISTER_FUNCTION
+            plan.command.WhichOneof(COMMAND_TYPE) == REGISTER_FUNCTION
         )
         if registers:
             name = plan.command.register_function.function_name
             self._registered.add(name.lower())
+        return registers
 
     def route(self, plan: proto.Plan, count: bool = True) -> Route:
         limit = self._policy.depth_limit
@@ -291,7 +314,11 @@ class PlanRouter:
 
     @property
     def counts(self) -> dict[str, int]:
-        return {"deep_plans": self.deep_plans, "sail_gaps": self.sail_gaps}
+        return {
+            DEEP_PLANS: self.deep_plans,
+            SAIL_GAPS: self.sail_gaps,
+            PLANS_CUT: self.lineage.plans_cut,
+        }
 
     def save_counts(self, directory: Path) -> None:
         target = directory / COUNTS_FILE_PATTERN.format(pid=os.getpid())
@@ -306,15 +333,19 @@ class RoutingSummary:
         self._directory = directory
         self._own = own
 
-    def line(self) -> str | None:
+    def lines(self) -> list[str]:
         totals = Counter(self._own)
         for saved in self._saved():
             totals.update(saved)
-        total = sum(totals.values())
-        if not total:
-            return None
-        noun = QUERY_NOUNS[total != 1]
-        return ROUTING_SUMMARY.format(total=total, noun=noun, **totals)
+        on_jvm = sum(totals[name] for name in JVM_COUNTS)
+        cut = totals[PLANS_CUT]
+        found: list[str] = []
+        if on_jvm:
+            noun = QUERY_NOUNS[on_jvm != 1]
+            found.append(ROUTING_SUMMARY.format(total=on_jvm, noun=noun, **totals))
+        if cut:
+            found.append(CUT_SUMMARY.format(plans_cut=cut, noun=PLAN_NOUNS[cut != 1]))
+        return found
 
     def _saved(self) -> list[dict[str, int]]:
         if self._directory is None or not self._directory.exists():
