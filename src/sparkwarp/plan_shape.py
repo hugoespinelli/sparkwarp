@@ -11,6 +11,7 @@ import path and patches.
 from __future__ import annotations
 
 import os
+from collections.abc import Iterator
 
 import pyspark.sql.connect.proto as proto
 from google.protobuf.descriptor import FieldDescriptor
@@ -79,7 +80,7 @@ class PlanShape:
             self.expression_depth = max(self.expression_depth, depth)
             if message.DESCRIPTOR.name == PLAN_RELATION:
                 self._note_relation(message)
-            pending.extend((child, depth) for child in self._children(message))
+            pending.extend((child, depth) for child in MessageTree.children(message))
 
     def _note_expression(self, expression: Message) -> None:
         kind = expression.WhichOneof("expr_type")
@@ -109,8 +110,12 @@ class PlanShape:
         if kind in SAIL_ONLY_RELATIONS or reads_a_table or reads_other_files:
             self._needs_sail = True
 
+
+class MessageTree:
+    """Iterative walks over a protobuf tree: deep plans would overflow recursion."""
+
     @staticmethod
-    def _children(message: Message) -> list[Message]:
+    def children(message: Message) -> list[Message]:
         children: list[Message] = []
         for field, value in message.ListFields():
             if field.type != FieldDescriptor.TYPE_MESSAGE:
@@ -120,6 +125,28 @@ class PlanShape:
             elif not field.message_type.GetOptions().map_entry:
                 children.extend(value)
         return children
+
+    @staticmethod
+    def walk(top: Message) -> Iterator[Message]:
+        """Every message under `top`, itself included, children read after the yield."""
+        pending = [top]
+        while pending:
+            message = pending.pop()
+            yield message
+            pending.extend(MessageTree.children(message))
+
+    @staticmethod
+    def relations_below(relation: Message) -> list[Message]:
+        """The nearest relations under `relation`, also those inside its expressions."""
+        found: list[Message] = []
+        pending = MessageTree.children(relation)
+        while pending:
+            message = pending.pop()
+            if message.DESCRIPTOR.name == PLAN_RELATION:
+                found.append(message)
+            else:
+                pending.extend(MessageTree.children(message))
+        return found
 
 
 class FileTarget:
