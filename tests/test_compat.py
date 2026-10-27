@@ -115,7 +115,9 @@ def test_held_stop_keeps_session_state_as_documented(spark: SparkSession) -> Non
 def test_a_separate_session_stop_keeps_the_shared_release_pool() -> None:
     engine = SailEngine()
     try:
-        engine.start_session().range(3).collect()
+        shared = engine.start_session()
+        shared.client.enable_reattachable_execute()
+        shared.range(3).collect()
         pool = ReattachIterator._release_thread_pool_instance
         assert pool is not None
         separate = ConnectSession.builder.remote(os.environ[REMOTE_ENV_VAR]).create()
