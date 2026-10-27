@@ -3,8 +3,9 @@
 Each shim is installed while sparkwarp owns an engine and removed at stop:
 `spark.sparkContext.setLogLevel(...)`, `spark.catalog.clearCache()`, `spark.stop()` and
 `df.rdd.isEmpty()` keep working, Arrow view types in results are cast to plain types
-(`arrow_views`), deeply nested columns get past the protobuf depth limit, and
-Java-only regex patterns run in Python (`regex_fallback`). Anything else on
+(`arrow_views`), deeply nested columns get past the protobuf depth limit,
+Java-only regex patterns run in Python (`regex_fallback`), and Sail's clients stream
+results without reattach round trips (`streams`). Anything else on
 `sparkContext` or `rdd` still fails as loudly as before.
 """
 
@@ -37,6 +38,7 @@ from sparkwarp.patches import ClassPatch, Shim
 from sparkwarp.regex_fallback import RegexFallbackPatch
 from sparkwarp.router import PlanRouter
 from sparkwarp.routing import RoutingPatches
+from sparkwarp.streams import EndpointLookup, PlainStreamsPatch
 
 try:
     from google._upb import _message as _upb_message
@@ -268,7 +270,7 @@ class ProtobufDepthLimit:
 class CompatShims:
     """Installs and removes all shims as one unit, skipping those that do not apply."""
 
-    def __init__(self, router: PlanRouter) -> None:
+    def __init__(self, router: PlanRouter, sail_endpoint: EndpointLookup) -> None:
         self.held_stop = HeldStopPatch()
         self.release_pool = ReleasePoolPatch()
         self._patches: tuple[Shim, ...] = (
@@ -280,6 +282,7 @@ class CompatShims:
             ViewTypesPatch(),
             ProtobufDepthLimit(),
             RegexFallbackPatch(),
+            PlainStreamsPatch(sail_endpoint),
             *RoutingPatches.for_router(router),
         )
 

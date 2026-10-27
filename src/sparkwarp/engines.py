@@ -12,6 +12,7 @@ import tempfile
 from collections.abc import Mapping
 from contextlib import ExitStack
 from pathlib import Path
+from typing import ClassVar
 
 from pysail.spark import SparkConnectServer
 from pyspark.sql import SparkSession
@@ -27,7 +28,9 @@ from sparkwarp.config import (
     DEFAULT_TIMEZONE,
     ENGINE_LABEL,
     LOCALHOST,
+    PARALLELISM_ENV_VAR,
     SAIL_STACK_SIZE_BYTES,
+    SAIL_TEST_PARALLELISM,
     STACK_SIZE_ENV_VAR,
     TIMEZONE_KEY,
 )
@@ -72,16 +75,24 @@ class ServerSettings:
     reads the stack size once per process, when the first server is built.
     The larger thread stack lets Sail plan columns nested several hundred calls deep, so
     PySpark's own recursion limit stops a deeper column before Sail can overflow.
+    One partition per plan node suits test data of a few rows: each extra partition adds
+    an Arrow batch to every result, and the work is too small to gain from parallelism.
     """
+
+    DEFAULTS: ClassVar[Mapping[str, str]] = {
+        STACK_SIZE_ENV_VAR: str(SAIL_STACK_SIZE_BYTES),
+        PARALLELISM_ENV_VAR: str(SAIL_TEST_PARALLELISM),
+    }
 
     def __init__(self, checkpoint_path: Path | None) -> None:
         self._checkpoint_path = checkpoint_path
 
     def scoped_vars(self) -> dict[str, str]:
-        scoped: dict[str, str] = {}
-        user_chose_a_stack_size = bool(os.environ.get(STACK_SIZE_ENV_VAR))
-        if not user_chose_a_stack_size:
-            scoped[STACK_SIZE_ENV_VAR] = str(SAIL_STACK_SIZE_BYTES)
+        scoped = {
+            name: value
+            for name, value in self.DEFAULTS.items()
+            if not os.environ.get(name)
+        }
         if self._checkpoint_path is not None:
             scoped[CHECKPOINT_ENV_VAR] = str(self._checkpoint_path)
         return scoped
@@ -111,7 +122,7 @@ class SailEngine:
         )
         self._jvm_session = JvmSession(self.contract)
         self.router = PlanRouter(self._jvm_session)
-        self._shims = CompatShims(self.router)
+        self._shims = CompatShims(self.router, self.sail_endpoint)
         self._jvm_server: SharedJvmServer | None = None
         self._checkpoint = CheckpointDir()
         self._stopped = False
@@ -135,6 +146,11 @@ class SailEngine:
     @property
     def stopped(self) -> bool:
         return self._stopped
+
+    def sail_endpoint(self) -> str | None:
+        """`host:port` of the running Sail server, as a Connect client names it."""
+        listening = self._server.listening_address if self._server else None
+        return ServerAddress(*listening).endpoint if listening else None
 
     def prepare_environment(self) -> None:
         """Start the server and route PySpark to it. Idempotent; refused after stop."""
