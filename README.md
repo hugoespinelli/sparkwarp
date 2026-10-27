@@ -206,7 +206,13 @@ PySpark 4 ships a [Spark Connect](https://spark.apache.org/docs/latest/spark-con
 client. With it, `F.col`, `DataFrame` and `Window` build a query plan in plain Python, and
 only an action sends that plan to a server, in one call. sparkwarp starts
 [Sail](https://github.com/lakehq/sail), a Spark Connect server written in Rust, inside the
-pytest process, with a 32 MB thread stack unless you set `SAIL_RUNTIME__STACK_SIZE`. It
+pytest process, with a 32 MB thread stack unless you set `SAIL_RUNTIME__STACK_SIZE`, and
+with one partition per plan node unless you set `SAIL_EXECUTION__DEFAULT_PARALLELISM`
+(`0` gives Sail's own default, one per CPU core). One partition suits test data: a result
+comes back as one Arrow batch. A test that runs a heavy query on millions of rows can be
+slower that way, and is the case for the setting. Sail's clients also stream results
+without PySpark's reattachable execute, which costs a round trip per streamed message
+and exists to resume streams a remote cluster dropped. sparkwarp
 then points PySpark at Sail with two environment variables and a few small patches,
 removed when the run ends: to `SparkSession.Builder`, to the conftest calls that Spark
 Connect lacks, and to result batches, which it converts from Arrow view types to the plain

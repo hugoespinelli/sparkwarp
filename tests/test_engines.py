@@ -3,18 +3,39 @@ from collections.abc import Iterator
 from pathlib import Path
 
 import pytest
+from pyspark.sql import SparkSession
+from pyspark.sql import functions as F
 
 from sparkwarp.config import (
     ANSI_KEY,
     CHECKPOINT_ENV_VAR,
     DEFAULT_TIMEZONE,
+    PARALLELISM_ENV_VAR,
+    SAIL_TEST_PARALLELISM,
     STACK_SIZE_ENV_VAR,
     TIMEZONE_KEY,
 )
-from sparkwarp.engines import SailEngine
+from sparkwarp.engines import SailEngine, ServerSettings
 from sparkwarp.errors import EngineStoppedError
 
 SAO_PAULO = "America/Sao_Paulo"
+USER_PARALLELISM = "4"
+GROUP_KEYS = 40
+GROUPED_ROWS = 80
+KEY_SCHEMA = "k int"
+PARTITION_ALIAS = "p"
+
+
+class PartitionsUsed:
+    """How many partitions Sail spread a small grouped result over."""
+
+    @staticmethod
+    def by_a_grouped_count(spark: SparkSession) -> int:
+        rows = [(i % GROUP_KEYS,) for i in range(GROUPED_ROWS)]
+        counted = spark.createDataFrame(rows, KEY_SCHEMA).groupBy("k").count()
+        partition_ids = F.spark_partition_id().alias(PARTITION_ALIAS)
+        partitions = counted.select(partition_ids).distinct()
+        return partitions.count()
 
 
 @pytest.fixture
@@ -62,6 +83,7 @@ def test_scoped_server_settings_are_temporary_and_not_inherited(
         assert checkpoint_dir is not None and checkpoint_dir.is_dir()
         assert CHECKPOINT_ENV_VAR not in os.environ
         assert STACK_SIZE_ENV_VAR not in os.environ
+        assert PARALLELISM_ENV_VAR not in os.environ
     finally:
         sail.stop()
     assert not checkpoint_dir.exists()
@@ -93,3 +115,26 @@ def test_stopped_engine_refuses_to_start_again(sail: SailEngine) -> None:
     sail.stop()
     with pytest.raises(EngineStoppedError):
         sail.start_session()
+
+
+def test_sail_runs_one_partition_per_plan_node(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.delenv(PARALLELISM_ENV_VAR, raising=False)
+    engine = SailEngine()
+    try:
+        spark = engine.start_session()
+        assert PartitionsUsed.by_a_grouped_count(spark) == SAIL_TEST_PARALLELISM
+    finally:
+        engine.stop()
+
+
+def test_a_parallelism_the_user_set_wins(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv(PARALLELISM_ENV_VAR, USER_PARALLELISM)
+    assert PARALLELISM_ENV_VAR not in ServerSettings(checkpoint_path=None).scoped_vars()
+    engine = SailEngine()
+    try:
+        spark = engine.start_session()
+        assert PartitionsUsed.by_a_grouped_count(spark) > SAIL_TEST_PARALLELISM
+    finally:
+        engine.stop()

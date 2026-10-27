@@ -40,8 +40,12 @@ class ServerAddress:
     port: int
 
     @property
+    def endpoint(self) -> str:
+        return f"{self.host}:{self.port}"
+
+    @property
     def url(self) -> str:
-        return f"{CONNECT_URL_SCHEME}{self.host}:{self.port}"
+        return f"{CONNECT_URL_SCHEME}{self.endpoint}"
 
 
 @dataclass

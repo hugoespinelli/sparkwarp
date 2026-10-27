@@ -58,19 +58,16 @@ ACCIDENTAL = [
         "accidental_group_by_order",
         lambda s: P(s).groupBy("dept").count(),
         ordered=True,
-        gap=KnownGap("ORDER-001", stable=False),
     ),
     Case(
         "accidental_distinct_order",
         lambda s: P(s).select("dept").distinct(),
         ordered=True,
-        gap=KnownGap("ORDER-001", stable=False),
     ),
     Case(
         "accidental_drop_duplicates_order",
         lambda s: P(s).dropDuplicates(["dept"]).select("dept"),
         ordered=True,
-        gap=KnownGap("ORDER-001", stable=False),
     ),
     Case(
         "accidental_first_in_group",

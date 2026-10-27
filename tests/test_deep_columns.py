@@ -96,7 +96,7 @@ def test_engine_stop_turns_the_protobuf_limit_back_on() -> None:
 def test_sail_gets_a_larger_thread_stack(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.delenv(STACK_SIZE_ENV_VAR, raising=False)
     scoped = ServerSettings(checkpoint_path=None).scoped_vars()
-    assert scoped == {STACK_SIZE_ENV_VAR: str(SAIL_STACK_SIZE_BYTES)}
+    assert scoped[STACK_SIZE_ENV_VAR] == str(SAIL_STACK_SIZE_BYTES)
 
 
 def test_a_stack_size_the_user_set_wins(monkeypatch: pytest.MonkeyPatch) -> None:
