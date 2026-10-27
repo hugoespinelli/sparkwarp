@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from enum import Enum
+from typing import Final
 
 
 class Ownership(str, Enum):
@@ -106,11 +107,12 @@ PROC_CMDLINE = "/proc/{pid}/cmdline"
 ZOMBIE_STATE = "State:\tZ"
 PLAN_RELATION = "Relation"
 PLAN_EXPRESSION = "Expression"
+CACHED_REMOTE_RELATION = "cached_remote_relation"
 SERVER_STATE_RELATIONS = frozenset(
     {
         "sql",
         "catalog",
-        "cached_remote_relation",
+        CACHED_REMOTE_RELATION,
         "cached_local_relation",
         "chunked_cached_local_relation",
         "extension",
@@ -121,6 +123,9 @@ CONF_SET = "set"
 CONF_WRITES = frozenset({CONF_SET, "unset"})
 COMMAND = "command"
 ROOT = "root"
+OP_TYPE: Final = "op_type"
+REL_TYPE = "rel_type"
+EXPR_TYPE = "expr_type"
 READ = "read"
 NAMED_TABLE = "named_table"
 DATA_SOURCE = "data_source"
@@ -150,7 +155,8 @@ INLINE_CODE_RELATIONS = frozenset(
         "common_inline_user_defined_data_source",
     }
 )
-INLINE_CODE_EXPRESSIONS = frozenset({"common_inline_user_defined_function"})
+INLINE_FUNCTION = "common_inline_user_defined_function"
+INLINE_CODE_EXPRESSIONS = frozenset({INLINE_FUNCTION})
 SAIL_ONLY_RELATIONS = SERVER_STATE_RELATIONS | INLINE_CODE_RELATIONS
 SAIL_ONLY_EXPRESSIONS = SERVER_STATE_EXPRESSIONS | INLINE_CODE_EXPRESSIONS
 PORTABLE_FORMATS = frozenset({"", "parquet", "csv", "json", "orc", "text"})
@@ -161,6 +167,89 @@ SAIL_GAP_SIGNALS = (
     "Incompatible inputs for Union",
 )
 LOOKUP_CAST_SIGNAL = "Cannot cast string"
+
+CUT_ENV_VAR = "SPARKWARP_CUT"
+ON_FLAG_VALUES = frozenset({"1", "true", "yes", "on"})
+CUT_BUDGET_NODES = 400
+CUT_MAX_STORED = 64
+ACTION_WRAPPERS = frozenset({"limit", "tail", "show_string", "html_string"})
+AGGREGATE = "aggregate"
+PROJECT = "project"
+COUNT_FUNCTION = "count"
+COLUMN_REFERENCES = frozenset(
+    {"unresolved_attribute", "unresolved_star", "unresolved_regex"}
+)
+PLAN_ID_FIELD = "plan_id"
+CHECKPOINT_RESULT = "checkpoint_command_result"
+FINGERPRINT_BYTES = 16
+PLANS_CUT = "plans_cut"
+TRIAL_RELATION_ID = "sparkwarp-trial"
+SQL_COMMAND = "sql_command"
+COMMAND_TYPE: Final = "command_type"
+SQL_CONF_KEYWORDS = frozenset({"SET", "RESET"})
+SQL_COMMENT = "--"
+STORABLE_RELATIONS = frozenset(
+    {
+        "local_relation",
+        PROJECT,
+        "filter",
+        "with_columns",
+        "with_columns_renamed",
+        "drop",
+        "to_df",
+        "deduplicate",
+        "join",
+        "set_op",
+        AGGREGATE,
+        "hint",
+        "fill_na",
+        "drop_na",
+        "replace",
+        "repartition",
+        "repartition_by_expression",
+    }
+)
+PURE_EXPRESSION_KINDS = frozenset(
+    {
+        "literal",
+        "unresolved_attribute",
+        "unresolved_star",
+        "unresolved_regex",
+        "alias",
+        "cast",
+        "sort_order",
+        "window",
+        "lambda_function",
+        "unresolved_named_lambda_variable",
+        "unresolved_extract_value",
+        "update_fields",
+    }
+)
+PURE_FUNCTIONS = frozenset(
+    {
+        "==", "!=", "<", "<=", ">", ">=", "<=>", "and", "or", "not",
+        "+", "-", "*", "/", "%", "negative", "positive", "abs", "round", "bround",
+        "floor", "ceil", "ceiling", "greatest", "least", "sqrt", "pow", "power",
+        "pmod", "mod", "isnull", "isnotnull", "isnan", "in", "when", "if",
+        "coalesce", "nvl", "ifnull", "nullif",
+        "regexp_replace", "replace", "translate", "lower", "upper", "lcase", "ucase",
+        "trim", "ltrim", "rtrim", "btrim", "concat", "concat_ws", "substring",
+        "substr", "length", "char_length", "character_length", "lpad", "rpad",
+        "split", "initcap", "reverse", "repeat", "regexp_extract", "rlike", "like",
+        "ilike", "startswith", "endswith", "contains", "instr", "locate", "left",
+        "right", "format_string", "md5", "sha1", "sha2", "hash", "xxhash64",
+        "base64", "ascii",
+        "array", "size", "array_contains", "element_at", "struct", "named_struct",
+        "count", "sum", "min", "max", "avg", "mean",
+        "row_number", "rank", "dense_rank", "ntile", "percent_rank", "cume_dist",
+        "lag", "lead",
+    }
+)  # fmt: skip
+DEEP_PLANS = "deep_plans"
+SAIL_GAPS = "sail_gaps"
+JVM_COUNTS = (DEEP_PLANS, SAIL_GAPS)
+CUT_SUMMARY = "sparkwarp: {plans_cut} growing {noun} cut (checkpointed on Sail)"
+PLAN_NOUNS = ("plan", "plans")
 
 STUB_DEFAULT_PARALLELISM = 1
 STUB_ATTRIBUTE_PARAMETER = "attr_name"
