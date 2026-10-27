@@ -1,6 +1,8 @@
 # Changelog
 
-## Unreleased
+## 0.6.0 (2026-10-27)
+
+Cheaper actions on small data: about half the fixed cost of a small `collect()`.
 
 - Faster actions: Sail now runs one partition per plan node, and its clients stream
   results without PySpark's reattachable execute. A small `collect()` drops from about

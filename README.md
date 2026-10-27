@@ -9,7 +9,7 @@
   <img alt="Python 3.10+" src="https://img.shields.io/badge/python-3.10%2B-2a78d6">
   <img alt="PySpark 4" src="https://img.shields.io/badge/pyspark-4.x-eb6834">
   <img alt="License: Apache-2.0" src="https://img.shields.io/badge/license-Apache--2.0-52514e">
-  <img alt="Release v0.5.0" src="https://img.shields.io/badge/release-v0.5.0-898781">
+  <img alt="Release v0.6.0" src="https://img.shields.io/badge/release-v0.6.0-898781">
 </p>
 
 <p align="center">
@@ -49,10 +49,10 @@ Production keeps running on Spark.
 
 ## Installation
 
-Install the 0.5.0 release from GitHub:
+Install the 0.6.0 release from GitHub:
 
 ```bash
-pip install https://github.com/hugoespinelli/sparkwarp/releases/download/v0.5.0/sparkwarp-0.5.0-py3-none-any.whl
+pip install https://github.com/hugoespinelli/sparkwarp/releases/download/v0.6.0/sparkwarp-0.6.0-py3-none-any.whl
 ```
 
 Or from source:
