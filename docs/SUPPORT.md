@@ -9,7 +9,7 @@ Each row is a corpus case that runs on real Spark and on Sail. *matches Spark* m
 | Functions | 181 | 170 | 11 |
 | DataFrame methods and actions | 64 | 58 | 6 |
 | Semantic traps | 93 | 78 | 15 |
-| Row order | 12 | 8 | 4 |
+| Row order | 12 | 11 | 1 |
 
 ## Functions
 
@@ -383,8 +383,8 @@ Covers guaranteed and accidental row order.
 | `accidental_filter_keeps_insertion_order` | matches Spark |
 | `accidental_union_appends_in_order` | matches Spark |
 | `accidental_left_join_order` | differs: ORDER-001 (silent) |
-| `accidental_group_by_order` | differs: ORDER-001 (silent) |
-| `accidental_distinct_order` | differs: ORDER-001 (silent) |
-| `accidental_drop_duplicates_order` | differs: ORDER-001 (silent) |
+| `accidental_group_by_order` | matches Spark |
+| `accidental_distinct_order` | matches Spark |
+| `accidental_drop_duplicates_order` | matches Spark |
 | `accidental_first_in_group` | matches Spark |
 | `accidental_collect_list_order` | matches Spark |
