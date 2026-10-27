@@ -80,7 +80,7 @@ sparkwarp already handles the lines that most conftests contain:
 | `df.rdd.isEmpty()` | Works, as `df.isEmpty()`. Other `df.rdd` members still fail |
 | `spark.stop()` in a teardown | Held: the shared session stays open until the run ends, so libraries that cached it (cuallee does) keep working. Its conf values and temp views carry over to later tests (ADOPT-008) |
 | `df.localCheckpoint()` or `df.checkpoint()` | Works: each run gets a temporary checkpoint directory |
-| `pytest -n auto` (pytest-xdist) | Supported: each worker starts its own Sail; the workers share one JVM server when they need it |
+| `pytest -n auto` (pytest-xdist) | Supported: each worker starts its own Sail; the workers share one JVM server when they need it. Add `--dist worksteal` when some tests are much slower than others (see "Benchmarks") |
 | A column nested 64+ levels deep, or an array index taken from a column | Runs on a JVM Spark Connect server when Java 17+ is installed (see "The JVM for what Sail is bad at"); without Java, a deep column fails fast with the `spark_only` hint |
 
 Mark these `@pytest.mark.spark_only` before the first run, because Sail or Spark Connect
@@ -269,7 +269,8 @@ few rows (`first`, `show`, `limit`, `tail`) never store. A conf change through
 `spark.conf` or SQL `SET`/`RESET` drops the session's stored DataFrames. Sail frees a
 stored DataFrame only when the session ends, so at most 64 are made per session. The cut
 matches the same DataFrame object, not an equal one rebuilt from scratch. It is off by
-default while it is new.
+default while it is new. On the private suite described under "Benchmarks", it reused
+nothing and left the run time unchanged.
 
 ## Benchmarks
 
@@ -287,11 +288,14 @@ default while it is new.
 
 That is one process and 42 shallow tests, where JVM start-up and per-action latency are
 most of Spark's time. A real suite looks different. On a private 8,181-test lakehouse suite
-with pytest-xdist, real Spark takes about 18 minutes (8 workers) and sparkwarp 0.4.0 takes
-12 minutes (16 workers) at 95.9% passing. What dominates there is not per-action latency
-but iterative pipelines whose plan grows every round, so each action re-plans every earlier
-round; that is the next thing being worked on. Expect the headline speed-up on short tests
-and a smaller one on long pipelines, until then.
+with pytest-xdist, real Spark takes about 18 minutes (8 workers). sparkwarp 0.5.0 takes
+6 minutes with 16 workers and `--dist worksteal`, at 95.8% passing, but 8 to 12 minutes
+with xdist's default `--dist load` and the same results. The default hands each worker a
+consecutive slice of the tests, so a few slow test classes can land on one worker while the
+other fifteen sit idle; which classes collide changes from run to run. With `worksteal`, a
+worker that runs out takes queued tests from the others. Inside the 6 minutes, the slowest
+tests are iterative pipelines whose plan grows every round, at up to 90 s each. Expect the
+headline speed-up on short tests and a smaller one on long pipelines.
 
 The suite in [`benchmarks/`](https://github.com/hugoespinelli/sparkwarp/tree/main/benchmarks) is 42 tests shaped like a real lakehouse repo.
 They are transformer classes with a `process(df)` method, tested with `createDataFrame`,

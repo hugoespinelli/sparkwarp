@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Docs: the README recommends `--dist worksteal` with pytest-xdist and reports the fourth
+  real-world run: 6 minutes with it, 8 to 12 minutes with xdist's default `--dist load`,
+  against about 18 minutes on real Spark. The experimental lineage cut did not change that
+  suite's time.
+
 ## 0.5.0 (2026-10-27)
 
 An experimental fix for the slowest tests of the third real-world run: loops that re-derive
