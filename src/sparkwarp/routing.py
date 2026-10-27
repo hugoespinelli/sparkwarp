@@ -16,7 +16,7 @@ from pyspark.errors import PySparkException
 from pyspark.sql.connect.client.core import SparkConnectClient
 
 from sparkwarp.patches import ClassPatch
-from sparkwarp.router import PlanRouter, Route
+from sparkwarp.router import ConfWrite, PlanRouter, Route
 
 Stream = Callable[..., Iterator[object]]
 Call = Callable[..., object]
@@ -69,9 +69,11 @@ class RoutedStream(ClientMethod):
         if self.router.route(request.plan) is Route.JVM:
             yield from self._on_jvm(request, args, kwargs)
             return
+        cut = self.router.lineage.prepare(client, request.plan, self.router.registered)
         answered = False
         try:
-            for response in self._stream(client, request, *args, **kwargs):
+            sent = cut.request_for(request)
+            for response in self._stream(client, sent, *args, **kwargs):
                 answered = True
                 yield response
         except PySparkException as error:
@@ -96,7 +98,9 @@ class WatchedExecute(ClientMethod):
         self, client: SparkConnectClient, request: proto.ExecutePlanRequest
     ) -> object:
         if not self.router.is_jvm_client(client):
-            self.router.note_registration(request.plan)
+            registered = self.router.note_registration(request.plan)
+            if registered:
+                self.router.lineage.forget(client)
         return self.original(client, request)
 
 
@@ -136,6 +140,8 @@ class MirroredConfig(ClientMethod):
         result = self.original(client, operation)
         if not self.router.is_jvm_client(client):
             self.router.jvm.record_conf(operation)
+            if ConfWrite.changes_conf(operation):
+                self.router.lineage.forget(client)
         return result
 
 

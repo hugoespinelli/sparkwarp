@@ -182,6 +182,7 @@ class SailEngine:
             for session in self._live_sessions():
                 cleanup.callback(self._shims.close, session)
             cleanup.callback(self._close_jvm_session)
+            cleanup.callback(self.router.lineage.release_all)
 
     def _live_sessions(self) -> list[ConnectSession]:
         """Every open Connect session sparkwarp knows of: shared, active, and held.

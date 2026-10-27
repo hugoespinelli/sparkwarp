@@ -87,8 +87,7 @@ class SparkwarpSession:
         runtime = Runtime.current()
         if runtime is None:
             return
-        line = runtime.engine.routing_summary().line()
-        if line is not None:
+        for line in runtime.engine.routing_summary().lines():
             terminalreporter.write_line(line)
 
     @pytest.hookimpl(wrapper=True)
