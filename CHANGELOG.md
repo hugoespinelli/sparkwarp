@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+- Faster actions: Sail now runs one partition per plan node, and its clients stream
+  results without PySpark's reattachable execute. A small `collect()` drops from about
+  12 ms to 6 ms: one Arrow batch instead of one per partition, and no ReleaseExecute round
+  trip per streamed message. Set `SAIL_EXECUTION__DEFAULT_PARALLELISM` (for example `0`,
+  Sail's per-core default) for tests that run heavy queries on millions of rows. Visible
+  to tests that read `spark_partition_id()` or `monotonically_increasing_id()`. Sessions
+  on any other server, such as the JVM server, keep reattach.
+- ORDER-001 narrowed to joins: with one partition, the accidental row order after
+  `groupBy`, `distinct` and `dropDuplicates` matches local Spark (20 of 20 runs), and
+  those three corpus cases now pass without a gap marker. The order is still not
+  guaranteed, and a higher `SAIL_EXECUTION__DEFAULT_PARALLELISM` brings the difference
+  back.
 - Docs: the README recommends `--dist worksteal` with pytest-xdist and reports the fourth
   real-world run: 6 minutes with it, 8 to 12 minutes with xdist's default `--dist load`,
   against about 18 minutes on real Spark. The experimental lineage cut did not change that
