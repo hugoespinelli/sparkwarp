@@ -4,17 +4,16 @@ from collections.abc import Iterator
 
 import pyspark.sql.connect.proto as proto
 import pytest
-from pysail.spark import SparkConnectServer
 from pyspark.sql import SparkSession
 from pyspark.sql.connect.client.core import SparkConnectClient
 from pyspark.sql.connect.session import SparkSession as ConnectSession
 
-from sparkwarp.config import ANY_FREE_PORT, LOCALHOST
-from sparkwarp.engines import SailEngine
+from sparkwarp.engines import SailEngine, ServerSettings
 from sparkwarp.environment import ServerAddress
 from sparkwarp.streams import PlainStreamsPatch
 
 ROWS = 3
+NO_CHECKPOINTS = None
 
 
 class SentRequests:
@@ -61,8 +60,7 @@ def sail() -> Iterator[SailEngine]:
 
 @pytest.fixture
 def other_server() -> Iterator[ServerAddress]:
-    server = SparkConnectServer(LOCALHOST, ANY_FREE_PORT)
-    server.start(background=True)
+    server = ServerSettings(NO_CHECKPOINTS).launch()
     host, port = server.listening_address
     yield ServerAddress(host, port)
     server.stop()

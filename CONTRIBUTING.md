@@ -76,10 +76,27 @@ CI runs all of these. Run them locally before you push:
 uv run ruff check .
 uv run black --check .
 uv run mypy
-uv run pytest -q
+uv run pytest -q -n auto
+uv run pytest -q -m timing
 SPARKWARP=1 uv run pytest corpus -q
 uv run python -m corpus.support_page --check
 ```
+
+## The speed guard
+
+`tests/test_speed_guard.py` keeps sparkwarp's fast paths fast. Two kinds of checks live
+there:
+
+- Counters run with every `pytest` run: a small action sends the same requests as plain
+  PySpark on Sail, a too-deep column without Java never reaches Sail, and a shallow run
+  never opens the JVM.
+- Checks marked `timing` compare times measured in one process: an action against plain
+  Sail, the regex fallback against a native pattern, the lineage cut against a growing
+  loop, and how fast a too-deep column fails and a session starts. A plain `pytest` skips
+  them; run them alone, with nothing else busy, as `uv run pytest -q -m timing`.
+
+When a timing check fails, run it once more. If it fails again, treat it as a regression,
+not as noise: each limit sits at least a third above the slowest healthy run measured.
 
 ## Code style
 
