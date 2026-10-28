@@ -72,6 +72,8 @@ include = [
 testpaths = ["tests"]
 pythonpath = ["."]
 filterwarnings = ["ignore::DeprecationWarning"]
+markers = ["timing: compares times measured in one process; run alone with -m timing"]
+addopts = "-m 'not timing'"
 
 [tool.mypy]
 strict = true
